@@ -1,10 +1,11 @@
 import { clientId, redirectToAuthCodeFlow } from "./auth/login";
 import { getAccessToken } from "./auth/token";
 import { fetchProfile, getPlaylists, populateUI } from "./homepage/homepage";
+import * as dotenv from 'dotenv';
+
 
 const params = new URLSearchParams(window.location.search);
 const code = params.get("code");
-
 
 if (!code) {
     redirectToAuthCodeFlow(clientId);

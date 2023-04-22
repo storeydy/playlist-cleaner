@@ -1,4 +1,6 @@
-export const clientId = "<<replaceWithClientId>>"; // Replace with your client id
+
+
+export const clientId = import.meta.env.VITE_CLIENTID;
 
 
 export async function redirectToAuthCodeFlow(clientId: string) {    //GET request to /authorize with permission list 
