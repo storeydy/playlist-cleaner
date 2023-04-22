@@ -21,3 +21,34 @@ interface Image {
     height: number;
     width: number;
 }
+
+interface PlaylistOwner{
+    displayName : string;
+    externalUrls: {},
+    href: string;
+    id: string;
+    type: string;
+    uri: string;
+}
+
+interface PlaylistTracks{
+    href: string;
+    total: number;
+}
+
+export interface Playlist {
+    collaborative: boolean;
+    description: string;
+    externalUrls: {};
+    href: string;
+    id: string;
+    images: Image[];
+    name: string;
+    owner: PlaylistOwner;
+    primaryColor: string;
+    public: boolean;
+    snapshotId: string;
+    tracks : PlaylistTracks;
+    type: string;
+    uri: string;
+}

@@ -1,3 +1,5 @@
+import { Playlist, UserProfile } from "../types";
+
 export async function fetchProfile(token: string): Promise<UserProfile> {
     const result = await fetch("https://api.spotify.com/v1/me", {
         method: "GET", headers: { Authorization: `Bearer ${token}` }
@@ -10,7 +12,36 @@ export async function getPlaylists(token: string, userId: string): Promise<any> 
     const result = await fetch("https://api.spotify.com/v1/users/" + userId + "/playlists", {
         method: "GET", headers: { Authorization: `Bearer ${token}`}
     })
-    return await result.json();
+
+    let data = await result.json();
+    
+    let typedPlaylists : Playlist[] = [];
+
+    data.items.forEach((element: any) => {
+        let p = convertPlaylist(element);
+        typedPlaylists.push(p);
+    });
+
+    return typedPlaylists;
+}
+
+function convertPlaylist(externalPlaylist: any): Playlist { //ToDo: add function for more effective mapping
+    return {
+        name: externalPlaylist.name,
+        collaborative: externalPlaylist.collaborative,
+        description: externalPlaylist.description,
+        externalUrls : externalPlaylist.external_urls,
+        href: externalPlaylist.href,
+        id: externalPlaylist.id,
+        images: externalPlaylist.images,
+        owner: externalPlaylist.owner,
+        tracks: externalPlaylist.tracks,
+        primaryColor: externalPlaylist.primary_color,
+        public: externalPlaylist.public,
+        snapshotId: externalPlaylist.shapshop_id,
+        uri: externalPlaylist.uri,
+        type: externalPlaylist.type
+    }
 }
 
 export function populateUI(profile: UserProfile) {
