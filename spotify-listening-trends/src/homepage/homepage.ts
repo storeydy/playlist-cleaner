@@ -10,19 +10,38 @@ export async function fetchProfile(token: string): Promise<UserProfile> {
 
 export async function getPlaylists(token: string, userId: string): Promise<any> {
     const result = await fetch("https://api.spotify.com/v1/users/" + userId + "/playlists", {
-        method: "GET", headers: { Authorization: `Bearer ${token}`}
+        method: "GET", headers: { Authorization: `Bearer ${token}` }
     })
 
     let data = await result.json();
-    
-    let typedPlaylists : Playlist[] = [];
+
+    let typedPlaylists: Playlist[] = [];
 
     data.items.forEach((element: any) => {
         let p = convertPlaylist(element);
         typedPlaylists.push(p);
     });
-
     return typedPlaylists;
+}
+
+export async function getTracksInPlaylist(token: string, playlistId: string): Promise<any> {
+    let tracks: any[] = []  //Add type
+    let url = "https://api.spotify.com/v1/playlists/" + playlistId + "/tracks";
+    const result = await fetch(url, {
+        method: "GET", headers: { Authorization: `Bearer ${token}` }
+    })
+    let newData : any = await result.json();
+    tracks.push(...newData.items)    
+    while(newData.next != null){
+        const urlForNextPage : string = newData.next;
+        const result = await fetch( urlForNextPage, {
+            method: "GET", headers: { Authorization: `Bearer ${token}` }
+        })
+        newData = await result.json();
+        tracks.push(...newData.items)
+    }
+
+    return tracks;
 }
 
 function convertPlaylist(externalPlaylist: any): Playlist { //ToDo: add function for more effective mapping
@@ -30,7 +49,7 @@ function convertPlaylist(externalPlaylist: any): Playlist { //ToDo: add function
         name: externalPlaylist.name,
         collaborative: externalPlaylist.collaborative,
         description: externalPlaylist.description,
-        externalUrls : externalPlaylist.external_urls,
+        externalUrls: externalPlaylist.external_urls,
         href: externalPlaylist.href,
         id: externalPlaylist.id,
         images: externalPlaylist.images,
