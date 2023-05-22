@@ -1,6 +1,6 @@
 import { clientId, redirectToAuthCodeFlow } from "./auth/login";
 import { getAccessToken } from "./auth/token";
-import { fetchProfile, getPlaylists, getTracksInPlaylist, populateUI } from "./homepage/homepage";
+import { fetchProfile, getPlaylists, getTracksInPlaylist, fillUserProfileSummary, fillUserPlaylistsDisplay } from "./homepage/homepage";
 import { Playlist } from "./types";
 
 const params = new URLSearchParams(window.location.search);
@@ -17,7 +17,8 @@ if (!code) {
     console.log(profile);
     console.log(playlists);
     console.log(tracks);
-    populateUI(profile);
+    fillUserProfileSummary(profile);
+    fillUserPlaylistsDisplay(playlists);
 }
 
 

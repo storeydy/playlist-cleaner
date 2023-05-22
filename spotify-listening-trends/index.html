@@ -1,24 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <title>My Spotify Profile</title>
-        <script src="src/script.ts" type="module"></script>
-    </head>
-    <body>
-      <h1>Display your Spotify profile data</h1>
 
-      <section id="profile">
-      <h2>Logged in as <span id="displayName"></span></h2>
-      <span id="avatar"></span>
-      <ul>
-          <li>User ID: <span id="id"></span></li>
-          <li>Email: <span id="email"></span></li>
-          <li>Spotify URI: <a id="uri" href="#"></a></li>
-          <li>Follower Count: <span id="followers"></span></li>
-          <li>Link: <a id="url" href="#"></a></li>
-          <li>Profile Image: <span id="imgUrl"></span></li>
-      </ul>
-      </section>
-    </body>
+<head>
+    <meta charset="utf-8">
+    <title>My Spotify Profile</title>
+    <script src="src/script.ts" type="module"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <h1>Display your Spotify profile data</h1>
+
+    <section id="profile">
+        <h2>Logged in as <span id="displayName"></span></h2>
+        <span id="avatar"></span>
+        <ul>
+            <li>User ID: <span id="id"></span></li>
+            <li>Email: <span id="email"></span></li>
+            <li>Spotify URI: <a id="uri" href="#"></a></li>
+            <li>Follower Count: <span id="followers"></span></li>
+            <li>Link: <a id="url" href="#"></a></li>
+            <li>Profile Image: <span id="imgUrl"></span></li>
+        </ul>
+    </section>
+
+    <secton id="playlists">
+        <h2> User's Playlists </h2>
+        <h4> This includes Public, Private or Collaborative playlists created or followed by the signed in user.</h4>
+        <table id="playlist-table" class="table">
+            <tbody id = "playlist-table-body">
+                <tr>
+                    <th>Name</th>
+                    <th>URI</th>
+                    <th>Owner</th>
+                    <th>Description</th>
+                    <th>Type</th>
+                    <th>Track Count</th>
+                </tr>
+            </tbody>
+        </table>
+    </secton>
+</body>
+
 </html>

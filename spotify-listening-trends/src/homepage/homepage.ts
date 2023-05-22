@@ -1,3 +1,4 @@
+import { getAccessToken } from "../auth/token";
 import { Playlist, UserProfile } from "../types";
 
 export async function fetchProfile(token: string): Promise<UserProfile> {
@@ -9,7 +10,7 @@ export async function fetchProfile(token: string): Promise<UserProfile> {
 }
 
 export async function getPlaylists(token: string, userId: string): Promise<any> {
-    const result = await fetch("https://api.spotify.com/v1/users/" + userId + "/playlists", {
+    const result = await fetch("https://api.spotify.com/v1/users/" + userId + "/playlists?limit=50", {
         method: "GET", headers: { Authorization: `Bearer ${token}` }
     })
 
@@ -63,7 +64,7 @@ function convertPlaylist(externalPlaylist: any): Playlist { //ToDo: add function
     }
 }
 
-export function populateUI(profile: UserProfile) {
+export function fillUserProfileSummary(profile: UserProfile) {
     document.getElementById("displayName")!.innerText = profile.display_name;
     if (profile.images[0]) {
         const profileImage = new Image(200, 200);
@@ -78,4 +79,26 @@ export function populateUI(profile: UserProfile) {
     document.getElementById("url")!.setAttribute("href", profile.href);
     document.getElementById("followers")!.innerText = profile.followers.total.toString();
     document.getElementById("imgUrl")!.innerText = profile.images[0]?.url ?? '(no profile image)';
+}
+
+export function fillUserPlaylistsDisplay(playlists: Playlist[]) {
+    var table = document.getElementById("playlist-table-body");
+    for(var i = 0; i < playlists.length; i++)
+    {
+        var playlistRow = document.createElement("tr");
+        var playlistName = document.createElement("td");
+        playlistName.innerHTML = playlists[i].name;
+        var playlistUri = document.createElement("td");
+        playlistUri.innerHTML = playlists[i].href;
+        var playlistOwner = document.createElement("td");
+        playlistOwner.innerHTML = playlists[i].owner.href;
+        var playlistDescription = document.createElement("td");
+        playlistDescription.innerHTML = playlists[i].description;
+        var playlistType = document.createElement("td");
+        playlistType.innerHTML = playlists[i].type;
+        var playlistTrackCount = document.createElement("td");
+        playlistTrackCount.innerHTML = playlists[i].tracks.total.toString();
+        playlistRow.append(playlistName, playlistUri, playlistOwner, playlistDescription, playlistType, playlistTrackCount);
+        table?.appendChild(playlistRow);
+    }
 }
