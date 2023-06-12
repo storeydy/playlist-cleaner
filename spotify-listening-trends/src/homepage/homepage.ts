@@ -1,4 +1,3 @@
-import { getAccessToken } from "../auth/token";
 import { Playlist, UserProfile } from "../types";
 
 export async function fetchProfile(token: string): Promise<UserProfile> {
@@ -101,4 +100,21 @@ export function fillUserPlaylistsDisplay(playlists: Playlist[]) {
         playlistRow.append(playlistName, playlistUri, playlistOwner, playlistDescription, playlistType, playlistTrackCount);
         table?.appendChild(playlistRow);
     }
+}
+
+
+export function fillHistoryDisplay(history: any){
+    var section = document.getElementById("history");
+    var div = document.createElement("ol");
+
+    for(var i = 0; i < history.length; i++)
+    {
+        console.log(history[i])
+        var object = document.createElement("li");
+        if(history[i].context != null) {//add back after
+        object.innerHTML = history[i].context.type + " - " + history[i].context.href + " - " + history[i].track.name ;
+        div.appendChild(object);
+            }
+    }
+    section?.appendChild(div);
 }

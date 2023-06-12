@@ -1,6 +1,7 @@
 import { clientId, redirectToAuthCodeFlow } from "./auth/login";
 import { getAccessToken } from "./auth/token";
-import { fetchProfile, getPlaylists, getTracksInPlaylist, fillUserProfileSummary, fillUserPlaylistsDisplay } from "./homepage/homepage";
+import { getRecentlyPlayed } from "./history/recently-played";
+import { fetchProfile, getPlaylists, getTracksInPlaylist, fillUserProfileSummary, fillUserPlaylistsDisplay, fillHistoryDisplay } from "./homepage/homepage";
 import { Playlist } from "./types";
 
 const params = new URLSearchParams(window.location.search);
@@ -14,11 +15,10 @@ if (!code) {
     const profile = await fetchProfile(accessToken);
     let playlists : Playlist[] =  await getPlaylists(accessToken, profile.id);
     let tracks : any[] = await getTracksInPlaylist(accessToken, playlists[0].id);
-    console.log(profile);
-    console.log(playlists);
-    console.log(tracks);
+    let history : any[] = await getRecentlyPlayed(accessToken);
+    
     fillUserProfileSummary(profile);
     fillUserPlaylistsDisplay(playlists);
+    fillHistoryDisplay(history);
 }
-
 
