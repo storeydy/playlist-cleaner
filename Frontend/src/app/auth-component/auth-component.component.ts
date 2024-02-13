@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { environment } from 'src/environments/environment.development'; //Local environment variables file - in gitignore 
+import { Buffer } from 'buffer';
 
 const params = new URLSearchParams(window.location.search);
 const code: any = params.get("code");
@@ -13,6 +14,7 @@ const clientId = environment.clientId;
   templateUrl: './auth-component.component.html',
   styleUrls: ['./auth-component.component.scss'],
 })
+
 export class AuthComponentComponent {
   async ngOnInit() {
     if (!code) {
@@ -21,7 +23,6 @@ export class AuthComponentComponent {
     else {
       const accessToken = await this.getAccessToken(clientId, code);  
       const profile = await this.fetchProfile(accessToken);
-      console.log(profile);
     }
   }
 
@@ -57,7 +58,8 @@ export class AuthComponentComponent {
   async generateCodeChallenge(codeVerifier: string) {    //SHA Hash of random string
     const data = new TextEncoder().encode(codeVerifier);
     const digest = await window.crypto.subtle.digest('SHA-256', data);
-    return btoa(String.fromCharCode.apply(null, [...new Uint8Array(digest)]))
+    const base64Digest = Buffer.from(new Uint8Array(digest)).toString('base64');
+    return base64Digest
         .replace(/\+/g, '-')
         .replace(/\//g, '_')
         .replace(/=+$/, '');
@@ -87,5 +89,6 @@ export class AuthComponentComponent {
         method: "GET", headers: { Authorization: `Bearer ${token}` }
     });
     return await result.json();
-}
+  }
+
 }
