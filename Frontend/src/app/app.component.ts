@@ -6,10 +6,10 @@ import { AuthComponentComponent } from './auth-component/auth-component.componen
 @Component({
   standalone: true,
   imports: [NxWelcomeComponent, RouterModule, AuthComponentComponent],
-  selector: 'spotify-listening-trends-root',
+  selector: 'playlist-cleaner-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-  title = 'spotify-listening-trends';
+  title = 'playlist-cleaner';
 }

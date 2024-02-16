@@ -17,15 +17,15 @@
             "executor": "@nx/cypress:cypress",
             "options": {
               "cypressConfig": "e2e/cypress.config.ts",
-              "devServerTarget": "spotify-listening-trends:serve:development",
+              "devServerTarget": "playlist-cleaner:serve:development",
               "testingType": "e2e"
             },
             "configurations": {
               "production": {
-                "devServerTarget": "spotify-listening-trends:serve:production"
+                "devServerTarget": "playlist-cleaner:serve:production"
               },
               "ci": {
-                "devServerTarget": "spotify-listening-trends:serve-static"
+                "devServerTarget": "playlist-cleaner:serve-static"
               }
             }
           },
@@ -49,19 +49,19 @@
         },
         "tags": [],
         "implicitDependencies": [
-          "spotify-listening-trends"
+          "playlist-cleaner"
         ],
         "root": "e2e"
       }
     },
-    "spotify-listening-trends": {
-      "name": "spotify-listening-trends",
+    "playlist-cleaner": {
+      "name": "playlist-cleaner",
       "type": "app",
       "data": {
-        "name": "spotify-listening-trends",
+        "name": "playlist-cleaner",
         "$schema": "node_modules/nx/schemas/project-schema.json",
         "projectType": "application",
-        "prefix": "spotify-listening-trends",
+        "prefix": "playlist-cleaner",
         "sourceRoot": "./src",
         "tags": [],
         "targets": {
@@ -84,7 +84,7 @@
               "{options.outputPath}"
             ],
             "options": {
-              "outputPath": "dist/spotify-listening-trends",
+              "outputPath": "dist/playlist-cleaner",
               "index": "./src/index.html",
               "main": "./src/main.ts",
               "polyfills": [
@@ -158,10 +158,10 @@
             "executor": "@angular-devkit/build-angular:dev-server",
             "configurations": {
               "production": {
-                "browserTarget": "spotify-listening-trends:build:production"
+                "browserTarget": "playlist-cleaner:build:production"
               },
               "development": {
-                "browserTarget": "spotify-listening-trends:build:development"
+                "browserTarget": "playlist-cleaner:build:development"
               }
             },
             "defaultConfiguration": "development"
@@ -169,7 +169,7 @@
           "extract-i18n": {
             "executor": "@angular-devkit/build-angular:extract-i18n",
             "options": {
-              "browserTarget": "spotify-listening-trends:build"
+              "browserTarget": "playlist-cleaner:build"
             }
           },
           "lint": {
@@ -193,7 +193,7 @@
           "serve-static": {
             "executor": "@nx/web:file-server",
             "options": {
-              "buildTarget": "spotify-listening-trends:build"
+              "buildTarget": "playlist-cleaner:build"
             }
           }
         },
@@ -11845,7 +11845,7 @@
     "e2e": [
       {
         "source": "e2e",
-        "target": "spotify-listening-trends",
+        "target": "playlist-cleaner",
         "type": "implicit"
       },
       {
@@ -11859,244 +11859,244 @@
         "type": "static"
       }
     ],
-    "spotify-listening-trends": [
+    "playlist-cleaner": [
       {
-        "source": "spotify-listening-trends",
+        "source": "playlist-cleaner",
         "target": "npm:@nx/jest",
         "type": "static"
       },
       {
-        "source": "spotify-listening-trends",
+        "source": "playlist-cleaner",
         "target": "npm:@angular/animations",
         "type": "static"
       },
       {
-        "source": "spotify-listening-trends",
+        "source": "playlist-cleaner",
         "target": "npm:@angular/common",
         "type": "static"
       },
       {
-        "source": "spotify-listening-trends",
+        "source": "playlist-cleaner",
         "target": "npm:@angular/compiler",
         "type": "static"
       },
       {
-        "source": "spotify-listening-trends",
+        "source": "playlist-cleaner",
         "target": "npm:@angular/core",
         "type": "static"
       },
       {
-        "source": "spotify-listening-trends",
+        "source": "playlist-cleaner",
         "target": "npm:@angular/forms",
         "type": "static"
       },
       {
-        "source": "spotify-listening-trends",
+        "source": "playlist-cleaner",
         "target": "npm:@angular/platform-browser",
         "type": "static"
       },
       {
-        "source": "spotify-listening-trends",
+        "source": "playlist-cleaner",
         "target": "npm:@angular/platform-browser-dynamic",
         "type": "static"
       },
       {
-        "source": "spotify-listening-trends",
+        "source": "playlist-cleaner",
         "target": "npm:@angular/router",
         "type": "static"
       },
       {
-        "source": "spotify-listening-trends",
+        "source": "playlist-cleaner",
         "target": "npm:@nx/angular",
         "type": "static"
       },
       {
-        "source": "spotify-listening-trends",
+        "source": "playlist-cleaner",
         "target": "npm:dotenv",
         "type": "static"
       },
       {
-        "source": "spotify-listening-trends",
+        "source": "playlist-cleaner",
         "target": "npm:rxjs",
         "type": "static"
       },
       {
-        "source": "spotify-listening-trends",
+        "source": "playlist-cleaner",
         "target": "npm:tslib",
         "type": "static"
       },
       {
-        "source": "spotify-listening-trends",
+        "source": "playlist-cleaner",
         "target": "npm:zone.js",
         "type": "static"
       },
       {
-        "source": "spotify-listening-trends",
+        "source": "playlist-cleaner",
         "target": "npm:@angular-devkit/build-angular",
         "type": "static"
       },
       {
-        "source": "spotify-listening-trends",
+        "source": "playlist-cleaner",
         "target": "npm:@angular-devkit/core",
         "type": "static"
       },
       {
-        "source": "spotify-listening-trends",
+        "source": "playlist-cleaner",
         "target": "npm:@angular-devkit/schematics",
         "type": "static"
       },
       {
-        "source": "spotify-listening-trends",
+        "source": "playlist-cleaner",
         "target": "npm:@angular-eslint/eslint-plugin",
         "type": "static"
       },
       {
-        "source": "spotify-listening-trends",
+        "source": "playlist-cleaner",
         "target": "npm:@angular-eslint/eslint-plugin-template",
         "type": "static"
       },
       {
-        "source": "spotify-listening-trends",
+        "source": "playlist-cleaner",
         "target": "npm:@angular-eslint/template-parser",
         "type": "static"
       },
       {
-        "source": "spotify-listening-trends",
+        "source": "playlist-cleaner",
         "target": "npm:@angular/cli",
         "type": "static"
       },
       {
-        "source": "spotify-listening-trends",
+        "source": "playlist-cleaner",
         "target": "npm:@angular/compiler-cli",
         "type": "static"
       },
       {
-        "source": "spotify-listening-trends",
+        "source": "playlist-cleaner",
         "target": "npm:@angular/language-service",
         "type": "static"
       },
       {
-        "source": "spotify-listening-trends",
+        "source": "playlist-cleaner",
         "target": "npm:@nx/cypress",
         "type": "static"
       },
       {
-        "source": "spotify-listening-trends",
+        "source": "playlist-cleaner",
         "target": "npm:@nx/eslint-plugin",
         "type": "static"
       },
       {
-        "source": "spotify-listening-trends",
+        "source": "playlist-cleaner",
         "target": "npm:@nx/js",
         "type": "static"
       },
       {
-        "source": "spotify-listening-trends",
+        "source": "playlist-cleaner",
         "target": "npm:@nx/linter",
         "type": "static"
       },
       {
-        "source": "spotify-listening-trends",
+        "source": "playlist-cleaner",
         "target": "npm:@nx/web",
         "type": "static"
       },
       {
-        "source": "spotify-listening-trends",
+        "source": "playlist-cleaner",
         "target": "npm:@nx/workspace",
         "type": "static"
       },
       {
-        "source": "spotify-listening-trends",
+        "source": "playlist-cleaner",
         "target": "npm:@schematics/angular",
         "type": "static"
       },
       {
-        "source": "spotify-listening-trends",
+        "source": "playlist-cleaner",
         "target": "npm:@types/jest",
         "type": "static"
       },
       {
-        "source": "spotify-listening-trends",
+        "source": "playlist-cleaner",
         "target": "npm:@types/node",
         "type": "static"
       },
       {
-        "source": "spotify-listening-trends",
+        "source": "playlist-cleaner",
         "target": "npm:@typescript-eslint/eslint-plugin",
         "type": "static"
       },
       {
-        "source": "spotify-listening-trends",
+        "source": "playlist-cleaner",
         "target": "npm:@typescript-eslint/parser",
         "type": "static"
       },
       {
-        "source": "spotify-listening-trends",
+        "source": "playlist-cleaner",
         "target": "npm:cypress",
         "type": "static"
       },
       {
-        "source": "spotify-listening-trends",
+        "source": "playlist-cleaner",
         "target": "npm:eslint",
         "type": "static"
       },
       {
-        "source": "spotify-listening-trends",
+        "source": "playlist-cleaner",
         "target": "npm:eslint-config-prettier",
         "type": "static"
       },
       {
-        "source": "spotify-listening-trends",
+        "source": "playlist-cleaner",
         "target": "npm:eslint-plugin-cypress",
         "type": "static"
       },
       {
-        "source": "spotify-listening-trends",
+        "source": "playlist-cleaner",
         "target": "npm:jest",
         "type": "static"
       },
       {
-        "source": "spotify-listening-trends",
+        "source": "playlist-cleaner",
         "target": "npm:jest-environment-jsdom",
         "type": "static"
       },
       {
-        "source": "spotify-listening-trends",
+        "source": "playlist-cleaner",
         "target": "npm:jest-preset-angular",
         "type": "static"
       },
       {
-        "source": "spotify-listening-trends",
+        "source": "playlist-cleaner",
         "target": "npm:nx",
         "type": "static"
       },
       {
-        "source": "spotify-listening-trends",
+        "source": "playlist-cleaner",
         "target": "npm:nx-cloud",
         "type": "static"
       },
       {
-        "source": "spotify-listening-trends",
+        "source": "playlist-cleaner",
         "target": "npm:prettier",
         "type": "static"
       },
       {
-        "source": "spotify-listening-trends",
+        "source": "playlist-cleaner",
         "target": "npm:ts-jest",
         "type": "static"
       },
       {
-        "source": "spotify-listening-trends",
+        "source": "playlist-cleaner",
         "target": "npm:ts-node",
         "type": "static"
       },
       {
-        "source": "spotify-listening-trends",
+        "source": "playlist-cleaner",
         "target": "npm:typescript",
         "type": "static"
       },
       {
-        "source": "spotify-listening-trends",
+        "source": "playlist-cleaner",
         "target": "npm:buffer",
         "type": "static"
       }

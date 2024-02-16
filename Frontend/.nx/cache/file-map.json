@@ -53,14 +53,14 @@
   "pathMappings": {},
   "nxJsonPlugins": [],
   "projectFileMap": {
-    "spotify-listening-trends": [
+    "playlist-cleaner": [
       {
         "file": ".eslintignore",
         "hash": "13404745306227114823"
       },
       {
         "file": ".eslintrc.json",
-        "hash": "14131571408301974950"
+        "hash": "6127529222365820818"
       },
       {
         "file": ".gitignore",
@@ -68,19 +68,19 @@
       },
       {
         "file": ".nx/cache/d/daemon.log",
-        "hash": "7743163121723304032"
+        "hash": "3715801557357859201"
       },
       {
         "file": ".nx/cache/d/server-process.json",
-        "hash": "11233275852050163238"
+        "hash": "1086550762019435411"
       },
       {
         "file": ".nx/cache/file-map.json",
-        "hash": "3238594677354280980"
+        "hash": "10278751073995212775"
       },
       {
         "file": ".nx/cache/lockfile.hash",
-        "hash": "7243078113122725686"
+        "hash": "9365561536922237794"
       },
       {
         "file": ".nx/cache/nx-console-project-graph/project-graph.html",
@@ -92,7 +92,7 @@
       },
       {
         "file": ".nx/cache/nx-console-project-graph/static/environment.js",
-        "hash": "5335495628457857263"
+        "hash": "14630265720440342840"
       },
       {
         "file": ".nx/cache/nx-console-project-graph/static/favicon.ico",
@@ -127,15 +127,19 @@
       },
       {
         "file": ".nx/cache/project-graph.json",
-        "hash": "1090098035612329338"
+        "hash": "11010642666862066587"
       },
       {
         "file": ".nx/cache/run.json",
-        "hash": "2508111809115154146"
+        "hash": "18123260767082811763"
+      },
+      {
+        "file": ".nx/cache/terminalOutputs/12841091656103951104",
+        "hash": "8793157216053254091"
       },
       {
         "file": ".nx/cache/terminalOutputs/2624669353429927547",
-        "hash": "15300990719999477309"
+        "hash": "9875823079706397471"
       },
       {
         "file": ".nx/cache/terminalOutputs/4923784079088692206",
@@ -159,11 +163,11 @@
       },
       {
         "file": "README.md",
-        "hash": "10436438801421671895"
+        "hash": "3574585997918811785"
       },
       {
         "file": "jest.config.ts",
-        "hash": "3992659313906480122"
+        "hash": "3733392238061274991"
       },
       {
         "file": "jest.preset.js",
@@ -174,15 +178,15 @@
       },
       {
         "file": "nx.json",
-        "hash": "176996516556422831"
+        "hash": "4759654223967270467"
       },
       {
         "file": "package-lock.json",
-        "hash": "10329741416626214310"
+        "hash": "8407715652231707459"
       },
       {
         "file": "package.json",
-        "hash": "10447411959207929283",
+        "hash": "11399570845979160000",
         "deps": [
           "npm:@angular/animations",
           "npm:@angular/common",
@@ -235,7 +239,7 @@
       },
       {
         "file": "project.json",
-        "hash": "5389179938868889514"
+        "hash": "16444353339329597229"
       },
       {
         "file": "spotify-listening-trends",
@@ -243,7 +247,7 @@
       },
       {
         "file": "src/app/app.component.html",
-        "hash": "1242824431991889604"
+        "hash": "14596549107187380551"
       },
       {
         "file": "src/app/app.component.scss",
@@ -251,7 +255,7 @@
       },
       {
         "file": "src/app/app.component.spec.ts",
-        "hash": "12228331151490097618",
+        "hash": "3799559889882486743",
         "deps": [
           "npm:@angular/core",
           "npm:@angular/router"
@@ -259,7 +263,7 @@
       },
       {
         "file": "src/app/app.component.ts",
-        "hash": "18143604073596243846",
+        "hash": "283131805645485529",
         "deps": [
           "npm:@angular/core",
           "npm:@angular/router"
@@ -297,7 +301,7 @@
       },
       {
         "file": "src/app/auth-component/auth-component.component.ts",
-        "hash": "17726356800837824865",
+        "hash": "13552094340297080949",
         "deps": [
           "npm:@angular/core",
           "npm:@angular/common",
@@ -306,7 +310,7 @@
       },
       {
         "file": "src/app/nx-welcome.component.ts",
-        "hash": "2128922580450325951",
+        "hash": "5529624446848760343",
         "deps": [
           "npm:@angular/core",
           "npm:@angular/common"
@@ -322,7 +326,7 @@
       },
       {
         "file": "src/index.html",
-        "hash": "15473128971239494243"
+        "hash": "1345872250580171121"
       },
       {
         "file": "src/main.ts",
@@ -374,11 +378,11 @@
       },
       {
         "file": "e2e/project.json",
-        "hash": "11748282650772909865"
+        "hash": "3168815909710223101"
       },
       {
         "file": "e2e/src/e2e/app.cy.ts",
-        "hash": "4802041409915176317"
+        "hash": "2543273799614933744"
       },
       {
         "file": "e2e/src/fixtures/example.json",

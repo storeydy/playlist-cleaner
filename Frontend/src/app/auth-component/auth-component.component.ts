@@ -8,7 +8,7 @@ const code: any = params.get("code");
 const clientId = environment.clientId;
 
 @Component({
-  selector: 'spotify-listening-trends-auth-component',
+  selector: 'playlist-cleaner-auth-component',
   standalone: true,
   imports: [CommonModule],
   templateUrl: './auth-component.component.html',

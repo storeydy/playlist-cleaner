@@ -1,6 +1,6 @@
 import { getGreeting } from '../support/app.po';
 
-describe('spotify-listening-trends', () => {
+describe('playlist-cleaner', () => {
   beforeEach(() => cy.visit('/'));
 
   it('should display welcome message', () => {
@@ -8,6 +8,6 @@ describe('spotify-listening-trends', () => {
     cy.login('my-email@something.com', 'myPassword');
 
     // Function helper example, see `../support/app.po.ts` file
-    getGreeting().contains('Welcome spotify-listening-trends');
+    getGreeting().contains('Welcome playlist-cleaner');
   });
 });

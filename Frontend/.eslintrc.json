@@ -15,7 +15,7 @@
           "error",
           {
             "type": "attribute",
-            "prefix": "spotifyListeningTrends",
+            "prefix": "playlistCleaner",
             "style": "camelCase"
           }
         ],
@@ -23,7 +23,7 @@
           "error",
           {
             "type": "element",
-            "prefix": "spotify-listening-trends",
+            "prefix": "playlist-cleaner",
             "style": "kebab-case"
           }
         ]

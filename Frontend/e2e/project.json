@@ -8,15 +8,15 @@
       "executor": "@nx/cypress:cypress",
       "options": {
         "cypressConfig": "e2e/cypress.config.ts",
-        "devServerTarget": "spotify-listening-trends:serve:development",
+        "devServerTarget": "playlist-cleaner:serve:development",
         "testingType": "e2e"
       },
       "configurations": {
         "production": {
-          "devServerTarget": "spotify-listening-trends:serve:production"
+          "devServerTarget": "playlist-cleaner:serve:production"
         },
         "ci": {
-          "devServerTarget": "spotify-listening-trends:serve-static"
+          "devServerTarget": "playlist-cleaner:serve-static"
         }
       }
     },
@@ -29,5 +29,5 @@
     }
   },
   "tags": [],
-  "implicitDependencies": ["spotify-listening-trends"]
+  "implicitDependencies": ["playlist-cleaner"]
 }

@@ -1,9 +1,9 @@
 /* eslint-disable */
 export default {
-  displayName: 'spotify-listening-trends',
+  displayName: 'playlist-cleaner',
   preset: './jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
-  coverageDirectory: './coverage/spotify-listening-trends',
+  coverageDirectory: './coverage/playlist-cleaner',
   transform: {
     '^.+\\.(ts|mjs|js|html)$': [
       'jest-preset-angular',

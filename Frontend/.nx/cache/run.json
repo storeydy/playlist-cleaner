@@ -7,9 +7,9 @@
   },
   "tasks": [
     {
-      "taskId": "spotify-listening-trends:serve:development",
+      "taskId": "playlist-cleaner:serve:development",
       "target": "serve",
-      "projectName": "spotify-listening-trends",
+      "projectName": "playlist-cleaner",
       "hash": "8446740309993861968",
       "startTime": "2024-02-13T13:42:26.968Z",
       "endTime": "2024-02-13T13:42:27.313Z",
