@@ -2,10 +2,15 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { environment } from 'src/environments/environment.development'; //Local environment variables file - in gitignore 
 import { Buffer } from 'buffer';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+
 
 const params = new URLSearchParams(window.location.search);
 const code: any = params.get("code");
 const clientId = environment.clientId;
+const clientSecret = environment.clientSecret;
 
 @Component({
   selector: 'playlist-cleaner-auth-component',
@@ -16,13 +21,30 @@ const clientId = environment.clientId;
 })
 
 export class AuthComponentComponent {
+
+  profile$: Observable<any> | undefined;
+
+  constructor(private httpClient: HttpClient){
+    
+  }
+
   async ngOnInit() {
     if (!code) {
       this.redirectToAuthCodeFlow(clientId);
     }
     else {
-      const accessToken = await this.getAccessToken(clientId, code);  
-      const profile = await this.fetchProfile(accessToken);
+      const accessToken = await this.getAccessToken(clientId, clientSecret, code);
+      
+      localStorage.setItem('access_token', accessToken);
+
+      const headers = new HttpHeaders().set("Authorization", "Bearer " + accessToken)
+      var userId = "" //add userId here
+      this.profile$ = this.httpClient
+          .get<any>("https://localhost:7204/api/v1/users/" + userId + "/profile",
+          {headers})
+          .pipe(map((data => this.profile$ = data)));
+
+      const profile = await this.fetchProfile(accessToken)
     }
   }
 
@@ -65,7 +87,7 @@ export class AuthComponentComponent {
         .replace(/=+$/, '');
   }
 
-  async getAccessToken(clientId: string, code: string): Promise<string> { //Gets token using auth code
+  async getAccessToken(clientId: string, clientSecret: string, code: string): Promise<string> { //Gets token using auth code
     const verifier = localStorage.getItem("verifier");    
     const params = new URLSearchParams();
     params.append("client_id", clientId);
@@ -76,11 +98,13 @@ export class AuthComponentComponent {
 
     const result = await fetch("https://accounts.spotify.com/api/token", {
         method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded" },
         body: params
     });
-
+    
     const { access_token } = await result.json();
+    
     return access_token;
   }
 
@@ -88,7 +112,10 @@ export class AuthComponentComponent {
     const result = await fetch("https://api.spotify.com/v1/me", {
         method: "GET", headers: { Authorization: `Bearer ${token}` }
     });
-    return await result.json();
+
+    let content = await result.json();
+    
+    return content;
   }
 
 }

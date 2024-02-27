@@ -1,1 +1,8 @@
 <p>auth-component works!</p>
+
+<ul *ngIf="profile$ | async as profile else noData">
+    <li *ngFor="let p of profile">
+        {{p}}
+    </li> 
+</ul>
+<ng-template #noData>No Data Available</ng-template>
