@@ -1,12 +1,18 @@
 import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { NxWelcomeComponent } from './nx-welcome.component';
-import { AuthComponentComponent } from './auth-component/auth-component.component';
 import { HttpClientModule } from '@angular/common/http';
+import { WelcomeComponent } from './welcome/welcome.component';
+import { LoginService } from './auth/services/login/login.service';
+import { ApiService } from './shared/api/src';
 
 @Component({
   standalone: true,
-  imports: [NxWelcomeComponent, RouterModule, AuthComponentComponent, HttpClientModule],
+  imports: [RouterModule, HttpClientModule, WelcomeComponent],
+  providers : 
+  [ 
+    LoginService,
+    ApiService,
+  ],
   selector: 'playlist-cleaner-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],

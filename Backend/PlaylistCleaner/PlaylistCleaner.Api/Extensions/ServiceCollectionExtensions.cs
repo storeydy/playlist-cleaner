@@ -1,4 +1,5 @@
-﻿using PlaylistCleaner.ApiClients.Clients.SpotifyApiClient;
+﻿using AutoMapper;
+using PlaylistCleaner.ApiClients.Clients.SpotifyApiClient;
 
 namespace PlaylistCleaner.Api.Extensions;
 
@@ -9,6 +10,7 @@ public static class ServiceCollectionExtensions
         services.AddControllers()
             .AddApplicationPart(typeof(ServiceCollectionExtensions).Assembly);
         services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+        
         services.AddHttpClient<ISpotifyApiClient, SpotifyApiClient>();
 
         return services;

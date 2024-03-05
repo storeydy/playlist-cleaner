@@ -1,50 +1,24 @@
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment.development'; //Local environment variables file - in gitignore 
 import { Buffer } from 'buffer';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 
 
 const params = new URLSearchParams(window.location.search);
 const code: any = params.get("code");
 const clientId = environment.clientId;
-const clientSecret = environment.clientSecret;
 
-@Component({
-  selector: 'playlist-cleaner-auth-component',
-  standalone: true,
-  imports: [CommonModule],
-  templateUrl: './auth-component.component.html',
-  styleUrls: ['./auth-component.component.scss'],
+@Injectable({
+  providedIn: 'root',
 })
+export class LoginService {
 
-export class AuthComponentComponent {
-
-  profile$: Observable<any> | undefined;
-
-  constructor(private httpClient: HttpClient){
-    
-  }
-
-  async ngOnInit() {
+  async loginAsync(){
     if (!code) {
       this.redirectToAuthCodeFlow(clientId);
     }
     else {
-      const accessToken = await this.getAccessToken(clientId, clientSecret, code);
-      
+      const accessToken = await this.getAccessToken(clientId, code);
       localStorage.setItem('access_token', accessToken);
-
-      const headers = new HttpHeaders().set("Authorization", "Bearer " + accessToken)
-      var userId = "" //add userId here
-      this.profile$ = this.httpClient
-          .get<any>("https://localhost:7204/api/v1/users/" + userId + "/profile",
-          {headers})
-          .pipe(map((data => this.profile$ = data)));
-
-      const profile = await this.fetchProfile(accessToken)
     }
   }
 
@@ -87,7 +61,7 @@ export class AuthComponentComponent {
         .replace(/=+$/, '');
   }
 
-  async getAccessToken(clientId: string, clientSecret: string, code: string): Promise<string> { //Gets token using auth code
+  async getAccessToken(clientId: string, code: string): Promise<string> { //Gets token using auth code
     const verifier = localStorage.getItem("verifier");    
     const params = new URLSearchParams();
     params.append("client_id", clientId);
@@ -107,15 +81,4 @@ export class AuthComponentComponent {
     
     return access_token;
   }
-
- async fetchProfile(token: string): Promise<any> {  //gets account summary
-    const result = await fetch("https://api.spotify.com/v1/me", {
-        method: "GET", headers: { Authorization: `Bearer ${token}` }
-    });
-
-    let content = await result.json();
-    
-    return content;
-  }
-
 }
