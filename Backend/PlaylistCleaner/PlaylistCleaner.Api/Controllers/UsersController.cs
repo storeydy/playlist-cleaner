@@ -51,4 +51,19 @@ public class UsersController : ControllerBase
 
         return Ok(response);
     }
+
+    [HttpGet("{userId}/playlists")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<dynamic>> GetUsersPlaylistAsync(string userId, CancellationToken cancellationToken = default)
+    {
+        string? requestAuthHeader = HttpContext.Request.Headers.Authorization;
+
+        string token = requestAuthHeader.Substring(requestAuthHeader.IndexOf("Bearer ") + 7);
+
+        var result = await _apiClient.GetUserPlaylistsAsync(userId, token, cancellationToken);
+
+
+        return Ok(result);
+    }
 }
