@@ -53,13 +53,14 @@ public class UsersController : ControllerBase
     [HttpGet("{userId}/playlists")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<dynamic>> GetUsersPlaylistAsync(string userId, CancellationToken cancellationToken = default)
+    public async Task<ActionResult<GetUsersPlaylistsResponse>> GetUsersPlaylistAsync(string userId, CancellationToken cancellationToken = default)
     {
         string token = TokenExtensions.ExtractTokenFromHeaders(HttpContext.Request.Headers);
 
         var result = await _apiClient.GetUserPlaylistsAsync(userId, token, cancellationToken);
 
+        var response = _mapper.Map<GetUsersPlaylistsResponse>(result);
 
-        return Ok(result);
+        return Ok(response);
     }
 }
