@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PlaylistCleaner.Api.Extensions;
 using PlaylistCleaner.Api.Responses;
 using PlaylistCleaner.ApiClients.Clients.SpotifyApiClient;
 
@@ -26,9 +27,7 @@ public class UsersController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
      public async Task<ActionResult<GetUserProfileResponse>> GetUserProfileAsync(string userId, CancellationToken cancellationToken = default)
     {
-        string? requestAuthHeader = HttpContext.Request.Headers.Authorization;
-
-        string token = requestAuthHeader.Substring(requestAuthHeader.IndexOf("Bearer ") + 7);
+        string token = TokenExtensions.ExtractTokenFromHeaders(HttpContext.Request.Headers);
 
         var result = await _apiClient.GetUserProfileAsync(userId, token, cancellationToken);
 
@@ -39,11 +38,10 @@ public class UsersController : ControllerBase
     [HttpGet("me")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<ActionResult<GetCurrentUsersProfileResponse>> GetCurrentUsersProfileAsync(CancellationToken cancellationToken = default)
     {
-        string? requestAuthHeader = HttpContext.Request.Headers.Authorization;
-
-        string token = requestAuthHeader.Substring(requestAuthHeader.IndexOf("Bearer ") + 7);
+        string token = TokenExtensions.ExtractTokenFromHeaders(HttpContext.Request.Headers);
 
         var result = await _apiClient.GetCurrentUsersProfileAsync(token, cancellationToken);
 
@@ -57,9 +55,7 @@ public class UsersController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<dynamic>> GetUsersPlaylistAsync(string userId, CancellationToken cancellationToken = default)
     {
-        string? requestAuthHeader = HttpContext.Request.Headers.Authorization;
-
-        string token = requestAuthHeader.Substring(requestAuthHeader.IndexOf("Bearer ") + 7);
+        string token = TokenExtensions.ExtractTokenFromHeaders(HttpContext.Request.Headers);
 
         var result = await _apiClient.GetUserPlaylistsAsync(userId, token, cancellationToken);
 
