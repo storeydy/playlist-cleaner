@@ -8,11 +8,11 @@ internal sealed class GetCurrentUsersProfileProfile : Profile
 {
     public GetCurrentUsersProfileProfile()
     {
-        CreateMap<ImageObject, GetCurrentUsersProfileResponseImage>();
+        CreateMap<ApiClients.Responses.SpotifyApiClientResults.GetCurrentUsersProfile.ImageObject, GetCurrentUsersProfileResponseImage>();
 
-        CreateMap<Followers, GetCurrentUsersProfileResponseFollower>();
+        CreateMap<ApiClients.Responses.SpotifyApiClientResults.GetCurrentUsersProfile.Followers, GetCurrentUsersProfileResponseFollower>();
 
-        CreateMap<External_Urls, string>()
+        CreateMap<ApiClients.Responses.SpotifyApiClientResults.GetCurrentUsersProfile.External_Urls, string>()
             .ConstructUsing(s => s.spotify);
 
         CreateMap<Explicit_Content, GetCurrentUsersProfileResponseExplicitContent>();

@@ -1,11 +1,12 @@
 ﻿using AutoMapper;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using PlaylistCleaner.ApiClients.Responses.SpotifyApiClientResults.GetPlaylist;
 using PlaylistCleaner.ApiClients.Responses.SpotifyApiClientResults.GetCurrentUsersProfile;
 using PlaylistCleaner.ApiClients.Responses.SpotifyApiClientResults.GetUserProfile;
 using PlaylistCleaner.ApiClients.Responses.SpotifyApiClientResults.GetUsersPlaylists;
 using System.Net.Http.Headers;
-using System.Text.Json.Nodes;
+using PlaylistCleaner.ApiClients.Responses.SpotifyApiClientResults.GetPlaylistItems;
 
 namespace PlaylistCleaner.ApiClients.Clients.SpotifyApiClient;
 
@@ -48,11 +49,11 @@ internal sealed class SpotifyApiClient : ISpotifyApiClient
 
     public async Task<GetUsersPlaylistsResult> GetUserPlaylistsAsync(string userId, string jwt, CancellationToken cancellationToken = default)
     {
-        dynamic jsonParsed = await GetPageOfPlaylistDataAsJsonString(userId, jwt, 0, cancellationToken);
         int pageNumber = 1;
+        dynamic jsonParsed = await GetPageOfPlaylistsDataAsJsonString(userId, 0, jwt, cancellationToken);
         while (jsonParsed.next != null)
         {
-            dynamic nextPage = await GetPageOfPlaylistDataAsJsonString(userId, jwt, 20 * pageNumber, cancellationToken);
+            dynamic nextPage = await GetPageOfPlaylistsDataAsJsonString(userId, 20 * pageNumber, jwt, cancellationToken);
             jsonParsed.items.Merge(nextPage.items);
             jsonParsed.next = nextPage.next;
             pageNumber++;
@@ -63,9 +64,72 @@ internal sealed class SpotifyApiClient : ISpotifyApiClient
         return result;
     }
 
-    private async Task<JObject> GetPageOfPlaylistDataAsJsonString(string userId, string jwt, int playlistOffset, CancellationToken cancellationToken = default)
+    private async Task<JObject> GetPageOfPlaylistsDataAsJsonString(string userId, int playlistOffset, string jwt, CancellationToken cancellationToken = default)
     {
         var requestMessage = new HttpRequestMessage(HttpMethod.Get, $"/v1/users/{userId}/playlists?offset={playlistOffset}");
+        requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", jwt);
+
+        HttpResponseMessage response = await _httpClient.SendAsync(requestMessage, cancellationToken);
+        HttpContent content = response.Content;
+        string json = await content.ReadAsStringAsync(cancellationToken);
+
+        return JObject.Parse(json);
+    }
+
+    public async Task<GetPlaylistResult> GetPlaylistAsync(string userId, string playlistId, string jwt, CancellationToken cancellationToken = default)
+    {
+        int pageNumber = 1;
+        dynamic jsonPlaylistMetadataParsed = await GetPlaylistMetadataAsJsonStringAsync(playlistId, jwt, cancellationToken);
+
+        dynamic jsonPlaylistTracksParsed = await GetPageOfPlaylistItemsAsJsonString(playlistId, 0, jwt, cancellationToken);
+        while (jsonPlaylistTracksParsed.next != null)
+        {
+            dynamic nextPage = await GetPageOfPlaylistItemsAsJsonString(playlistId, pageNumber * 100, jwt, cancellationToken);
+            jsonPlaylistTracksParsed.items.Merge(nextPage.items);
+            jsonPlaylistTracksParsed.next = nextPage.next;
+            pageNumber++;
+        }
+
+        jsonPlaylistMetadataParsed.tracks = jsonPlaylistTracksParsed.items;
+
+        GetPlaylistResult result = jsonPlaylistMetadataParsed.ToObject<GetPlaylistResult>();
+
+        return result;
+    }
+
+    public async Task<GetPlaylistItemsResult> GetPlaylistItemsAsync(string playlistId, string jwt, CancellationToken cancellationToken = default)
+    {
+        int pageNumber = 1;
+        dynamic jsonParsed = await GetPageOfPlaylistItemsAsJsonString(playlistId, 0, jwt, cancellationToken);
+
+        while (jsonParsed.next != null)
+        {
+            dynamic nextPage = await GetPageOfPlaylistItemsAsJsonString(playlistId, 20 * pageNumber, jwt, cancellationToken);
+            jsonParsed.items.Merge(nextPage.items);
+            jsonParsed.next = nextPage.next;
+            pageNumber++;
+        }
+
+        GetPlaylistItemsResult result = jsonParsed.ToObject<GetPlaylistItemsResult>();
+
+        return result;
+    }
+
+    private async Task<JObject> GetPlaylistMetadataAsJsonStringAsync(string playlistId, string jwt, CancellationToken cancellationToken = default)
+    {
+        var requestMessage = new HttpRequestMessage(HttpMethod.Get, $"/v1/playlists/{playlistId}");
+        requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", jwt);
+
+        HttpResponseMessage response = await _httpClient.SendAsync(requestMessage, cancellationToken);
+        HttpContent content = response.Content;
+        string json = await content.ReadAsStringAsync(cancellationToken);
+
+        return JObject.Parse(json);
+    }
+
+    private async Task<JObject> GetPageOfPlaylistItemsAsJsonString(string playlistId, int playlistItemsOffset, string jwt, CancellationToken cancellationToken = default)
+    {
+        var requestMessage = new HttpRequestMessage(HttpMethod.Get, $"/v1/playlists/{playlistId}/tracks?offset={playlistItemsOffset}");
         requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", jwt);
 
         HttpResponseMessage response = await _httpClient.SendAsync(requestMessage, cancellationToken);

@@ -1,3 +1,3 @@
 ﻿namespace PlaylistCleaner.Api.Responses;
 
-public sealed record GetUsersPlaylistsResponse(ICollection<string> PlaylistIds);
+public sealed record GetUsersPlaylistsResponse(ICollection<string> playlist_ids);

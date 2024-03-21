@@ -12,6 +12,6 @@ internal sealed class GetUsersPlaylistsProfile : Profile
             .ConstructUsing(s => s.id);
 
         CreateMap<GetUsersPlaylistsResult, GetUsersPlaylistsResponse>()
-            .ForCtorParam(nameof(GetUsersPlaylistsResponse.PlaylistIds), opt => opt.MapFrom(s => s.items));
+            .ForCtorParam(nameof(GetUsersPlaylistsResponse.playlist_ids), opt => opt.MapFrom(s => s.items));
     }
 }

@@ -21,15 +21,19 @@ export class WelcomeComponent implements OnInit {
 
   profile$: Observable<any> = this.getProfile();
   profileData: any;
+  playlistsData: any;
   playlistData: any;
 
 
-  async ngOnInit(){
+  async ngOnInit(){   // tidy up with RxJS map operators
     await this.loginService.loginAsync();
     this.subscription = this.getProfile().subscribe((response) => {
       this.profileData = response;
-      this.getPlaylists(response.id).subscribe((response) => {
-        this.playlistData = response;
+      this.getPlaylists(response.id).subscribe((playlistsResponse) => {
+        this.playlistsData = playlistsResponse;        
+        this.getPlaylist(this.profileData.id, this.playlistsData.playlist_ids[0]).subscribe((playlistDataResponse)=> {
+          this.playlistData = playlistDataResponse;
+        })
       })
     })
   }
@@ -39,7 +43,11 @@ export class WelcomeComponent implements OnInit {
   }
 
   getPlaylists(userId: string): Observable<any> { 
-    return this.apiService.get('/api/v1/users/' + userId + '/playlists')
+    return this.apiService.get('/api/v1/playlists/' + userId + '/playlists')
+  }
+
+  getPlaylist(userId: string, playlistId: string): Observable<any> { 
+    return this.apiService.get('/api/v1/playlists/' + userId + '/playlists/' + playlistId)
   }
 
   ngOnDestroy() {
