@@ -14,7 +14,5 @@ public interface ISpotifyApiClient
 
     Task<GetUsersPlaylistsResult> GetUserPlaylistsAsync(string userId, string jwt, CancellationToken cancellationToken = default);
 
-    Task<GetPlaylistResult> GetPlaylistAsync(string userId, string playlistId, string jwt, CancellationToken cancellationToken = default);
-
-    Task<GetPlaylistItemsResult> GetPlaylistItemsAsync(string playlistId, string jwt, CancellationToken cancellationToken = default);
+    Task<GetPlaylistResult> GetPlaylistAsync(string playlistId, string jwt, CancellationToken cancellationToken = default);
 }

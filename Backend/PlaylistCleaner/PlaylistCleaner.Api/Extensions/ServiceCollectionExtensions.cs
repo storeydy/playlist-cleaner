@@ -1,6 +1,7 @@
 ﻿using PlaylistCleaner.ApiClients.Clients.SpotifyApiClient;
 using Hellang.Middleware.ProblemDetails;
 using PlaylistCleaner.Api.Exceptions;
+using PlaylistCleaner.ApiClients.Clients.ApiClient;
 
 namespace PlaylistCleaner.Api.Extensions;
 
@@ -18,7 +19,8 @@ public static class ServiceCollectionExtensions
             o.MapToStatusCode<TokenNotFoundException>(StatusCodes.Status401Unauthorized);
         });
         
-        services.AddHttpClient<ISpotifyApiClient, SpotifyApiClient>();
+        services.AddHttpClient<IApiClient, ApiClient>();
+        services.AddTransient<ISpotifyApiClient, SpotifyApiClient>();
 
         return services;
     }

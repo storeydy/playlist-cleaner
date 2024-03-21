@@ -31,7 +31,7 @@ export class WelcomeComponent implements OnInit {
       this.profileData = response;
       this.getPlaylists(response.id).subscribe((playlistsResponse) => {
         this.playlistsData = playlistsResponse;        
-        this.getPlaylist(this.profileData.id, this.playlistsData.playlist_ids[0]).subscribe((playlistDataResponse)=> {
+        this.getPlaylist(this.playlistsData.playlist_ids[0]).subscribe((playlistDataResponse)=> {
           this.playlistData = playlistDataResponse;
         })
       })
@@ -46,8 +46,8 @@ export class WelcomeComponent implements OnInit {
     return this.apiService.get('/api/v1/playlists/' + userId + '/playlists')
   }
 
-  getPlaylist(userId: string, playlistId: string): Observable<any> { 
-    return this.apiService.get('/api/v1/playlists/' + userId + '/playlists/' + playlistId)
+  getPlaylist(playlistId: string): Observable<any> { 
+    return this.apiService.get('/api/v1/playlists/' + playlistId)
   }
 
   ngOnDestroy() {

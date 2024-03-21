@@ -36,15 +36,15 @@ public class PlaylistsController : ControllerBase
         return Ok(response);
     }
 
-    [HttpGet("{userId}/playlists/{playlistId}")]
+    [HttpGet("{playlistId}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public async Task<ActionResult<GetPlaylistResponse>> GetPlaylistAsync(string userId, string playlistId, CancellationToken cancellationToken = default)
+    public async Task<ActionResult<GetPlaylistResponse>> GetPlaylistAsync(string playlistId, CancellationToken cancellationToken = default)
     {
         string token = TokenExtensions.ExtractTokenFromHeaders(HttpContext.Request.Headers);
 
-        var result = await _apiClient.GetPlaylistAsync(userId, playlistId, token, cancellationToken);
+        var result = await _apiClient.GetPlaylistAsync(playlistId, token, cancellationToken);
 
         var response = _mapper.Map<GetPlaylistResponse>(result);
 
