@@ -49,13 +49,13 @@ internal sealed class SpotifyApiClient : ISpotifyApiClient
         return result;
     }
 
-    public async Task<GetPlaylistResult> GetPlaylistAsync(string playlistId, string jwt, CancellationToken cancellationToken = default)
+    public async Task<GetPlaylistResult> GetPlaylistAsync(string playlistId, string jwt, CancellationToken cancellationToken = default, int trackLimit = 50)
     {
         var playlistRequestUri = $"playlists/{playlistId}";
        
         var playlistFull = await _apiClient.SendRequestAsync<JObject>(HttpMethod.Get, playlistRequestUri, jwt, cancellationToken);
 
-        var playlistTracks = await GetPlaylistTracks(playlistId, jwt, cancellationToken);
+        var playlistTracks = await GetPlaylistTracks(playlistId, jwt, trackLimit, cancellationToken);
 
         playlistFull["tracks"] = playlistTracks["items"];
 
@@ -64,18 +64,18 @@ internal sealed class SpotifyApiClient : ISpotifyApiClient
         return result;
     }
 
-    private async Task<JObject> GetPlaylistTracks(string playlistId, string jwt, CancellationToken cancellationToken = default)
+    private async Task<JObject> GetPlaylistTracks(string playlistId, string jwt, int trackLimit, CancellationToken cancellationToken = default)
     {
-        int offsetValue = 20;
-        var playlistTracksRequestUri = $"playlists/{playlistId}/tracks";
+        int offsetValue = 50;
+        var playlistTracksRequestUri = $"playlists/{playlistId}/tracks?limit=50";
         var jsonPlaylistTracks = await _apiClient.SendRequestAsync<JObject>(HttpMethod.Get, playlistTracksRequestUri, jwt, cancellationToken);
-        while (!jsonPlaylistTracks["next"].IsNullOrEmpty())
+        while (jsonPlaylistTracks["items"].Count() < trackLimit || !jsonPlaylistTracks["next"].IsNullOrEmpty())
         {
-            string offsetParameter = $"?offset={offsetValue}";
+            string offsetParameter = $"&offset={offsetValue}";
             var nextPageOfTracks = await _apiClient.SendRequestAsync<JObject>(HttpMethod.Get, playlistTracksRequestUri + offsetParameter, jwt, cancellationToken);
             jsonPlaylistTracks["items"] = new JArray(jsonPlaylistTracks["items"].Concat(nextPageOfTracks["items"]));
             jsonPlaylistTracks["next"] = nextPageOfTracks["next"];
-            offsetValue += 20;
+            offsetValue += 50;
         }
 
         return jsonPlaylistTracks;

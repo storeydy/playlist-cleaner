@@ -2,8 +2,9 @@ import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LoginService } from '../auth/services/login/login.service';
 import { HttpClientModule } from '@angular/common/http';
-import { ApiService } from '../shared/api/src';
-import { Observable, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
+import { UserProfileService } from '../shared/data-access/user-profile/user-profile.service';
+import { PlaylistsService } from '../shared/data-access/playlists/playlists.service';
 
 @Component({
   selector: 'playlist-cleaner-welcome',
@@ -16,38 +17,49 @@ import { Observable, Subscription } from 'rxjs';
 export class WelcomeComponent implements OnInit {
 
   private readonly loginService = inject(LoginService)
-  private readonly apiService = inject(ApiService)
+  private readonly userProfileService = inject(UserProfileService);
+  private readonly playlistsService = inject(PlaylistsService);
+
   private subscription = new Subscription();
 
-  profile$: Observable<any> = this.getProfile();
   profileData: any;
   playlistsData: any;
-  playlistData: any;
+  selectedPlaylistData: any;
 
 
-  async ngOnInit(){   // tidy up with RxJS map operators
+  async ngOnInit(){
     await this.loginService.loginAsync();
-    this.subscription = this.getProfile().subscribe((response) => {
-      this.profileData = response;
-      this.getPlaylists(response.id).subscribe((playlistsResponse) => {
-        this.playlistsData = playlistsResponse;        
-        this.getPlaylist(this.playlistsData.playlist_ids[0]).subscribe((playlistDataResponse)=> {
-          this.playlistData = playlistDataResponse;
-        })
+    this.initialiseSubscriptions();
+    this.userProfileService.getUserProfile();
+    this.playlistsService.getUserPlaylists();
+  }
+
+  private initialiseSubscriptions() {
+    this.subscription.add(
+      this.userProfileService.profileObject$.subscribe((res) => {
+        this.profileData = res;
+        this.setUserId(this.profileData.id);
       })
-    })
+    );
+
+    this.subscription.add(
+      this.playlistsService.playlistsList$.subscribe((res) => {
+        this.playlistsData = res;
+        this.playlistsService.updateSelectedPlaylistId(res.playlist_ids[0]);
+        this.playlistsService.getPlaylistById(this.playlistsService.getSelectedPlaylistId());
+      })
+    );
+
+    this.subscription.add(
+      this.playlistsService.getSelectedPlaylist$.subscribe((res) => {
+        this.selectedPlaylistData = res;
+      })
+    );
+
   }
 
-  getProfile(): Observable<any> { 
-    return this.apiService.get('/api/v1/users/me');
-  }
-
-  getPlaylists(userId: string): Observable<any> { 
-    return this.apiService.get('/api/v1/playlists/' + userId + '/playlists')
-  }
-
-  getPlaylist(playlistId: string): Observable<any> { 
-    return this.apiService.get('/api/v1/playlists/' + playlistId)
+  setUserId(userId: string) {
+    localStorage.setItem('user_id', userId);
   }
 
   ngOnDestroy() {
