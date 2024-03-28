@@ -5,6 +5,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { Subscription } from 'rxjs';
 import { UserProfileService } from '../shared/data-access/user-profile/user-profile.service';
 import { PlaylistsService } from '../shared/data-access/playlists/playlists.service';
+import { GetCurrentUsersProfileResponse, GetPlaylistResponse, GetUsersPlaylistsResponse } from '../shared/types/openapi';
 
 @Component({
   selector: 'playlist-cleaner-welcome',
@@ -22,9 +23,9 @@ export class WelcomeComponent implements OnInit {
 
   private subscription = new Subscription();
 
-  profileData: any;
-  playlistsData: any;
-  selectedPlaylistData: any;
+  profileData: GetCurrentUsersProfileResponse | null = null;
+  playlistsData: GetUsersPlaylistsResponse | null = null;
+  selectedPlaylistData: GetPlaylistResponse | null = null;
 
 
   async ngOnInit(){
@@ -38,14 +39,14 @@ export class WelcomeComponent implements OnInit {
     this.subscription.add(
       this.userProfileService.profileObject$.subscribe((res) => {
         this.profileData = res;
-        this.setUserId(this.profileData.id);
+        this.setUserId(this.profileData.id!);
       })
     );
 
     this.subscription.add(
       this.playlistsService.playlistsList$.subscribe((res) => {
         this.playlistsData = res;
-        this.playlistsService.updateSelectedPlaylistId(res.playlist_ids[0]);
+        this.playlistsService.updateSelectedPlaylistId(res.playlist_ids![0]);
         this.playlistsService.getPlaylistById(this.playlistsService.getSelectedPlaylistId());
       })
     );

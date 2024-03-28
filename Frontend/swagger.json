@@ -1,0 +1,936 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "PlaylistCleaner.Api",
+    "version": "1.0"
+  },
+  "paths": {
+    "/api/v1/Playlists/{userId}/playlists": {
+      "get": {
+        "tags": [
+          "Playlists"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetUsersPlaylistsResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetUsersPlaylistsResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetUsersPlaylistsResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/Playlists/{playlistId}": {
+      "get": {
+        "tags": [
+          "Playlists"
+        ],
+        "parameters": [
+          {
+            "name": "playlistId",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetPlaylistResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetPlaylistResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetPlaylistResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/Users/{userId}/profile": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetUserProfileResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetUserProfileResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetUserProfileResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/Users/me": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetCurrentUsersProfileResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetCurrentUsersProfileResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetCurrentUsersProfileResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "GetCurrentUsersProfileResponse": {
+        "type": "object",
+        "properties": {
+          "country": {
+            "type": "string",
+            "nullable": true
+          },
+          "display_name": {
+            "type": "string",
+            "nullable": true
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "explicit_content": {
+            "$ref": "#/components/schemas/GetCurrentUsersProfileResponseExplicitContent"
+          },
+          "spotify_external_url": {
+            "type": "string",
+            "nullable": true
+          },
+          "followers": {
+            "$ref": "#/components/schemas/GetCurrentUsersProfileResponseFollower"
+          },
+          "href": {
+            "type": "string",
+            "nullable": true
+          },
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "images": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GetCurrentUsersProfileResponseImage"
+            },
+            "nullable": true
+          },
+          "product": {
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "type": "string",
+            "nullable": true
+          },
+          "uri": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetCurrentUsersProfileResponseExplicitContent": {
+        "type": "object",
+        "properties": {
+          "filter_enabled": {
+            "type": "boolean"
+          },
+          "filter_locked": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetCurrentUsersProfileResponseFollower": {
+        "type": "object",
+        "properties": {
+          "href": {
+            "type": "string",
+            "nullable": true
+          },
+          "total": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetCurrentUsersProfileResponseImage": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string",
+            "nullable": true
+          },
+          "height": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "width": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetPlaylistResponse": {
+        "type": "object",
+        "properties": {
+          "collaborative": {
+            "type": "boolean"
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "external_urls": {
+            "$ref": "#/components/schemas/GetPlaylistResponseExternalUrls"
+          },
+          "href": {
+            "type": "string",
+            "nullable": true
+          },
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "images": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GetPlaylistResponseImageObject"
+            },
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "owner": {
+            "$ref": "#/components/schemas/GetPlaylistResponsePlaylistOwner"
+          },
+          "public": {
+            "type": "boolean"
+          },
+          "snapshot_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "tracks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GetPlaylistResponseTrack"
+            },
+            "nullable": true
+          },
+          "type": {
+            "type": "string",
+            "nullable": true
+          },
+          "uri": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetPlaylistResponseAlbum": {
+        "type": "object",
+        "properties": {
+          "album_type": {
+            "type": "string",
+            "nullable": true
+          },
+          "total_tracks": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "available_markets": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "external_urls": {
+            "$ref": "#/components/schemas/GetPlaylistResponseExternalUrls"
+          },
+          "href": {
+            "type": "string",
+            "nullable": true
+          },
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "images": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GetPlaylistResponseImageObject"
+            },
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "release_date": {
+            "type": "string",
+            "nullable": true
+          },
+          "release_date_precision": {
+            "type": "string",
+            "nullable": true
+          },
+          "restrictions": {
+            "$ref": "#/components/schemas/GetPlaylistResponseRestrictions"
+          },
+          "type": {
+            "type": "string",
+            "nullable": true
+          },
+          "uri": {
+            "type": "string",
+            "nullable": true
+          },
+          "artists": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GetPlaylistResponseAlbumArtist"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetPlaylistResponseAlbumArtist": {
+        "type": "object",
+        "properties": {
+          "external_urls": {
+            "$ref": "#/components/schemas/GetPlaylistResponseExternalUrls"
+          },
+          "href": {
+            "type": "string",
+            "nullable": true
+          },
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "type": "string",
+            "nullable": true
+          },
+          "uri": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetPlaylistResponseArtist": {
+        "type": "object",
+        "properties": {
+          "external_urls": {
+            "$ref": "#/components/schemas/GetPlaylistResponseExternalUrls"
+          },
+          "followers": {
+            "$ref": "#/components/schemas/GetPlaylistResponseFollowers"
+          },
+          "genres": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "href": {
+            "type": "string",
+            "nullable": true
+          },
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "images": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GetPlaylistResponseImageObject"
+            },
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "popularity": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "type": {
+            "type": "string",
+            "nullable": true
+          },
+          "uri": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetPlaylistResponseExternalIds": {
+        "type": "object",
+        "properties": {
+          "isrc": {
+            "type": "string",
+            "nullable": true
+          },
+          "ean": {
+            "type": "string",
+            "nullable": true
+          },
+          "upc": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetPlaylistResponseExternalUrls": {
+        "type": "object",
+        "properties": {
+          "spotify": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetPlaylistResponseFollowers": {
+        "type": "object",
+        "properties": {
+          "href": {
+            "type": "string",
+            "nullable": true
+          },
+          "total": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetPlaylistResponseImageObject": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string",
+            "nullable": true
+          },
+          "height": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "width": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetPlaylistResponsePlaylistOwner": {
+        "type": "object",
+        "properties": {
+          "external_urls": {
+            "$ref": "#/components/schemas/GetPlaylistResponseExternalUrls"
+          },
+          "followers": {
+            "$ref": "#/components/schemas/GetPlaylistResponseFollowers"
+          },
+          "href": {
+            "type": "string",
+            "nullable": true
+          },
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "type": "string",
+            "nullable": true
+          },
+          "uri": {
+            "type": "string",
+            "nullable": true
+          },
+          "display_name": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetPlaylistResponseRestrictions": {
+        "type": "object",
+        "properties": {
+          "reason": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetPlaylistResponseTrack": {
+        "type": "object",
+        "properties": {
+          "added_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "added_by": {
+            "$ref": "#/components/schemas/GetPlaylistResponseTrackAddedBy"
+          },
+          "is_local": {
+            "type": "boolean"
+          },
+          "track": {
+            "$ref": "#/components/schemas/GetPlaylistResponseTrackData"
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetPlaylistResponseTrackAddedBy": {
+        "type": "object",
+        "properties": {
+          "external_urls": {
+            "$ref": "#/components/schemas/GetPlaylistResponseExternalUrls"
+          },
+          "followers": {
+            "$ref": "#/components/schemas/GetPlaylistResponseFollowers"
+          },
+          "href": {
+            "type": "string",
+            "nullable": true
+          },
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "type": "string",
+            "nullable": true
+          },
+          "uri": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetPlaylistResponseTrackData": {
+        "type": "object",
+        "properties": {
+          "album": {
+            "$ref": "#/components/schemas/GetPlaylistResponseAlbum"
+          },
+          "artists": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GetPlaylistResponseArtist"
+            },
+            "nullable": true
+          },
+          "available_markets": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "disc_number": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "duration_ms": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "explicit": {
+            "type": "boolean"
+          },
+          "external_ids": {
+            "$ref": "#/components/schemas/GetPlaylistResponseExternalIds"
+          },
+          "external_urls": {
+            "$ref": "#/components/schemas/GetPlaylistResponseExternalUrls"
+          },
+          "href": {
+            "type": "string",
+            "nullable": true
+          },
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "is_playable": {
+            "type": "boolean"
+          },
+          "restrictions": {
+            "$ref": "#/components/schemas/GetPlaylistResponseRestrictions"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "popularity": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "preview_url": {
+            "type": "string",
+            "nullable": true
+          },
+          "track_number": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "type": {
+            "type": "string",
+            "nullable": true
+          },
+          "uri": {
+            "type": "string",
+            "nullable": true
+          },
+          "is_local": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetUserProfileResponse": {
+        "type": "object",
+        "properties": {
+          "displayName": {
+            "type": "string",
+            "nullable": true
+          },
+          "externalUrls": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "followers": {
+            "$ref": "#/components/schemas/GetUserProfileResponseFollower"
+          },
+          "href": {
+            "type": "string",
+            "nullable": true
+          },
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "images": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GetUserProfileResponseImage"
+            },
+            "nullable": true
+          },
+          "type": {
+            "type": "string",
+            "nullable": true
+          },
+          "uri": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetUserProfileResponseFollower": {
+        "type": "object",
+        "properties": {
+          "href": {
+            "type": "string",
+            "nullable": true
+          },
+          "total": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetUserProfileResponseImage": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string",
+            "nullable": true
+          },
+          "height": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "width": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetUsersPlaylistsResponse": {
+        "type": "object",
+        "properties": {
+          "playlist_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ProblemDetails": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "nullable": true
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "detail": {
+            "type": "string",
+            "nullable": true
+          },
+          "instance": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": { }
+      }
+    }
+  }
+}

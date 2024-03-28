@@ -5,7 +5,8 @@
   "scripts": {
     "start": "nx serve config",
     "build": "nx build",
-    "test": "nx test"
+    "test": "nx test",
+    "codegen": "rm -rf src/generated-sources/openapi; openapi-generator-cli generate -i https://localhost:7204/swagger/v1/swagger.json -o src/app/shared/types/openapi -g typescript-fetch --additional-properties=supportsES6=true,npmVersion=6.9.0,typescriptThreePlus=true"
   },
   "private": true,
   "dependencies": {
@@ -40,6 +41,7 @@
     "@nx/linter": "16.4.2",
     "@nx/web": "16.4.2",
     "@nx/workspace": "16.4.2",
+    "@openapitools/openapi-generator-cli": "^2.13.1",
     "@schematics/angular": "~16.1.0",
     "@types/jest": "^29.4.0",
     "@types/node": "^16.11.7",
@@ -54,6 +56,7 @@
     "jest-preset-angular": "~13.1.0",
     "nx": "16.4.2",
     "nx-cloud": "latest",
+    "openapi-typescript": "^6.7.5",
     "prettier": "^2.6.2",
     "ts-jest": "^29.1.0",
     "ts-node": "10.9.1",

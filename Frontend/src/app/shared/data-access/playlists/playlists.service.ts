@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { ApiService } from '../../api/src';
 import { BehaviorSubject, Observable, Subject, combineLatest, of, switchMap } from 'rxjs';
+import { GetUsersPlaylistsResponse } from '../../types/openapi';
 
 @Injectable({
   providedIn: 'root'
@@ -8,13 +9,13 @@ import { BehaviorSubject, Observable, Subject, combineLatest, of, switchMap } fr
 export class PlaylistsService {
   private readonly apiService = inject(ApiService);
   private readonly userId = localStorage.getItem('user_id');
-  private selectedPlaylistId = new BehaviorSubject<number | null>(null);
-  playlists$ = this.apiService.get('/api/v1/playlists/' + this.userId + '/playlists') as Observable<any>;
+  private selectedPlaylistId = new BehaviorSubject<string | null>(null);
+  playlists$ = this.apiService.get('/api/v1/playlists/' + this.userId + '/playlists') as Observable<GetUsersPlaylistsResponse>;
 
 
   selectedPlaylist$ = combineLatest([this.playlists$, this.selectedPlaylistId]).pipe(
     switchMap(([playlists, selectedId]) => {
-      if (selectedId !== null && playlists.playlist_ids.includes(selectedId)) {
+      if (selectedId !== null && playlists.playlist_ids!.includes(selectedId)) {
         return this.apiService.get('/api/v1/playlists/' + selectedId) as Observable<any>;
       } else {
         return of(null);
@@ -23,7 +24,7 @@ export class PlaylistsService {
   );
 
   private readonly getPlaylistsAction = new Subject<void>();
-  private readonly getSelectedPlaylistAction = new Subject<number>();
+  private readonly getSelectedPlaylistAction = new Subject<string>();
   private readonly getPlaylists$ = this.getPlaylistsAction
     .asObservable()
     .pipe(switchMap(() => this.playlists$));
@@ -38,15 +39,15 @@ export class PlaylistsService {
     this.getPlaylistsAction.next();
   }
 
-  getPlaylistById(playlistId: number) {
+  getPlaylistById(playlistId: string) {
     this.getSelectedPlaylistAction.next(playlistId);
   }
 
-  updateSelectedPlaylistId(id: number) {
+  updateSelectedPlaylistId(id: string) {
     this.selectedPlaylistId.next(id);
   }
 
-  getSelectedPlaylistId(): number {
+  getSelectedPlaylistId(): string {
     return this.selectedPlaylistId.value!;
   }
 }
