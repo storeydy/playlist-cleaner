@@ -10,7 +10,7 @@ import { GetCurrentUsersProfileResponse, GetPlaylistResponse, GetUsersPlaylistsR
 @Component({
   selector: 'playlist-cleaner-welcome',
   standalone: true,
-  imports: [CommonModule, HttpClientModule],
+  imports: [CommonModule, HttpClientModule ],
   templateUrl: './welcome.component.html',
   styleUrls: ['./welcome.component.scss'],
 })

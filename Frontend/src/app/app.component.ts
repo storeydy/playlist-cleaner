@@ -7,7 +7,11 @@ import { ApiService } from './shared/api/src';
 
 @Component({
   standalone: true,
-  imports: [RouterModule, HttpClientModule, WelcomeComponent],
+  imports: [
+    RouterModule,
+    HttpClientModule,
+    WelcomeComponent
+  ],
   providers : 
   [ 
     LoginService,
