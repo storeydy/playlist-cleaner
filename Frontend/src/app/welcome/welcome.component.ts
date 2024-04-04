@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LoginService } from '../auth/services/login/login.service';
 import { HttpClientModule } from '@angular/common/http';
@@ -6,13 +6,16 @@ import { Subscription } from 'rxjs';
 import { UserProfileService } from '../shared/data-access/user-profile/user-profile.service';
 import { PlaylistsService } from '../shared/data-access/playlists/playlists.service';
 import { GetCurrentUsersProfileResponse, GetPlaylistResponse, GetUsersPlaylistsResponse } from '../shared/types/openapi';
+import { SpeedDialModule } from 'primeng/speeddial';
+import { MenuItem, MessageService } from 'primeng/api';
 
 @Component({
   selector: 'playlist-cleaner-welcome',
   standalone: true,
-  imports: [CommonModule, HttpClientModule ],
+  imports: [CommonModule, HttpClientModule, SpeedDialModule ],
   templateUrl: './welcome.component.html',
   styleUrls: ['./welcome.component.scss'],
+  providers: [MessageService],
 })
 
 export class WelcomeComponent implements OnInit {
@@ -20,15 +23,36 @@ export class WelcomeComponent implements OnInit {
   private readonly loginService = inject(LoginService)
   private readonly userProfileService = inject(UserProfileService);
   private readonly playlistsService = inject(PlaylistsService);
+  profilePictureUrl : string = "";
 
   private subscription = new Subscription();
 
   profileData: GetCurrentUsersProfileResponse | null = null;
-  playlistsData: GetUsersPlaylistsResponse | null = null;
-  selectedPlaylistData: GetPlaylistResponse | null = null;
+  
+  menuItems: MenuItem[] = [
+    {
+      label: '<p>Spotify Webpage<p>',
+      icon: 'pi pi-external-link',
+      url: 'http://angular.io',
+      title: 'Spotify Webpage'
+    },
+    {
+      title: 'User Information',
+      icon: 'pi pi-id-card',
+      routerLink: 'playlist-cleaner-user-profile',
+      label: 'User Information'
+    },
+    {
+      title: 'Playlist View',
+      icon: 'pi pi-list',
+      routerLink: 'playlist-cleaner-playlist-list',
+      label: 'Playlist View'
+    }
+  ]
 
 
-  async ngOnInit(){
+
+  async ngOnInit() {
     await this.loginService.loginAsync();
     this.initialiseSubscriptions();
     this.userProfileService.getUserProfile();
@@ -39,21 +63,9 @@ export class WelcomeComponent implements OnInit {
     this.subscription.add(
       this.userProfileService.profileObject$.subscribe((res) => {
         this.profileData = res;
+        console.log(res);
         this.setUserId(this.profileData.id!);
-      })
-    );
-
-    this.subscription.add(
-      this.playlistsService.playlistsList$.subscribe((res) => {
-        this.playlistsData = res;
-        this.playlistsService.updateSelectedPlaylistId(res.playlist_ids![0]);
-        this.playlistsService.getPlaylistById(this.playlistsService.getSelectedPlaylistId());
-      })
-    );
-
-    this.subscription.add(
-      this.playlistsService.getSelectedPlaylist$.subscribe((res) => {
-        this.selectedPlaylistData = res;
+        this.profilePictureUrl = this.profileData.images![0].url ?? "";
       })
     );
 
@@ -64,6 +76,6 @@ export class WelcomeComponent implements OnInit {
   }
 
   ngOnDestroy() {
-		this.subscription.unsubscribe();
-	}
+    this.subscription.unsubscribe();
+  }
 }

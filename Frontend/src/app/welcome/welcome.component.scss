@@ -1,0 +1,22 @@
+.speed-dial-container {
+    position: relative;
+    display: inline-block;
+    height: auto;
+    ::ng-deep {
+        .p-speeddial {
+          position: inherit !important; // TODO: find another way to overwrite the position attribute of p-speeddial
+        }
+      }
+}
+
+.custom-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60px;
+    height: 60px;
+    z-index: 1;
+    pointer-events: none;
+    border-radius: 30px;
+}

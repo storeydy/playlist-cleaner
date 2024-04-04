@@ -1,12 +1,7 @@
-<p>welcome works!</p>
-<div *ngIf="profileData">
-    <p>{{ profileData | json }}</p>>
-</div>
-
-<!-- <div *ngIf="playlistsData">
-    <p>{{ playlistsData | json }}</p>>
-</div> -->
-
-<div *ngIf="selectedPlaylistData">
-    <p>{{ selectedPlaylistData | json }}</p>>
+<div style="height: 500px" class="flex align-items-center justify-content-center">
+    <div class = "speed-dial-container" *ngIf="profileData != null">
+        <p-speedDial icon = "p-circle" [model]="menuItems" direction="down-right" type="quarter-circle" [radius]="200" buttonClassName="p-button-success">
+        </p-speedDial>
+        <img [src] = "profilePictureUrl" class="custom-icon" alt="Custom Icon">
+    </div>
 </div>
