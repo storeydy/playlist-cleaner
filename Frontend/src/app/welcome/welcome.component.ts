@@ -31,12 +31,6 @@ export class WelcomeComponent implements OnInit {
   
   menuItems: MenuItem[] = [
     {
-      label: '<p>Spotify Webpage<p>',
-      icon: 'pi pi-external-link',
-      url: 'http://angular.io',
-      title: 'Spotify Webpage'
-    },
-    {
       title: 'User Information',
       icon: 'pi pi-id-card',
       routerLink: 'playlist-cleaner-user-profile',
@@ -65,6 +59,7 @@ export class WelcomeComponent implements OnInit {
         this.profileData = res;
         console.log(res);
         this.setUserId(this.profileData.id!);
+        this.pushUserProfileMenuItem(this.profileData.spotify_external_url!);
         this.profilePictureUrl = this.profileData.images![0].url ?? "";
       })
     );
@@ -73,6 +68,16 @@ export class WelcomeComponent implements OnInit {
 
   setUserId(userId: string) {
     localStorage.setItem('user_id', userId);
+  }
+
+  pushUserProfileMenuItem(spotifUrl: string) { 
+    var item = {     
+      label: '<p>Spotify Webpage<p>',
+      icon: 'pi pi-external-link',
+      url: spotifUrl,
+      title: 'Spotify Webpage'
+    } as MenuItem
+    this.menuItems.push(item);
   }
 
   ngOnDestroy() {
