@@ -4,10 +4,10 @@ import { LoginService } from '../auth/services/login/login.service';
 import { HttpClientModule } from '@angular/common/http';
 import { Subscription } from 'rxjs';
 import { UserProfileService } from '../shared/data-access/user-profile/user-profile.service';
-import { PlaylistsService } from '../shared/data-access/playlists/playlists.service';
-import { GetCurrentUsersProfileResponse, GetPlaylistResponse, GetUsersPlaylistsResponse } from '../shared/types/openapi';
+import { GetCurrentUsersProfileResponse } from '../shared/types/openapi';
 import { SpeedDialModule } from 'primeng/speeddial';
 import { MenuItem, MessageService } from 'primeng/api';
+import { TokenService } from '../auth/services/token/token.service';
 
 @Component({
   selector: 'playlist-cleaner-welcome',
@@ -22,7 +22,7 @@ export class WelcomeComponent implements OnInit {
 
   private readonly loginService = inject(LoginService)
   private readonly userProfileService = inject(UserProfileService);
-  private readonly playlistsService = inject(PlaylistsService);
+  private readonly tokenService = inject(TokenService);
   profilePictureUrl : string = "";
 
   private subscription = new Subscription();
@@ -33,13 +33,13 @@ export class WelcomeComponent implements OnInit {
     {
       title: 'User Information',
       icon: 'pi pi-id-card',
-      routerLink: 'playlist-cleaner-user-profile',
+      routerLink: 'user-profile',
       label: 'User Information'
     },
     {
       title: 'Playlist View',
       icon: 'pi pi-list',
-      routerLink: 'playlist-cleaner-playlist-list',
+      routerLink: 'playlist-list',
       label: 'Playlist View'
     }
   ]
@@ -47,17 +47,18 @@ export class WelcomeComponent implements OnInit {
 
 
   async ngOnInit() {
-    await this.loginService.loginAsync();
+    if(!this.tokenService.retrieveTokenFromLocalStorage()){
+      await this.loginService.loginAsync();
+    }
+
     this.initialiseSubscriptions();
-    this.userProfileService.getUserProfile();
-    this.playlistsService.getUserPlaylists();
+    this.userProfileService.getUserProfile();    
   }
 
   private initialiseSubscriptions() {
     this.subscription.add(
       this.userProfileService.profileObject$.subscribe((res) => {
         this.profileData = res;
-        console.log(res);
         this.setUserId(this.profileData.id!);
         this.pushUserProfileMenuItem(this.profileData.spotify_external_url!);
         this.profilePictureUrl = this.profileData.images![0].url ?? "";

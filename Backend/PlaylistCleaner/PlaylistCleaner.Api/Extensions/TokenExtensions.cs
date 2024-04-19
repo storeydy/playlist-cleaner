@@ -6,17 +6,19 @@ internal static class TokenExtensions
 {
     internal static string ExtractTokenFromHeaders(this IHeaderDictionary httpHeaders)
     {
-        try
+        string? token = null;
+        string? authHeader = httpHeaders.Authorization;
+        if (authHeader != null)
         {
-            string authHeader = httpHeaders.Authorization;
-            string token = authHeader.Replace("Bearer ", "");
-            return token;
-        }
-        catch(NullReferenceException)
-        {
-            throw new TokenNotFoundException("No token found in headers of HTTP request");
+            token = authHeader.Replace("Bearer ", "");
         }
 
+        if (token == null)
+        {
+            throw new TokenNotFoundException("No access token found in headers of HTTP request");
+        };
+
+        return token;
 
     }
 }

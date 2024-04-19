@@ -2,10 +2,11 @@ import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
-import { TabView, TabViewModule } from 'primeng/tabview';
+import { TabViewModule } from 'primeng/tabview';
 import { UserProfileService } from '../shared/data-access/user-profile/user-profile.service';
 import { Subscription } from 'rxjs';
 import { GetCurrentUsersProfileResponse } from '../shared/types/openapi';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'playlist-cleaner-user-profile',
@@ -21,9 +22,10 @@ export class UserProfileComponent {
 
   activeIndex: number = 0;
   profileData: GetCurrentUsersProfileResponse | null = null;
-  displayName: string = '';
 
-  async ngOnInit() {
+  constructor(private router: Router) {}
+
+  async ngOnInit() {    
     this.initialiseSubscriptions();
     this.userProfileService.getUserProfile();
   }
@@ -33,8 +35,6 @@ export class UserProfileComponent {
     this.subscription.add(
       this.userProfileService.profileObject$.subscribe((res) => {
         this.profileData = res;
-        console.log(res);
-        this.displayName = this.profileData.display_name!;
       })
     );
 
@@ -42,5 +42,9 @@ export class UserProfileComponent {
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
+  }
+
+  navigateToWelcome(){
+    this.router.navigate(['']);
   }
 }

@@ -7,8 +7,10 @@ export class TokenService {
 
   constructor() { }
 
-    retrieveTokenFromLocalStorage(): string {
-    
-    return localStorage.getItem('access_token')!;
+  retrieveTokenFromLocalStorage(): string | null {
+    var accessToken = localStorage.getItem('access_token');
+    return accessToken !== null && accessToken !== 'undefined' ? accessToken : null;
   }
+
+
 }
