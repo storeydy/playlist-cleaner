@@ -7,11 +7,12 @@ import { ButtonModule } from 'primeng/button';
 import { TableModule } from 'primeng/table';
 import { Router } from '@angular/router';
 import { UserProfileService } from '../shared/data-access/user-profile/user-profile.service';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 @Component({
   selector: 'playlist-cleaner-playlist-list',
   standalone: true,
-  imports: [CommonModule, ButtonModule, TableModule],
+  imports: [CommonModule, ButtonModule, TableModule, ProgressSpinnerModule],
   templateUrl: './playlist-list.component.html',
   styleUrl: './playlist-list.component.scss',
 })
