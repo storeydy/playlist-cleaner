@@ -1,1 +1,31 @@
-<p>playlist-list works!</p>
+<div class="header">
+    <p-button label="Back" icon="pi pi-times" styleClass="p-button-secondary" [style]="{ 'margin-left': '.5em' }"
+        (onClick)="navigateToWelcome()"></p-button>
+    <h1> Playlists </h1>
+    <img src="{{profileData!.images![0].url!}}">
+</div>
+<div class="table-container">
+    <p-table [value]="playlistsList!.playlist_ids!" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
+        [tableStyle]="{ 'min-width': '50rem' }"
+        [scrollable]="true"
+        scrollHeight= "500px"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+        [rowsPerPageOptions]="[5, 10, 20]">
+        <ng-template pTemplate="header">
+            <tr>
+                <th style="width: 15%">Id</th>
+                <th style="width:25%">Name</th>
+                <th style="width:25%">Tracks</th>
+                <th style="width:25%">Owner</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-playlist>
+            <tr>
+                <td>{{playlist}}</td>
+                <td>Playlist_name</td>
+                <td>Track_Count</td>
+                <td>Owner</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>

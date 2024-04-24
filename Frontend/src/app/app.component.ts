@@ -10,7 +10,7 @@ import { ApiService } from './shared/api/src';
   imports: [
     RouterModule,
     HttpClientModule,
-    WelcomeComponent
+    WelcomeComponent,
   ],
   providers : 
   [ 

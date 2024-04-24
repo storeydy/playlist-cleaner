@@ -6,19 +6,20 @@ import {
 import { appRoutes } from './app.routes';
 import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { AuthInterceptorService } from './auth/interceptors/auth-interceptor/auth-interceptor.service';
+import { provideAnimations } from '@angular/platform-browser/animations';
 
 export const appConfig: ApplicationConfig = {
-  providers: 
-  [
-    provideRouter(appRoutes, withEnabledBlockingInitialNavigation()),
-    provideHttpClient(
-      withInterceptorsFromDi(),
+  providers:
+    [
+      provideRouter(appRoutes, withEnabledBlockingInitialNavigation()),
+      provideAnimations(),
+      provideHttpClient(
+        withInterceptorsFromDi(),
       ),
       {
         provide: HTTP_INTERCEPTORS,
         useClass: AuthInterceptorService,
         multi: true,
       }
-
-  ],
+    ],
 };
