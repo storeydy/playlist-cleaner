@@ -2,7 +2,7 @@ import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PlaylistsService } from '../shared/data-access/playlists/playlists.service';
 import { Subscription } from 'rxjs';
-import { GetCurrentUsersProfileResponse, GetUsersPlaylistsResponse } from '../shared/types/openapi';
+import { GetCurrentUsersProfileResponse } from '../shared/types/openapi';
 import { ButtonModule } from 'primeng/button';
 import { TableModule } from 'primeng/table';
 import { Router } from '@angular/router';
@@ -23,7 +23,7 @@ export class PlaylistListComponent implements OnInit {
 
   private subscription = new Subscription();
 
-  playlistsList: GetUsersPlaylistsResponse | null = null;
+  playlistsList: any[] | null = null;
   profileData: GetCurrentUsersProfileResponse | null = null;
 
   constructor(private router: Router) {}
@@ -36,7 +36,7 @@ export class PlaylistListComponent implements OnInit {
 
   private initialiseSubscriptions() {
     this.subscription.add(
-      this.playlistService.playlistsList$.subscribe((res) => {
+      this.playlistService.playlists$.subscribe((res) => {
         this.playlistsList = res;
       })
     );

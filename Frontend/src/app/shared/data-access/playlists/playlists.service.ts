@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { ApiService } from '../../api/src';
-import { BehaviorSubject, Observable, Subject, combineLatest, of, switchMap } from 'rxjs';
-import { GetUsersPlaylistsResponse } from '../../types/openapi';
+import { BehaviorSubject, Observable, Subject, combineLatest, of, switchMap, take } from 'rxjs';
+import { GetPlaylistResponse, GetUsersPlaylistsResponse } from '../../types/openapi';
 
 @Injectable({
   providedIn: 'root'
@@ -10,17 +10,16 @@ export class PlaylistsService {
   private readonly apiService = inject(ApiService);
   private readonly userId = localStorage.getItem('user_id');
   private selectedPlaylistId = new BehaviorSubject<string | null>(null);
-  playlists$ = this.apiService.get('/api/v1/playlists/' + this.userId + '/playlists') as Observable<GetUsersPlaylistsResponse>;
 
-
-  selectedPlaylist$ = combineLatest([this.playlists$, this.selectedPlaylistId]).pipe(
-    switchMap(([playlists, selectedId]) => {
-      if (selectedId !== null && playlists.playlist_ids!.includes(selectedId)) {
-        return this.apiService.get('/api/v1/playlists/' + selectedId) as Observable<any>;
-      } else {
-        return of(null);
-      }
-    })
+  //TODO: Update to use proper type & address server throttling
+  playlists$: Observable<any> = this.apiService.get<GetUsersPlaylistsResponse>('/api/v1/playlists/' + this.userId + '/playlists')
+  .pipe(
+    take(10),
+    switchMap((response: GetUsersPlaylistsResponse) =>
+      response.playlist_ids ?
+        this.fetchPlaylists(response.playlist_ids) :
+        of([])
+    )
   );
 
   private readonly getPlaylistsAction = new Subject<void>();
@@ -31,9 +30,13 @@ export class PlaylistsService {
 
   readonly playlistsList$ = this.getPlaylists$;
 
-  readonly getSelectedPlaylist$ = this.getSelectedPlaylistAction
-    .asObservable()
-    .pipe(switchMap(() => this.selectedPlaylist$));
+  private fetchPlaylists(playlistIds: string[]): Observable<GetPlaylistResponse[]> {
+    return combineLatest(
+      playlistIds.map(id =>
+        this.apiService.get<GetPlaylistResponse>('/api/v1/playlists/' + id)
+      )
+    );
+  }
 
   getUserPlaylists() {
     this.getPlaylistsAction.next();

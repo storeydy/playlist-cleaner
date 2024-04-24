@@ -53,13 +53,9 @@ internal sealed class SpotifyApiClient : ISpotifyApiClient
     {
         var playlistRequestUri = $"playlists/{playlistId}";
        
-        var playlistFull = await _apiClient.SendRequestAsync<JObject>(HttpMethod.Get, playlistRequestUri, jwt, cancellationToken);
+        var playlist = await _apiClient.SendRequestAsync<JObject>(HttpMethod.Get, playlistRequestUri, jwt, cancellationToken);
 
-        var playlistTracks = await GetPlaylistTracks(playlistId, jwt, trackLimit, cancellationToken);
-
-        playlistFull["tracks"] = playlistTracks["items"];
-
-        GetPlaylistResult result = playlistFull.ToObject<GetPlaylistResult>();
+        GetPlaylistResult result = playlist.ToObject<GetPlaylistResult>();
 
         return result;
     }
