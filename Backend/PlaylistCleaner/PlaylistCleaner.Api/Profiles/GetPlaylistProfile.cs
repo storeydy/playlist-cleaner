@@ -22,6 +22,7 @@ internal sealed class GetPlaylistProfile : Profile
             .ForCtorParam(nameof(GetPlaylistResponse.external_urls), opt => opt.MapFrom(s => s.external_urls))
             .ForCtorParam(nameof(GetPlaylistResponse.images), opt => opt.MapFrom(s => s.images))
             .ForCtorParam(nameof(GetPlaylistResponse.owner), opt => opt.MapFrom(s => s.owner))
-            .ForCtorParam(nameof(GetPlaylistResponse.tracks), opt => opt.MapFrom(s => s.tracks));
+            .ForCtorParam(nameof(GetPlaylistResponse.tracks), opt => opt.MapFrom(s => s.tracks))
+            .ForCtorParam(nameof(GetPlaylistResponse.followers), opt => opt.MapFrom(s => s.followers));
     }
 }

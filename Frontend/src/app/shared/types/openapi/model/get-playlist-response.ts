@@ -12,6 +12,7 @@
 import { GetPlaylistResponseImageObject } from './get-playlist-response-image-object';
 import { GetPlaylistResponsePlaylistOwner } from './get-playlist-response-playlist-owner';
 import { GetPlaylistResponseExternalUrls } from './get-playlist-response-external-urls';
+import { GetPlaylistResponseFollowers } from './get-playlist-response-followers';
 import { GetPlaylistResponseTrack } from './get-playlist-response-track';
 
 
@@ -21,12 +22,13 @@ export interface GetPlaylistResponse {
     external_urls?: GetPlaylistResponseExternalUrls;
     href?: string | null;
     id?: string | null;
+    followers?: GetPlaylistResponseFollowers;
     images?: Array<GetPlaylistResponseImageObject> | null;
     name?: string | null;
     owner?: GetPlaylistResponsePlaylistOwner;
-    _public?: boolean;
+    public?: boolean;
     snapshot_id?: string | null;
-    tracks?: Array<GetPlaylistResponseTrack> | null;
+    tracks?: GetPlaylistResponseTrack;
     type?: string | null;
     uri?: string | null;
 }

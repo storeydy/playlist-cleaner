@@ -9,14 +9,9 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { GetPlaylistResponseTrackAddedBy } from './get-playlist-response-track-added-by';
-import { GetPlaylistResponseTrackData } from './get-playlist-response-track-data';
 
 
 export interface GetPlaylistResponseTrack { 
-    added_at?: string;
-    added_by?: GetPlaylistResponseTrackAddedBy;
-    is_local?: boolean;
-    track?: GetPlaylistResponseTrackData;
+    total?: number;
 }
 

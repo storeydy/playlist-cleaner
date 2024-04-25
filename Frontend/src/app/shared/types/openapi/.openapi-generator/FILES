@@ -1,5 +1,4 @@
 .gitignore
-.openapi-generator-ignore
 README.md
 api.module.ts
 api/api.ts
@@ -15,17 +14,10 @@ model/get-current-users-profile-response-explicit-content.ts
 model/get-current-users-profile-response-follower.ts
 model/get-current-users-profile-response-image.ts
 model/get-current-users-profile-response.ts
-model/get-playlist-response-album-artist.ts
-model/get-playlist-response-album.ts
-model/get-playlist-response-artist.ts
-model/get-playlist-response-external-ids.ts
 model/get-playlist-response-external-urls.ts
 model/get-playlist-response-followers.ts
 model/get-playlist-response-image-object.ts
 model/get-playlist-response-playlist-owner.ts
-model/get-playlist-response-restrictions.ts
-model/get-playlist-response-track-added-by.ts
-model/get-playlist-response-track-data.ts
 model/get-playlist-response-track.ts
 model/get-playlist-response.ts
 model/get-user-profile-response-follower.ts
