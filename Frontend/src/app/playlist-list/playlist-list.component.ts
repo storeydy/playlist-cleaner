@@ -30,7 +30,6 @@ export class PlaylistListComponent implements OnInit {
 
   async ngOnInit() {
     this.initialiseSubscriptions();
-    this.playlistService.getUserPlaylists();
     this.userProfileService.getUserProfile();
   }
 

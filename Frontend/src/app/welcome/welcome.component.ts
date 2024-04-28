@@ -47,7 +47,7 @@ export class WelcomeComponent implements OnInit {
 
 
   async ngOnInit() {
-    if(!this.tokenService.retrieveTokenFromLocalStorage()){
+    if(!this.tokenService.retrieveAccessTokenFromLocalStorage()){
       await this.loginService.loginAsync();
     }
 

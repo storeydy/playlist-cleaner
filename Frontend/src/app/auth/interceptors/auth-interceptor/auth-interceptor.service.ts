@@ -12,7 +12,7 @@ export class AuthInterceptorService implements HttpInterceptor{
 
   intercept(request: HttpRequest<any>, next: HttpHandler) {
 
-    const token = this.tokenService.retrieveTokenFromLocalStorage();
+    const token = this.tokenService.retrieveAccessTokenFromLocalStorage();
     
     if (token) { 
       request = request.clone({ 

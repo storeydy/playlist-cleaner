@@ -5,7 +5,7 @@
     <div class="header">
         <p-button label="Back" icon="pi pi-times" styleClass="p-button-secondary" [style]="{ 'margin-left': '.5em' }"
             (onClick)="navigateToWelcome()"></p-button>
-        <h1> Playlists </h1>
+        <h1> {{profileData!.display_name}}'s Playlists </h1>
         <img src="{{profileData!.images![0].url!}}">
     </div>
     <div class="table-container">
@@ -14,14 +14,16 @@
             [rowsPerPageOptions]="[5, 10, 20]">
             <ng-template pTemplate="header">
                 <tr>
-                    <th style="width:15%">Name</th>
-                    <th style="width:15%">Tracks</th>
-                    <th style="width:15%">Owner</th>
-                    <th style="width:15%">Followers</th>
+                    <th style="width:15%">Image</th>
+                    <th pSortableColumn="name" style="width:15%">Name <p-sortIcon field="name"></p-sortIcon></th>
+                    <th pSortableColumn="tracks.total" style="width:15%">Tracks <p-sortIcon field="tracks"></p-sortIcon></th>
+                    <th pSortableColumn="owner.display_name" style="width:15%">Owner <p-sortIcon field="owner"></p-sortIcon></th>
+                    <th pSortableColumn="followers.total" style="width:15%">Followers <p-sortIcon field="followers"></p-sortIcon></th>
                 </tr>
             </ng-template>
             <ng-template pTemplate="body" let-playlist>
                 <tr>
+                    <td><img [src]="playlist.images[0].url!" width="100" class="shadow-4" /></td>
                     <td>{{playlist.name}}</td>
                     <td>{{playlist.tracks.total}}</td>
                     <td>{{playlist.owner.display_name}}</td>
