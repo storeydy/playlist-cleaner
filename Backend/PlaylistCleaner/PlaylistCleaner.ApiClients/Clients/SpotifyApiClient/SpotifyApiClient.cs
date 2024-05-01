@@ -32,16 +32,16 @@ internal sealed class SpotifyApiClient : ISpotifyApiClient
 
     public async Task<GetUsersPlaylistsResult> GetUserPlaylistsAsync(string userId, string jwt, CancellationToken cancellationToken = default)
     {
-        int offsetValue = 20;
-        var requestUri = $"users/{userId}/playlists";
+        int offsetValue = 50;
+        var requestUri = $"users/{userId}/playlists?limit=50";
         var jsonParsed = await _apiClient.SendRequestAsync<JObject>(HttpMethod.Get, requestUri, jwt, cancellationToken); 
         while (!jsonParsed["next"].IsNullOrEmpty())
         {
-            string offsetParameter = $"?offset={offsetValue}";
+            string offsetParameter = $"&offset={offsetValue}";
             var nextPageOfPlaylists = await _apiClient.SendRequestAsync<JObject>(HttpMethod.Get, requestUri + offsetParameter, jwt, cancellationToken);
             jsonParsed["items"] = new JArray(jsonParsed["items"].Concat(nextPageOfPlaylists["items"]));
             jsonParsed["next"] = nextPageOfPlaylists["next"];
-            offsetValue += 20;
+            offsetValue += 50;
         }
 
         GetUsersPlaylistsResult result = jsonParsed.ToObject<GetUsersPlaylistsResult>();

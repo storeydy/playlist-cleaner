@@ -39,9 +39,9 @@ export class TokenService {
     setTimeout(() => {
       this.getAccessTokenUsingRefreshToken();
     }, 3500000);
-
-    localStorage.setItem('access_token', response.accessToken);
-    localStorage.setItem('refresh_token', response.refreshToken);
+    
+    localStorage.setItem('access_token', response.access_token);
+    localStorage.setItem('refresh_token', response.refresh_token);
 
     return {
       accessToken: response.access_token,
