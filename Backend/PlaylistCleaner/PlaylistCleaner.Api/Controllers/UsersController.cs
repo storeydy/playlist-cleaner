@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using PlaylistCleaner.Api.Extensions;
 using PlaylistCleaner.Api.Responses;
-using PlaylistCleaner.ApiClients.Clients.SpotifyApiClient;
+using PlaylistCleaner.ApiClients.Clients.UserProfileClient;
+using PlaylistCleaner.ApiClients.Clients.UsersClient;
 
 namespace PlaylistCleaner.Api.Controllers;
 
@@ -13,12 +13,14 @@ namespace PlaylistCleaner.Api.Controllers;
 [Route("/api/v{version:apiVersion}/[controller]")]
 public class UsersController : ControllerBase
 {
-    private readonly ISpotifyApiClient _apiClient;
+    private readonly IUserProfileClient _userProfileClient;
+    private readonly IUsersClient _usersClient;
     private readonly IMapper _mapper;
 
-    public UsersController(ISpotifyApiClient apiClient, IMapper mapper)
+    public UsersController(IUserProfileClient userProfileClient, IUsersClient usersClient, IMapper mapper)
     {
-        _apiClient = apiClient;
+        _userProfileClient = userProfileClient;
+        _usersClient = usersClient;
         _mapper = mapper;
     }
 
@@ -26,10 +28,8 @@ public class UsersController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<GetUserProfileResponse>> GetUserProfileAsync(string userId, CancellationToken cancellationToken = default)
-    {
-        string token = TokenExtensions.ExtractTokenFromHeaders(HttpContext.Request.Headers);
-
-        var result = await _apiClient.GetUserProfileAsync(userId, token, cancellationToken);
+    { 
+        var result = await _usersClient.GetUserProfileAsync(userId, cancellationToken);
 
         var response = _mapper.Map<GetUserProfileResponse>(result);
         return Ok(response);
@@ -41,11 +41,21 @@ public class UsersController : ControllerBase
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<ActionResult<GetCurrentUsersProfileResponse>> GetCurrentUsersProfileAsync(CancellationToken cancellationToken = default)
     {
-        string token = TokenExtensions.ExtractTokenFromHeaders(HttpContext.Request.Headers);
-
-        var result = await _apiClient.GetCurrentUsersProfileAsync(token, cancellationToken);
+        var result = await _userProfileClient.GetCurrentUsersProfileAsync(cancellationToken);
 
         var response = _mapper.Map<GetCurrentUsersProfileResponse>(result);
+
+        return Ok(response);
+    }
+
+    [HttpGet("{userId}/playlists")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<GetUsersPlaylistsResponse>> GetUsersPlaylistAsync(string userId, CancellationToken cancellationToken = default)
+    {
+        var result = await _usersClient.GetUserPlaylistsAsync(userId, cancellationToken);
+
+        var response = _mapper.Map<GetUsersPlaylistsResponse>(result);
 
         return Ok(response);
     }

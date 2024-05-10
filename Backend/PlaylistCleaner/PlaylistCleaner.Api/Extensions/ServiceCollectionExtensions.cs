@@ -1,7 +1,9 @@
-﻿using PlaylistCleaner.ApiClients.Clients.SpotifyApiClient;
-using Hellang.Middleware.ProblemDetails;
-using PlaylistCleaner.Api.Exceptions;
-using PlaylistCleaner.ApiClients.Clients.ApiClient;
+﻿using Hellang.Middleware.ProblemDetails;
+using PlaylistCleaner.ApiClients.Clients.UserProfileClient;
+using PlaylistCleaner.ApiClients.Handlers.AuthorizationHandler;
+using PlaylistCleaner.ApiClients.Exceptions;
+using PlaylistCleaner.ApiClients.Clients.PlaylistClient;
+using PlaylistCleaner.ApiClients.Clients.UsersClient;
 
 namespace PlaylistCleaner.Api.Extensions;
 
@@ -18,9 +20,32 @@ public static class ServiceCollectionExtensions
             o.OnBeforeWriteDetails = (_, details) => details.Type = null;
             o.MapToStatusCode<TokenNotFoundException>(StatusCodes.Status401Unauthorized);
         });
-        
-        services.AddHttpClient<IApiClient, ApiClient>();
-        services.AddTransient<ISpotifyApiClient, SpotifyApiClient>();
+
+        services.AddHeaderPropagation(o => o.Headers.Add("Authorization"));
+
+        services.AddTransient<AuthorizationHandler>();
+
+        services.AddHttpClient<IUsersClient, UsersClient>(o =>
+        {
+            o.BaseAddress = new Uri("https://api.spotify.com/v1/users/");
+        })
+            .AddHeaderPropagation()
+            .AddHttpMessageHandler<AuthorizationHandler>();
+
+        services.AddHttpClient<IUserProfileClient, UserProfileClient>(o =>
+        {
+            o.BaseAddress = new Uri("https://api.spotify.com/v1/");
+        })
+            .AddHeaderPropagation()
+            .AddHttpMessageHandler<AuthorizationHandler>();
+
+        services.AddHttpClient<IPlaylistsClient, PlaylistsClient>(o =>
+        {
+            o.BaseAddress = new Uri("https://api.spotify.com/v1/playlists/");
+        })
+            .AddHeaderPropagation()
+            .AddHttpMessageHandler<AuthorizationHandler>();
+
 
         return services;
     }

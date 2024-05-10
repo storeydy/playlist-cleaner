@@ -17,7 +17,7 @@
             [showCurrentPageReport]="true"
             [tableStyle]="{ 'min-width': '50rem' }"
             [scrollable]="true"
-            scrollHeight="500px"
+            scrollHeight="475px"
             [rowsPerPageOptions]="[5, 10, 20]"
             [globalFilterFields]="['name', 'tracks.total', 'owner.display_name', 'followers.total']"
         >
@@ -41,7 +41,7 @@
             </ng-template>
             <ng-template pTemplate="body" let-playlist>
                 <tr>
-                    <td><img [src]="playlist.images[0].url!" width="50" class="shadow-4" /></td>
+                    <td><img [src]="playlist.images[0].url!" width="45" class="shadow-4" /></td>
                     <td>{{playlist.name}}</td>
                     <td>{{playlist.tracks.total}}</td>
                     <td>{{playlist.owner.display_name}}</td>

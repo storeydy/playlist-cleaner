@@ -1,4 +1,4 @@
-﻿namespace PlaylistCleaner.Api.Exceptions;
+﻿namespace PlaylistCleaner.ApiClients.Exceptions;
 
 public class TokenNotFoundException : Exception
 {

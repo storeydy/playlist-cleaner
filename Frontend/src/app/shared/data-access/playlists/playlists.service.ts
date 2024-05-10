@@ -10,7 +10,7 @@ export class PlaylistsService {
   private readonly apiService = inject(ApiService);
   private readonly userId = localStorage.getItem('user_id');
 
-  playlists$: Observable<GetPlaylistResponse[]> = this.apiService.get<GetUsersPlaylistsResponse>('/api/v1/playlists/' + this.userId + '/playlists')
+  playlists$: Observable<GetPlaylistResponse[]> = this.apiService.get<GetUsersPlaylistsResponse>('/api/v1/users/' + this.userId + '/playlists')
     .pipe(
       switchMap((response: GetUsersPlaylistsResponse) =>
         response.playlist_ids ?
