@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using PlaylistCleaner.Api.Responses;
+using PlaylistCleaner.Api.Responses.PlaylistsControllerResponses;
 using PlaylistCleaner.ApiClients.Clients.PlaylistClient;
 
 namespace PlaylistCleaner.Api.Controllers;
@@ -30,6 +30,19 @@ public class PlaylistsController : ControllerBase
         var playlist = await _playlistClient.GetPlaylistAsync(playlistId, cancellationToken);
 
         var response = _mapper.Map<GetPlaylistResponse>(playlist);
+
+        return Ok(response);
+    }
+
+    [HttpGet("{playlistId}/tracks")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public async Task<ActionResult<GetPlaylistTracksResponse>> GetPlaylistTracksAsync(string playlistId, CancellationToken cancellationToken = default)
+    {
+        var playlistTracks = await _playlistClient.GetPlaylistTracksAsync(playlistId, cancellationToken);
+
+        var response = _mapper.Map<GetPlaylistTracksResponse>(playlistTracks);
 
         return Ok(response);
     }

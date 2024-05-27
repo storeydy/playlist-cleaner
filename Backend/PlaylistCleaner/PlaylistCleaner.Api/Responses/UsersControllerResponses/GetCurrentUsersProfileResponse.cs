@@ -1,4 +1,4 @@
-﻿namespace PlaylistCleaner.Api.Responses;
+﻿namespace PlaylistCleaner.Api.Responses.UsersControllerResponses;
 
 public sealed record GetCurrentUsersProfileResponse(string country, string display_name, string email, GetCurrentUsersProfileResponseExplicitContent explicit_content, string spotify_external_url, GetCurrentUsersProfileResponseFollower? followers, string href, string id, ICollection<GetCurrentUsersProfileResponseImage> images, string product, string type, string uri);
 

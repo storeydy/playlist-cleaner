@@ -1,4 +1,4 @@
-﻿namespace PlaylistCleaner.Api.Responses;
+﻿namespace PlaylistCleaner.Api.Responses.PlaylistsControllerResponses;
 
 public sealed record GetPlaylistResponse(bool collaborative, string description, GetPlaylistResponseExternalUrls external_urls, string href, string id, GetPlaylistResponseFollowers followers, ICollection<GetPlaylistResponseImageObject> images, string name, GetPlaylistResponsePlaylistOwner owner, bool Public, string snapshot_id, GetPlaylistResponseTrack tracks, string type, string uri);
 

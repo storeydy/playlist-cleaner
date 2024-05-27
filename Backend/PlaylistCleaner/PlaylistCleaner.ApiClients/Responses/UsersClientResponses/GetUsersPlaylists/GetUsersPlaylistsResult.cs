@@ -1,4 +1,4 @@
-﻿namespace PlaylistCleaner.ApiClients.Responses.SpotifyApiClientResults.GetUsersPlaylists;
+﻿namespace PlaylistCleaner.ApiClients.Responses.UsersClientResponses.GetUsersPlaylists;
 
 public sealed record GetUsersPlaylistsResult(string next, List<SimplifiedPlaylistObject> items);
 

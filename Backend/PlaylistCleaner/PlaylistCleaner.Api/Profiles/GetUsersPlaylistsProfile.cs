@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using PlaylistCleaner.Api.Responses;
-using PlaylistCleaner.ApiClients.Responses.SpotifyApiClientResults.GetUsersPlaylists;
+using PlaylistCleaner.Api.Responses.UsersControllerResponses;
+using PlaylistCleaner.ApiClients.Responses.UsersClientResponses.GetUsersPlaylists;
 
 namespace PlaylistCleaner.Api.Profiles;
 

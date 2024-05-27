@@ -20,6 +20,13 @@ model/get-playlist-response-image-object.ts
 model/get-playlist-response-playlist-owner.ts
 model/get-playlist-response-track.ts
 model/get-playlist-response.ts
+model/get-playlist-tracks-response-playlist-track-added-by.ts
+model/get-playlist-tracks-response-playlist-track-album-image-object.ts
+model/get-playlist-tracks-response-playlist-track-album.ts
+model/get-playlist-tracks-response-playlist-track-artist.ts
+model/get-playlist-tracks-response-playlist-track-data.ts
+model/get-playlist-tracks-response-playlist-track.ts
+model/get-playlist-tracks-response.ts
 model/get-user-profile-response-follower.ts
 model/get-user-profile-response-image.ts
 model/get-user-profile-response.ts

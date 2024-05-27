@@ -1,4 +1,4 @@
-﻿using PlaylistCleaner.ApiClients.Responses.SpotifyApiClientResults.GetCurrentUsersProfile;
+﻿using PlaylistCleaner.ApiClients.Responses.UserProfileClientResponses.GetCurrentUsersProfile;
 using System.Net.Http.Json;
 
 namespace PlaylistCleaner.ApiClients.Clients.UserProfileClient;

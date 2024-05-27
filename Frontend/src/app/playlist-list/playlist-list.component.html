@@ -14,6 +14,8 @@
             [value]="playlistsList!"
             [paginator]="true"
             [rows]="10"
+            selectionMode="single"
+            (onRowSelect)="onRowSelect($event)"
             [showCurrentPageReport]="true"
             [tableStyle]="{ 'min-width': '50rem' }"
             [scrollable]="true"
@@ -40,7 +42,7 @@
                 </tr>
             </ng-template>
             <ng-template pTemplate="body" let-playlist>
-                <tr>
+                <tr [pSelectableRow]="playlist">
                     <td><img [src]="playlist.images[0].url!" width="45" class="shadow-4" /></td>
                     <td>{{playlist.name}}</td>
                     <td>{{playlist.tracks.total}}</td>

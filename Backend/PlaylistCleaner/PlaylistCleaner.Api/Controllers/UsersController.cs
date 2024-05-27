@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using PlaylistCleaner.Api.Responses;
+using PlaylistCleaner.Api.Responses.UsersControllerResponses;
 using PlaylistCleaner.ApiClients.Clients.UserProfileClient;
 using PlaylistCleaner.ApiClients.Clients.UsersClient;
 

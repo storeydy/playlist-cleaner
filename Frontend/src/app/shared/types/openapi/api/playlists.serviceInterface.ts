@@ -14,7 +14,7 @@ import { HttpHeaders }                                       from '@angular/comm
 import { Observable }                                        from 'rxjs';
 
 import { GetPlaylistResponse } from '../model/models';
-import { GetUsersPlaylistsResponse } from '../model/models';
+import { GetPlaylistTracksResponse } from '../model/models';
 import { ProblemDetails } from '../model/models';
 
 
@@ -36,8 +36,8 @@ export interface PlaylistsServiceInterface {
     /**
      * 
      * 
-     * @param userId 
+     * @param playlistId 
      */
-    apiV1PlaylistsUserIdPlaylistsGet(userId: string, extraHttpRequestParams?: any): Observable<GetUsersPlaylistsResponse>;
+    apiV1PlaylistsPlaylistIdTracksGet(playlistId: string, extraHttpRequestParams?: any): Observable<GetPlaylistTracksResponse>;
 
 }

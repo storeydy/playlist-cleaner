@@ -26,7 +26,7 @@ export interface GetPlaylistResponse {
     images?: Array<GetPlaylistResponseImageObject> | null;
     name?: string | null;
     owner?: GetPlaylistResponsePlaylistOwner;
-    public?: boolean;
+    _public?: boolean;
     snapshot_id?: string | null;
     tracks?: GetPlaylistResponseTrack;
     type?: string | null;

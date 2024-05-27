@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PlaylistsService } from '../shared/data-access/playlists/playlists.service';
 import { Subscription } from 'rxjs';
-import { GetCurrentUsersProfileResponse, GetPlaylistResponse, GetUsersPlaylistsResponse } from '../shared/types/openapi';
+import { GetCurrentUsersProfileResponse, GetPlaylistResponse, GetPlaylistTracksResponse, GetUsersPlaylistsResponse } from '../shared/types/openapi';
 import { ButtonModule } from 'primeng/button';
 import { Table, TableModule } from 'primeng/table';
 import { Router } from '@angular/router';
@@ -24,13 +24,14 @@ export class PlaylistListComponent implements OnInit {
 
   private subscription = new Subscription();
   @ViewChild('dt') dt!: Table;
-  
+
   playlistsList: GetPlaylistResponse[] | null = null;
+  selectedPlaylistTracks: GetPlaylistTracksResponse | null = null;
   unsortedPlaylistsList: GetPlaylistResponse[] | null = null;
   profileData: GetCurrentUsersProfileResponse | null = null;
 
   isSorted: boolean | null = null;
-  constructor(private router: Router) {}
+  constructor(private router: Router) { }
 
   async ngOnInit() {
     this.initialiseSubscriptions();
@@ -49,9 +50,15 @@ export class PlaylistListComponent implements OnInit {
         this.profileData = res;
       })
     );
+
+    this.subscription.add(
+      this.playlistService.selectedPlaylistTracks$.subscribe((res) => {
+        this.selectedPlaylistTracks = res;
+      })
+    )
   }
 
-  resetTableSort(){
+  resetTableSort() {
     this.dt.reset();
     this.playlistsList = [...this.unsortedPlaylistsList!];
   }
@@ -60,7 +67,13 @@ export class PlaylistListComponent implements OnInit {
     this.subscription.unsubscribe();
   }
 
-  navigateToWelcome(){
+  navigateToWelcome() {
     this.router.navigate(['']);
+  }
+
+  onRowSelect(event: any) {
+    if(event.data.id){
+      this.playlistService.setSelectedPlaylistId(event.data.id!);
+    }
   }
 }

@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
-using PlaylistCleaner.ApiClients.Responses.SpotifyApiClientResults.GetPlaylist;
+using PlaylistCleaner.ApiClients.Responses.PlaylistsClientResponses.GetPlaylist;
+using PlaylistCleaner.ApiClients.Responses.PlaylistsClientResponses.GetPlaylistTracks;
 using System.Net.Http.Json;
 
 namespace PlaylistCleaner.ApiClients.Clients.PlaylistClient;
@@ -22,8 +23,25 @@ internal sealed class PlaylistsClient : IPlaylistsClient
         return playlist;
     }
     
-    public async Task<JObject> GetPlaylistTracks(string playlistId, int trackLimit, CancellationToken cancellationToken = default)
+    public async Task<GetPlaylistTracksResult> GetPlaylistTracksAsync(string playlistId, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        int offsetValue = 50;
+        var playlistTracksRequestUri = $"{playlistId}/tracks?limit=50";
+        var jsonPlaylistTracks = await _httpClient.GetFromJsonAsync<GetPlaylistTracksResult>(playlistTracksRequestUri, cancellationToken);
+        bool isAnotherPageOfResults = jsonPlaylistTracks.next == null ? false : true;
+
+        while (isAnotherPageOfResults)
+        {
+            string offsetParameter = $"&offset={offsetValue}";
+            var nextPageOfTracks = await _httpClient.GetFromJsonAsync<GetPlaylistTracksResult>(playlistTracksRequestUri + offsetParameter, cancellationToken);
+            jsonPlaylistTracks.items.AddRange(nextPageOfTracks.items);
+            if (nextPageOfTracks.next == null)
+            {
+                isAnotherPageOfResults = false;
+            }
+            offsetValue += 50;
+        }
+
+        return jsonPlaylistTracks;
     }
 }

@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using PlaylistCleaner.Api.Responses;
-using PlaylistCleaner.ApiClients.Responses.SpotifyApiClientResults.GetCurrentUsersProfile;
+using PlaylistCleaner.Api.Responses.UsersControllerResponses;
+using PlaylistCleaner.ApiClients.Responses.UserProfileClientResponses.GetCurrentUsersProfile;
 
 namespace PlaylistCleaner.Api.Profiles;
 
@@ -8,11 +8,11 @@ internal sealed class GetCurrentUsersProfileProfile : Profile
 {
     public GetCurrentUsersProfileProfile()
     {
-        CreateMap<ApiClients.Responses.SpotifyApiClientResults.GetCurrentUsersProfile.ImageObject, GetCurrentUsersProfileResponseImage>();
+        CreateMap<ImageObject, GetCurrentUsersProfileResponseImage>();
 
-        CreateMap<ApiClients.Responses.SpotifyApiClientResults.GetCurrentUsersProfile.Followers, GetCurrentUsersProfileResponseFollower>();
+        CreateMap<Followers, GetCurrentUsersProfileResponseFollower>();
 
-        CreateMap<ApiClients.Responses.SpotifyApiClientResults.GetCurrentUsersProfile.External_Urls, string>()
+        CreateMap<External_Urls, string>()
             .ConstructUsing(s => s.spotify);
 
         CreateMap<Explicit_Content, GetCurrentUsersProfileResponseExplicitContent>();

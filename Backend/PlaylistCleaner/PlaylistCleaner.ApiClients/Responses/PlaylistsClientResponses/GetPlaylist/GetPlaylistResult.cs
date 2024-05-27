@@ -1,4 +1,4 @@
-﻿namespace PlaylistCleaner.ApiClients.Responses.SpotifyApiClientResults.GetPlaylist;
+﻿namespace PlaylistCleaner.ApiClients.Responses.PlaylistsClientResponses.GetPlaylist;
 
 public sealed record GetPlaylistResult(bool collaborative, string description, GetPlaylistResultExternalUrls external_urls, string href, string id, ICollection<GetPlaylistResultImageObject> images, string name, GetPlaylistResultPlaylistOwner owner, GetPlaylistResultFollowers followers, bool Public, string snapshot_id, GetPlaylistResultTrack tracks, string type, string uri);
 

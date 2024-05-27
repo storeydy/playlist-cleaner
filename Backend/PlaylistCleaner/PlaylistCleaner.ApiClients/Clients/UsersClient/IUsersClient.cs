@@ -1,5 +1,5 @@
-﻿using PlaylistCleaner.ApiClients.Responses.SpotifyApiClientResults.GetUserProfile;
-using PlaylistCleaner.ApiClients.Responses.SpotifyApiClientResults.GetUsersPlaylists;
+﻿using PlaylistCleaner.ApiClients.Responses.UsersClientResponses.GetUserProfile;
+using PlaylistCleaner.ApiClients.Responses.UsersClientResponses.GetUsersPlaylists;
 
 namespace PlaylistCleaner.ApiClients.Clients.UsersClient;
 

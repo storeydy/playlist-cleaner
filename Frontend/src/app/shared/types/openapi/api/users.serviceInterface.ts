@@ -15,6 +15,7 @@ import { Observable }                                        from 'rxjs';
 
 import { GetCurrentUsersProfileResponse } from '../model/models';
 import { GetUserProfileResponse } from '../model/models';
+import { GetUsersPlaylistsResponse } from '../model/models';
 import { ProblemDetails } from '../model/models';
 
 
@@ -31,6 +32,13 @@ export interface UsersServiceInterface {
      * 
      */
     apiV1UsersMeGet(extraHttpRequestParams?: any): Observable<GetCurrentUsersProfileResponse>;
+
+    /**
+     * 
+     * 
+     * @param userId 
+     */
+    apiV1UsersUserIdPlaylistsGet(userId: string, extraHttpRequestParams?: any): Observable<GetUsersPlaylistsResponse>;
 
     /**
      * 

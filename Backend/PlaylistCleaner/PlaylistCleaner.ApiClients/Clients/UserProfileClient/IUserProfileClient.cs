@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
-using PlaylistCleaner.ApiClients.Responses.SpotifyApiClientResults.GetCurrentUsersProfile;
+using PlaylistCleaner.ApiClients.Responses.UserProfileClientResponses.GetCurrentUsersProfile;
 
 namespace PlaylistCleaner.ApiClients.Clients.UserProfileClient;
 
