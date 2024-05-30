@@ -8,11 +8,12 @@ import { GetCurrentUsersProfileResponse } from '../shared/types/openapi';
 import { SpeedDialModule } from 'primeng/speeddial';
 import { MenuItem, MessageService } from 'primeng/api';
 import { TokenService } from '../auth/services/token/token.service';
+import { CardModule } from 'primeng/card';
 
 @Component({
   selector: 'playlist-cleaner-welcome',
   standalone: true,
-  imports: [CommonModule, HttpClientModule, SpeedDialModule ],
+  imports: [CommonModule, HttpClientModule, SpeedDialModule, CardModule ],
   templateUrl: './welcome.component.html',
   styleUrls: ['./welcome.component.scss'],
   providers: [MessageService],

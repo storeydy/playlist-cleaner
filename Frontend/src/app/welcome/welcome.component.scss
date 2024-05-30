@@ -9,6 +9,14 @@
       }
 }
 
+.welcome-page-div{
+  height: 500px;
+  flex-direction: column;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
 .custom-icon {
     position: absolute;
     top: 50%;
