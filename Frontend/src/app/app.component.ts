@@ -4,13 +4,17 @@ import { HttpClientModule } from '@angular/common/http';
 import { WelcomeComponent } from './welcome/welcome.component';
 import { LoginService } from './auth/services/login/login.service';
 import { ApiService } from './shared/api/src';
+import { HeaderComponent } from './shared/components/header/header.component';
+import { FooterComponent } from './shared/components/footer/footer.component';
 
 @Component({
   standalone: true,
   imports: [
     RouterModule,
     HttpClientModule,
-    WelcomeComponent,
+    HeaderComponent,
+    FooterComponent,
+    WelcomeComponent
   ],
   providers : 
   [ 

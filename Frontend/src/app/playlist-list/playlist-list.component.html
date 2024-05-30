@@ -1,13 +1,8 @@
-<div *ngIf="!playlistsList || !profileData" class="spinner-container">
+<div *ngIf="!playlistsList" class="spinner-container">
     <p-progressSpinner></p-progressSpinner>
 </div>
-<div *ngIf ="playlistsList && profileData">
-    <div class="header">
-        <p-button label="Back" icon="pi pi-times" styleClass="p-button-secondary" [style]="{ 'margin-left': '.5em' }"
-            (onClick)="navigateToWelcome()"></p-button>
-        <h1> {{profileData!.display_name}}'s Playlists </h1>
-        <img src="{{profileData!.images![0].url!}}">
-    </div>
+<div *ngIf ="playlistsList">
+    <playlist-cleaner-header></playlist-cleaner-header>
     <div class="table-container">
         <p-table 
             #dt
@@ -19,7 +14,7 @@
             [showCurrentPageReport]="true"
             [tableStyle]="{ 'min-width': '50rem' }"
             [scrollable]="true"
-            scrollHeight="475px"
+            scrollHeight="450px"
             [rowsPerPageOptions]="[5, 10, 20]"
             [globalFilterFields]="['name', 'tracks.total', 'owner.display_name', 'followers.total']"
         >

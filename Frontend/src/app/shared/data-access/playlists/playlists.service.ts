@@ -16,7 +16,7 @@ export class PlaylistsService {
     .pipe(
       switchMap((response: GetUsersPlaylistsResponse) =>
         response.playlist_ids ?
-          this.fetchPlaylists(response.playlist_ids.slice(0, 100)) as Observable<GetPlaylistResponse[]> :
+          this.fetchPlaylists(response.playlist_ids.slice(0, 10)) as Observable<GetPlaylistResponse[]> :
           of([])
       )
     );

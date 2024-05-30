@@ -1,9 +1,5 @@
-<div class="header">
-    <p-button label="Back" icon="pi pi-times" styleClass="p-button-secondary" [style]="{ 'margin-left': '.5em' }" (onClick)="navigateToWelcome()"></p-button>
-    <h1> User Information </h1>
-    <img src="{{profileData!.images![0].url!}}">
-</div>
-<div class="tab-container">
+<playlist-cleaner-header></playlist-cleaner-header>
+<div *ngIf = "profileData" class ="tab-container">
 <p-tabView [(activeIndex)]="activeIndex">
     <p-tabPanel header="Profile">
         <p> <b>Display Name : </b> {{profileData!.display_name}} </p>

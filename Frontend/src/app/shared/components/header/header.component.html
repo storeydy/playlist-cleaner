@@ -1,0 +1,8 @@
+<div class="header">
+    <p-button label="Back" icon="pi pi-times" styleClass="p-button-secondary" [style]="{ 'margin-left': '.5em' }"
+        (onClick)="navigateToWelcome()">
+    </p-button>
+    <div *ngIf = "profileData">
+        <img src="{{profileData!.images![0].url!}}">
+    </div>
+</div>
