@@ -40,7 +40,7 @@ export class WelcomeComponent implements OnInit {
     {
       title: 'Playlist View',
       icon: 'pi pi-list',
-      routerLink: 'playlist-list',
+      routerLink: 'playlists',
       label: 'Playlist View'
     }
   ]

@@ -8,6 +8,7 @@ import { Table, TableModule } from 'primeng/table';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { InputTextModule } from 'primeng/inputtext';
 import { HeaderComponent } from '../shared/components/header/header.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'playlist-cleaner-playlist-list',
@@ -18,6 +19,8 @@ import { HeaderComponent } from '../shared/components/header/header.component';
 })
 export class PlaylistListComponent implements OnInit {
 
+  constructor(private router: Router) { }
+
   private readonly playlistService = inject(PlaylistsService);
 
   private subscription = new Subscription();
@@ -26,8 +29,6 @@ export class PlaylistListComponent implements OnInit {
   playlistsList: GetPlaylistResponse[] | null = null;
   selectedPlaylistTracks: GetPlaylistTracksResponse | null = null;
   unsortedPlaylistsList: GetPlaylistResponse[] | null = null;
-
-  isSorted: boolean | null = null;
 
   async ngOnInit() {
     this.initialiseSubscriptions();
@@ -58,8 +59,14 @@ export class PlaylistListComponent implements OnInit {
   }
 
   onRowSelect(event: any) {
-    if(event.data.id){
+    if (event.data.id) {
       this.playlistService.setSelectedPlaylistId(event.data.id!);
+    }
+  }
+
+  onRowDblClick(event: any) {
+    if (event.id) {
+      this.router.navigate(['/playlist', event.id])
     }
   }
 }

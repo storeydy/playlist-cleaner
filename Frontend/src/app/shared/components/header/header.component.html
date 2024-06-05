@@ -2,6 +2,7 @@
     <p-button label="Back" icon="pi pi-times" styleClass="p-button-secondary" [style]="{ 'margin-left': '.5em' }"
         (onClick)="navigateToWelcome()">
     </p-button>
+    <p>{{headerText}}</p>
     <div class = "header-icons" *ngIf = "profileData">
         <img src="../../../../assets/spotify-icons-logos/icons/01_RGB/02_PNG/Spotify_Icon_RGB_Black.png" height="64px" style="margin-right: inherit;">
         <img src="{{profileData!.images![0].url!}}">

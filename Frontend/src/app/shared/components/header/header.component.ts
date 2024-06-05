@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
 import { UserProfileService } from '../../data-access/user-profile/user-profile.service';
 import { GetCurrentUsersProfileResponse } from '../../types/openapi';
 import { ButtonModule } from 'primeng/button';
@@ -14,6 +14,9 @@ import { CommonModule } from '@angular/common';
   styleUrl: './header.component.scss',
 })
 export class HeaderComponent implements OnInit {
+
+  @Input() headerText: string = "";
+  
   private readonly userProfileService = inject(UserProfileService);
 
   private subscription = new Subscription();

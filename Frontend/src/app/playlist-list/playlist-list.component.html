@@ -29,7 +29,7 @@
         </ng-template>
             <ng-template pTemplate="header">
                 <tr>
-                    <th style="width:15%">Image</th>
+                    <th style="width:15%">Playlist Image</th>
                     <th pSortableColumn="name" style="width:15%">Name <p-sortIcon field="name"></p-sortIcon></th>
                     <th pSortableColumn="tracks.total" style="width:15%">Tracks <p-sortIcon field="tracks"></p-sortIcon></th>
                     <th pSortableColumn="owner.display_name" style="width:15%">Owner <p-sortIcon field="owner"></p-sortIcon></th>
@@ -37,7 +37,7 @@
                 </tr>
             </ng-template>
             <ng-template pTemplate="body" let-playlist>
-                <tr [pSelectableRow]="playlist">
+                <tr [pSelectableRow]="playlist" (dblclick)="onRowDblClick(playlist)">
                     <td><img [src]="playlist.images[0].url!" width="45" class="shadow-4" /></td>
                     <td>{{playlist.name}}</td>
                     <td>{{playlist.tracks.total}}</td>
