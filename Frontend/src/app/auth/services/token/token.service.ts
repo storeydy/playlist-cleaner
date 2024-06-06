@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import { AuthenticationTokens } from 'src/app/shared/types/auth/authentication-tokens';
+import { environment } from 'src/environments/environment.development'; //Local environment variables file - in gitignore 
+
+const clientId = environment.clientId;
 
 @Injectable({
   providedIn: 'root'
 })
 export class TokenService {
-
-  constructor() { }
 
   retrieveAccessTokenFromLocalStorage(): string | null {
     var accessToken = localStorage.getItem('access_token');
@@ -18,7 +18,12 @@ export class TokenService {
     return refreshToken !== null && refreshToken !== 'undefined' ? refreshToken : null;
   }
 
-  async getAccessAndRefreshTokens(clientId: string, code: string): Promise<AuthenticationTokens> { //Gets token using auth code
+  retrieveTokenExpiryFromLocalStorage(): number | null {
+    var expiryString = localStorage.getItem('token_expiry');    
+    return expiryString !== null ? parseInt(expiryString!) : null;
+  }
+
+  async getAccessAndRefreshTokens(clientId: string, code: string) { //Gets token using auth code
     const verifier = localStorage.getItem("verifier");
     const params = new URLSearchParams();
     params.append("client_id", clientId);
@@ -36,25 +41,20 @@ export class TokenService {
     });
     const response = await result.json();
 
-    setTimeout(() => {
-      this.getAccessTokenUsingRefreshToken();
-    }, 3500000);
+    var tokenExpiry = Date.now() + response.expires_in*1000;      
     
     localStorage.setItem('access_token', response.access_token);
     localStorage.setItem('refresh_token', response.refresh_token);
-
-    return {
-      accessToken: response.access_token,
-      refreshToken: response.refresh_token,
-    };
+    localStorage.setItem('token_expiry', tokenExpiry.toString());
   }
 
-  private async getAccessTokenUsingRefreshToken() {
+  async getAccessTokenUsingRefreshToken() : Promise<string> {
     const params = new URLSearchParams();
     let refreshToken = this.retrieveRefreshTokenFromLocalStorage();
     params.append("grant_type", "refresh_token");
-    params.append("refresh_token", refreshToken!)
-
+    params.append("refresh_token", refreshToken!);
+    params.append("client_id", clientId);
+    
     const result = await fetch("https://accounts.spotify.com/api/token", {
       method: "POST",
       headers: {
@@ -64,13 +64,14 @@ export class TokenService {
     });
     const response = await result.json();
 
+    var tokenExpiry = Date.now() + response.expires_in*1000;
+
+    
     localStorage.setItem('access_token', response.access_token);
     localStorage.setItem('refresh_token', response.refresh_token);
+    localStorage.setItem('token_expiry', tokenExpiry.toString());    
 
-    setTimeout(() => {
-      this.getAccessTokenUsingRefreshToken();
-    }, 3500000);
-
+    return response.access_token
   }
 
 }

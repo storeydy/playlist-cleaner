@@ -1,7 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { environment } from 'src/environments/environment.development'; //Local environment variables file - in gitignore 
 import { Buffer } from 'buffer';
-import { AuthenticationTokens } from 'src/app/shared/types/auth/authentication-tokens';
 import { TokenService } from '../token/token.service';
 
 

@@ -19,6 +19,6 @@ export const appRoutes: Route[] = [
         path: 'user-profile', component: UserProfileComponent,
     },
     {
-        path: 'playlist/:id', component: PlaylistDetailsComponent,
+        path: 'playlists/:id', component: PlaylistDetailsComponent,
     }
 ];
