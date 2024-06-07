@@ -4,7 +4,7 @@ import { GetCurrentUsersProfileResponse } from '../../types/openapi';
 import { ButtonModule } from 'primeng/button';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 
 @Component({
   selector: 'playlist-cleaner-header',
@@ -23,7 +23,7 @@ export class HeaderComponent implements OnInit {
 
   profileData: GetCurrentUsersProfileResponse | null = null;
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private location: Location) { }
 
   async ngOnInit() {
     this.initialiseSubscriptions();
@@ -36,6 +36,10 @@ export class HeaderComponent implements OnInit {
         this.profileData = res;
       })
     )
+  }
+
+  navigateBackwards(){
+    this.location.back();
   }
 
   navigateToWelcome() {

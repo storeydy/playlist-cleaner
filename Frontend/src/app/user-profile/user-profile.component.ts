@@ -22,6 +22,7 @@ export class UserProfileComponent {
 
   activeIndex: number = 0;
   profileData: GetCurrentUsersProfileResponse | null = null;
+  userProfileHeaderText: string = "User Details"
 
   async ngOnInit() {    
     this.initialiseSubscriptions();

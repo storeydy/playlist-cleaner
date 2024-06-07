@@ -15,6 +15,8 @@
             [scrollable]="true"
             scrollHeight="450px"
             [rowsPerPageOptions]="[5, 10, 20]"
+            [customSort]="true"
+            (sortFunction)="customSort($event)"
         >
             <ng-template pTemplate="caption">
                 <div class="flex">
@@ -31,21 +33,21 @@
             <ng-template pTemplate="header">
                 <tr>
                     <th style="width:15%">Album Image</th>
-                    <th pSortableColumn="name" style="width:15%">Track Name <p-sortIcon field="name"></p-sortIcon></th>
-                    <th pSortableColumn="album.name" style="width:15%">Album name<p-sortIcon field="album"></p-sortIcon></th>
-                    <th pSortableColumn="artist.name" style="width:15%">Artist<p-sortIcon
-                            field="artist"></p-sortIcon></th>
-                    <th pSortableColumn="duration_ms" style="width:15%">Duration <p-sortIcon
-                            field="followers"></p-sortIcon></th>
+                    <th pSortableColumn="track.name" style="width:15%">Track Name <p-sortIcon field="track.name"></p-sortIcon></th>
+                    <th pSortableColumn="track.album.name" style="width:15%">Album name<p-sortIcon field="track.album.name"></p-sortIcon></th>
+                    <th pSortableColumn="track.artists[0].name" style="width:15%">Artist<p-sortIcon
+                            field="track.artists[0].name"></p-sortIcon></th>
+                    <th pSortableColumn="track.duration_ms" style="width:15%">Duration <p-sortIcon
+                            field="track.duration_ms"></p-sortIcon></th>
                 </tr>
             </ng-template>
             <ng-template pTemplate="body" let-item>
                 <tr>
-                    <td><img [src]="item.track.album.images[0].url!" width="30" class="shadow-4" /></td>
+                    <td><img [src]="item.track.album.images[0].url!" width="35" class="shadow-4" /></td>
                     <td>{{item.track.name}}</td>
                     <td>{{item.track.album.name}}</td>
                     <td>{{item.track.artists[0].name}}</td>
-                    <td>{{item.track.duration_ms}}</td>
+                    <td>{{item.track.duration_ms | millisecond }}</td>
                 </tr>
             </ng-template>
         </p-table>

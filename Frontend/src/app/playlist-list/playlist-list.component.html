@@ -2,7 +2,7 @@
     <p-progressSpinner></p-progressSpinner>
 </div>
 <div *ngIf ="playlistsList">
-    <playlist-cleaner-header></playlist-cleaner-header>
+    <playlist-cleaner-header [headerText] = "playlistListHeaderText"></playlist-cleaner-header>
     <div class="table-container">
         <p-table 
             #dt
@@ -31,9 +31,9 @@
                 <tr>
                     <th style="width:15%">Playlist Image</th>
                     <th pSortableColumn="name" style="width:15%">Name <p-sortIcon field="name"></p-sortIcon></th>
-                    <th pSortableColumn="tracks.total" style="width:15%">Tracks <p-sortIcon field="tracks"></p-sortIcon></th>
-                    <th pSortableColumn="owner.display_name" style="width:15%">Owner <p-sortIcon field="owner"></p-sortIcon></th>
-                    <th pSortableColumn="followers.total" style="width:15%">Followers <p-sortIcon field="followers"></p-sortIcon></th>
+                    <th pSortableColumn="tracks.total" style="width:15%">Tracks <p-sortIcon field="tracks.total"></p-sortIcon></th>
+                    <th pSortableColumn="owner.display_name" style="width:15%">Owner <p-sortIcon field="owner.display_name"></p-sortIcon></th>
+                    <th pSortableColumn="followers.total" style="width:15%">Followers <p-sortIcon field="followers.total"></p-sortIcon></th>
                 </tr>
             </ng-template>
             <ng-template pTemplate="body" let-playlist>

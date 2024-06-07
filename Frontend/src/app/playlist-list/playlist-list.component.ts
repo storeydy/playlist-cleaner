@@ -29,8 +29,9 @@ export class PlaylistListComponent implements OnInit {
   playlistsList: GetPlaylistResponse[] | null = null;
   selectedPlaylistTracks: GetPlaylistTracksResponse | null = null;
   unsortedPlaylistsList: GetPlaylistResponse[] | null = null;
+  playlistListHeaderText: string = "User's Playlists";
 
-  async ngOnInit() {
+  async ngOnInit() {    
     this.initialiseSubscriptions();
   }
 
@@ -66,7 +67,7 @@ export class PlaylistListComponent implements OnInit {
 
   onRowDblClick(event: any) {
     if (event.id) {
-      this.router.navigate(['/playlist', event.id])
+      this.router.navigate(['/playlists', event.id])
     }
   }
 }

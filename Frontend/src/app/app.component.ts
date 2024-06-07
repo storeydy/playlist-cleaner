@@ -6,6 +6,7 @@ import { LoginService } from './auth/services/login/login.service';
 import { ApiService } from './shared/api/src';
 import { HeaderComponent } from './shared/components/header/header.component';
 import { FooterComponent } from './shared/components/footer/footer.component';
+import { MillisecondPipe } from './shared/pipes/millisecond.pipe';
 
 @Component({
   standalone: true,
@@ -14,7 +15,8 @@ import { FooterComponent } from './shared/components/footer/footer.component';
     HttpClientModule,
     HeaderComponent,
     FooterComponent,
-    WelcomeComponent
+    WelcomeComponent,
+    MillisecondPipe
   ],
   providers : 
   [ 
