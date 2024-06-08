@@ -3,8 +3,10 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "start": "nx serve config",
-    "build": "nx build",
+    "start": "node src/environments/environment-replace.js && nx serve",
+    "preserve": "node src/environments/environment-replace.js",
+    "prebuild": "node src/environments/environment-replace.js",
+    "build": "nx build --prod",
     "test": "nx test",
     "codegen": "rm -rf src/generated-sources/openapi; openapi-generator-cli generate -i https://localhost:7204/swagger/v1/swagger.json -o src/app/shared/types/openapi -g typescript-fetch --additional-properties=supportsES6=true,npmVersion=6.9.0,typescriptThreePlus=true"
   },
@@ -19,7 +21,7 @@
     "@angular/platform-browser-dynamic": "17.3.2",
     "@angular/router": "17.3.2",
     "@nx/angular": "18.2.1",
-    "dotenv": "^16.4.2",
+    "dotenv": "^16.4.5",
     "primeng": "^17.12.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
