@@ -24,6 +24,7 @@ export class LoginService {
     }
   }
 
+  //TODO: ADD callback url to environment variables http://localhost:4200/callback
   async redirectToAuthCodeFlow(clientId: string) {    //GET request to /authorize with permission list 
     const verifier = this.generateCodeVerifier(128);
     const challenge = await this.generateCodeChallenge(verifier);
@@ -35,7 +36,7 @@ export class LoginService {
     params.append("client_id", clientId);
     params.append("response_type", "code");
     params.append("state", state);
-    params.append("redirect_uri", "http://localhost:4200/callback");
+    params.append("redirect_uri", "http://playlist-cleaner.vercel.app/callback");
     params.append("scope", "user-read-private user-read-email playlist-read-private playlist-read-collaborative");
     params.append("code_challenge_method", "S256");
     params.append("code_challenge", challenge);

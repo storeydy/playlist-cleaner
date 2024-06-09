@@ -23,13 +23,14 @@ export class TokenService {
     return expiryString !== null ? parseInt(expiryString!) : null;
   }
 
+  //TODO: ADD callback url to environment variables http://localhost:4200/callback
   async getAccessAndRefreshTokens(clientId: string, code: string) { //Gets token using auth code
     const verifier = localStorage.getItem("verifier");
     const params = new URLSearchParams();
     params.append("client_id", clientId);
     params.append("grant_type", "authorization_code");
     params.append("code", code);
-    params.append("redirect_uri", "http://localhost:4200/callback");
+    params.append("redirect_uri", "http://playlist-cleaner.vercel.app/callback");
     params.append("code_verifier", verifier!);
 
     const result = await fetch("https://accounts.spotify.com/api/token", {
