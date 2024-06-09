@@ -4,9 +4,7 @@
   "license": "MIT",
   "scripts": {
     "start": "node src/environments/environment-replace.js && nx serve",
-    "preserve": "node src/environments/environment-replace.js",
-    "prebuild": "node src/environments/environment-replace.js",
-    "build": "nx build --prod",
+    "build": "node src/environments/environment-replace.js && nx build --prod",
     "test": "nx test",
     "codegen": "rm -rf src/generated-sources/openapi; openapi-generator-cli generate -i https://localhost:7204/swagger/v1/swagger.json -o src/app/shared/types/openapi -g typescript-fetch --additional-properties=supportsES6=true,npmVersion=6.9.0,typescriptThreePlus=true"
   },
