@@ -4,10 +4,12 @@ const dotenv = require('dotenv');
 
 dotenv.config();
 
+console.log("making it here");
+
 const envFiles = [
-    path.join(__dirname, '../environments/environment.ts'),
-    path.join(__dirname, '../environments/environment.development.ts'),
-    path.join(__dirname, '../environments/environment.production.ts')
+    path.join(__dirname, 'environment.ts'),
+    path.join(__dirname, 'environment.development.ts'),
+    path.join(__dirname, 'environment.production.ts')
 ];
 
 envFiles.forEach((filePath) => {
