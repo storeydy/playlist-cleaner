@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment.development'; //Local environment variables file - in gitignore 
 
 const clientId = environment.clientId;
+const redirectUri = environment.redirectUri;
 
 @Injectable({
   providedIn: 'root'
@@ -30,7 +31,7 @@ export class TokenService {
     params.append("client_id", clientId);
     params.append("grant_type", "authorization_code");
     params.append("code", code);
-    params.append("redirect_uri", "http://playlist-cleaner.vercel.app/callback");
+    params.append("redirect_uri", redirectUri);
     params.append("code_verifier", verifier!);
 
     const result = await fetch("https://accounts.spotify.com/api/token", {

@@ -4,7 +4,6 @@ const dotenv = require('dotenv');
 
 dotenv.config();
 
-console.log("making it here");
 
 const envFiles = [
     path.join(__dirname, 'environment.ts'),
