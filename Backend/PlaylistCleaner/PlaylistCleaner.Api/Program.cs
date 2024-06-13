@@ -36,6 +36,14 @@ builder.Services.AddCors(x =>
                .AllowCredentials();
     });
 
+    x.AddDefaultPolicy(builder =>
+    {
+        builder.WithOrigins("https://playlist-cleaner.vercel.app")
+               .AllowAnyHeader()
+               .AllowAnyMethod()
+               .AllowCredentials();
+    });
+
 });
 
 builder.Services.AddSwaggerGen();
