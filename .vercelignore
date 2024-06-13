@@ -1,0 +1,10 @@
+Frontend/node_modules
+*.log
+Frontend/.angular/
+Frontend/.env
+Frontend/.git/
+Frontend/tests/
+Frontend/dist
+Frontend/e2e
+Frontend/coverage/
+Backend/

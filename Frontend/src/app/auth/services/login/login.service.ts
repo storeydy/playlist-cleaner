@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { environment } from 'src/environments/environment.development'; //Local environment variables file - in gitignore 
+import { environment } from 'src/environments/environment'; //Local environment variables file - in gitignore 
 import { Buffer } from 'buffer';
 import { TokenService } from '../token/token.service';
 
@@ -7,6 +7,7 @@ import { TokenService } from '../token/token.service';
 const params = new URLSearchParams(window.location.search);
 const code: any = params.get("code");
 const clientId = environment.clientId;
+const redirectUri = environment.redirectUri;
 
 @Injectable({
   providedIn: 'root',
@@ -36,7 +37,7 @@ export class LoginService {
     params.append("client_id", clientId);
     params.append("response_type", "code");
     params.append("state", state);
-    params.append("redirect_uri", "http://playlist-cleaner.vercel.app/callback");
+    params.append("redirect_uri", redirectUri);
     params.append("scope", "user-read-private user-read-email playlist-read-private playlist-read-collaborative");
     params.append("code_challenge_method", "S256");
     params.append("code_challenge", challenge);
