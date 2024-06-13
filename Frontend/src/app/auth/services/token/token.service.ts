@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { environment } from 'src/environments/environment.ts'; //Local environment variables file - in gitignore 
+import { environment } from 'src/environments/environment'; //Local environment variables file - in gitignore 
 
 const clientId = environment.clientId;
 const redirectUri = environment.redirectUri;
