@@ -46,4 +46,17 @@ public class PlaylistsController : ControllerBase
 
         return Ok(response);
     }
+
+    [HttpGet("{playlistId}/duplicates")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public async Task<ActionResult<GetPlaylistDuplicatesResponse>> GetPlaylistDuplicatesAsync(string playlistId, CancellationToken cancellationToken = default)
+    {
+        var playlistTracks = await _playlistClient.GetPlaylistDuplicatesAsync(playlistId, cancellationToken);
+
+        var response = _mapper.Map<GetPlaylistDuplicatesResponse>(playlistTracks);
+
+        return Ok(response);
+    }
 }

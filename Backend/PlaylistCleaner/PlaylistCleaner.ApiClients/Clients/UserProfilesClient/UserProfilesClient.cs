@@ -1,13 +1,13 @@
-﻿using PlaylistCleaner.ApiClients.Responses.UserProfileClientResponses.GetCurrentUsersProfile;
+﻿using PlaylistCleaner.ApiClients.Responses.UserProfileClientResults.GetCurrentUsersProfile;
 using System.Net.Http.Json;
 
-namespace PlaylistCleaner.ApiClients.Clients.UserProfileClient;
+namespace PlaylistCleaner.ApiClients.Clients.UserProfilesClient;
 
-internal sealed class UserProfileClient : IUserProfileClient
+internal sealed class UserProfilesClient : IUserProfilesClient
 {
     private readonly HttpClient _httpClient;
 
-    public UserProfileClient(HttpClient httpClient)
+    public UserProfilesClient(HttpClient httpClient)
     {
         _httpClient = httpClient;
     }

@@ -1,4 +1,4 @@
-﻿namespace PlaylistCleaner.ApiClients.Responses.UserProfileClientResponses.GetCurrentUsersProfile;
+﻿namespace PlaylistCleaner.ApiClients.Responses.UserProfileClientResults.GetCurrentUsersProfile;
 
 public sealed record GetCurrentUsersProfileResult(string country, string display_name, string email, Explicit_Content? explicit_content, External_Urls? external_urls, Followers? followers, string href, string id, ICollection<ImageObject> images, string product, string type, string uri);
 

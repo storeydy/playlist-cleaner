@@ -1,5 +1,5 @@
-﻿using PlaylistCleaner.ApiClients.Responses.UsersClientResponses.GetUserProfile;
-using PlaylistCleaner.ApiClients.Responses.UsersClientResponses.GetUsersPlaylists;
+﻿using PlaylistCleaner.ApiClients.Responses.UsersClientResults.GetUserProfile;
+using PlaylistCleaner.ApiClients.Responses.UsersClientResults.GetUsersPlaylists;
 using System.Net.Http.Json;
 
 namespace PlaylistCleaner.ApiClients.Clients.UsersClient;

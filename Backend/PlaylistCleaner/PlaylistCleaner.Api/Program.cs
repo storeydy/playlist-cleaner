@@ -30,20 +30,11 @@ builder.Services.AddCors(x =>
 {
     x.AddDefaultPolicy(builder =>
     {
-        builder.WithOrigins("http://localhost:4200")
+        builder.WithOrigins("http://localhost:4200", "https://playlist-cleaner.vercel.app")
                .AllowAnyHeader()
                .AllowAnyMethod()
                .AllowCredentials();
     });
-
-    x.AddDefaultPolicy(builder =>
-    {
-        builder.WithOrigins("https://playlist-cleaner.vercel.app")
-               .AllowAnyHeader()
-               .AllowAnyMethod()
-               .AllowCredentials();
-    });
-
 });
 
 builder.Services.AddSwaggerGen();

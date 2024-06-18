@@ -11,6 +11,7 @@ export class PlaylistsService {
   private readonly userId = localStorage.getItem('user_id');
 
   private selectedPlaylistId$ = new BehaviorSubject<string | null>(null);
+  // private duplicatesRequested$ = new BehaviorSubject<bool | null>(null);
 
   playlists$: Observable<GetPlaylistResponse[]> = this.apiService.get<GetUsersPlaylistsResponse>('/api/v1/users/' + this.userId + '/playlists')
     .pipe(
@@ -36,6 +37,10 @@ export class PlaylistsService {
     if (playlistId) {
       this.selectedPlaylistId$.next(playlistId);
     }
+  }
+
+  fetchDuplicateTracks(playlistId: string) : Observable<any> {
+    return this.apiService.get('/api/v1/playlists/' + playlistId + '/duplicates')
   }
 
 

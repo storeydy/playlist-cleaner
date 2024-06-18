@@ -1,11 +1,12 @@
 ﻿using Hellang.Middleware.ProblemDetails;
-using PlaylistCleaner.ApiClients.Clients.UserProfileClient;
+using PlaylistCleaner.ApiClients.Clients.UserProfilesClient;
 using PlaylistCleaner.ApiClients.Handlers.AuthorizationHandler;
 using PlaylistCleaner.ApiClients.Exceptions;
 using PlaylistCleaner.ApiClients.Clients.PlaylistClient;
 using PlaylistCleaner.ApiClients.Clients.UsersClient;
 using Polly;
 using Polly.Extensions.Http;
+using PlaylistCleaner.ApiClients.Services.DuplicateDetectorService;
 
 namespace PlaylistCleaner.Api.Extensions;
 
@@ -34,7 +35,7 @@ public static class ServiceCollectionExtensions
             .AddHeaderPropagation()
             .AddHttpMessageHandler<AuthorizationHandler>();
 
-        services.AddHttpClient<IUserProfileClient, UserProfileClient>(o =>
+        services.AddHttpClient<IUserProfilesClient, UserProfilesClient>(o =>
         {
             o.BaseAddress = new Uri("https://api.spotify.com/v1/");
         })
@@ -49,6 +50,7 @@ public static class ServiceCollectionExtensions
             .AddHeaderPropagation()
             .AddHttpMessageHandler<AuthorizationHandler>();
 
+        services.AddTransient<IDuplicateDetectorService, DuplicateDetectorService>();
 
         return services;
     }

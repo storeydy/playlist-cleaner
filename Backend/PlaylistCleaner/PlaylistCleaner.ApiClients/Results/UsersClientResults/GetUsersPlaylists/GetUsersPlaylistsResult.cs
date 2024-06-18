@@ -1,4 +1,4 @@
-﻿namespace PlaylistCleaner.ApiClients.Responses.UsersClientResponses.GetUsersPlaylists;
+﻿namespace PlaylistCleaner.ApiClients.Responses.UsersClientResults.GetUsersPlaylists;
 
 public sealed record GetUsersPlaylistsResult(string next, List<SimplifiedPlaylistObject> items);
 

@@ -65,14 +65,18 @@ export class PlaylistDetailsComponent implements OnInit {
   }
 
   cleanPlaylist(){
-    console.log('Cleaning...')
+    let duplicateTracks: any
+    this.playlistService.fetchDuplicateTracks(this.playlistId).subscribe((res) => {
+      duplicateTracks = res
+      console.log(duplicateTracks);
+    })
   }
 
   customSort(event: any) {
     event.data.sort((data1: any, data2: any) => {
       let value1 = this.getFieldValue(data1, event.field);
       let value2 = this.getFieldValue(data2, event.field);
-      let result = null;
+      let result : number | null = null;
 
       if (value1 == null && value2 != null)
         result = -1;

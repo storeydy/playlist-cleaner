@@ -1,4 +1,4 @@
-﻿namespace PlaylistCleaner.ApiClients.Responses.PlaylistsClientResponses.GetPlaylistTracks;
+﻿namespace PlaylistCleaner.ApiClients.Responses.PlaylistsClientResults.GetPlaylistTracks;
 
 public sealed record GetPlaylistTracksResult(string? next, List<GetPlaylistTracksResultPlaylistTrack> items);
 

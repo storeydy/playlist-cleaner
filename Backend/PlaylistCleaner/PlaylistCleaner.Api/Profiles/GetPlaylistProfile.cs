@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using PlaylistCleaner.Api.Responses.PlaylistsControllerResponses;
-using PlaylistCleaner.ApiClients.Responses.PlaylistsClientResponses.GetPlaylist;
+using PlaylistCleaner.ApiClients.Responses.PlaylistsClientResults.GetPlaylist;
 
 namespace PlaylistCleaner.Api.Profiles;
 

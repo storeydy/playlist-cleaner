@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PlaylistCleaner.Api.Responses.UsersControllerResponses;
-using PlaylistCleaner.ApiClients.Clients.UserProfileClient;
+using PlaylistCleaner.ApiClients.Clients.UserProfilesClient;
 using PlaylistCleaner.ApiClients.Clients.UsersClient;
 
 namespace PlaylistCleaner.Api.Controllers;
@@ -13,11 +13,11 @@ namespace PlaylistCleaner.Api.Controllers;
 [Route("/api/v{version:apiVersion}/[controller]")]
 public class UsersController : ControllerBase
 {
-    private readonly IUserProfileClient _userProfileClient;
+    private readonly IUserProfilesClient _userProfileClient;
     private readonly IUsersClient _usersClient;
     private readonly IMapper _mapper;
 
-    public UsersController(IUserProfileClient userProfileClient, IUsersClient usersClient, IMapper mapper)
+    public UsersController(IUserProfilesClient userProfileClient, IUsersClient usersClient, IMapper mapper)
     {
         _userProfileClient = userProfileClient;
         _usersClient = usersClient;

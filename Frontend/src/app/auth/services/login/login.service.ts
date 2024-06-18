@@ -25,7 +25,6 @@ export class LoginService {
     }
   }
 
-  //TODO: ADD callback url to environment variables http://localhost:4200/callback
   async redirectToAuthCodeFlow(clientId: string) {    //GET request to /authorize with permission list 
     const verifier = this.generateCodeVerifier(128);
     const challenge = await this.generateCodeChallenge(verifier);

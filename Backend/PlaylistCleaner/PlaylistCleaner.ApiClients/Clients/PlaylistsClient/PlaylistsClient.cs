@@ -1,6 +1,7 @@
-﻿using Newtonsoft.Json.Linq;
-using PlaylistCleaner.ApiClients.Responses.PlaylistsClientResponses.GetPlaylist;
-using PlaylistCleaner.ApiClients.Responses.PlaylistsClientResponses.GetPlaylistTracks;
+﻿using PlaylistCleaner.ApiClients.Responses.PlaylistsClientResults.GetPlaylist;
+using PlaylistCleaner.ApiClients.Responses.PlaylistsClientResults.GetPlaylistTracks;
+using PlaylistCleaner.ApiClients.Results.PlaylistsClientResults.GetPlaylistDuplicates;
+using PlaylistCleaner.ApiClients.Services.DuplicateDetectorService;
 using System.Net.Http.Json;
 
 namespace PlaylistCleaner.ApiClients.Clients.PlaylistClient;
@@ -8,10 +9,12 @@ namespace PlaylistCleaner.ApiClients.Clients.PlaylistClient;
 internal sealed class PlaylistsClient : IPlaylistsClient
 {
     private readonly HttpClient _httpClient;
+    private readonly IDuplicateDetectorService _duplicateDetectorService;
 
-    public PlaylistsClient(HttpClient httpClient)
+    public PlaylistsClient(HttpClient httpClient, IDuplicateDetectorService duplicateDetectorService)
     {
         _httpClient = httpClient;
+        _duplicateDetectorService = duplicateDetectorService;
     }
 
     public async Task<GetPlaylistResult> GetPlaylistAsync(string playlistId, CancellationToken cancellationToken = default)
@@ -43,5 +46,14 @@ internal sealed class PlaylistsClient : IPlaylistsClient
         }
 
         return jsonPlaylistTracks;
+    }
+
+    public async Task<GetPlaylistDuplicatesResult> GetPlaylistDuplicatesAsync(string playlistId, CancellationToken cancellationToken = default)
+    {
+        var tracks = await GetPlaylistTracksAsync(playlistId, cancellationToken);
+
+        var duplicates = await _duplicateDetectorService.GetDuplicatesFromPlaylistTracksAsync(tracks.items, cancellationToken);
+
+        return duplicates;
     }
 }

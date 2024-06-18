@@ -1,0 +1,5 @@
+﻿namespace PlaylistCleaner.Api.Responses.PlaylistsControllerResponses;
+
+public sealed record GetPlaylistDuplicatesResponse(ICollection<GetPlaylistDuplicatesResponseDuplicate> duplicateTrackSets);
+
+public sealed record GetPlaylistDuplicatesResponseDuplicate(ICollection<string> duplicateTrackIds);
