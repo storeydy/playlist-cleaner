@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PlaylistCleaner.Api.Responses.PlaylistsControllerResponses;
-using PlaylistCleaner.ApiClients.Clients.PlaylistClient;
+using PlaylistCleaner.Application.Services.PlaylistsService;
 
 namespace PlaylistCleaner.Api.Controllers;
 
@@ -12,12 +12,12 @@ namespace PlaylistCleaner.Api.Controllers;
 [Route("/api/v{version:apiVersion}/[controller]")]
 public class PlaylistsController : ControllerBase
 {
-    private readonly IPlaylistsClient _playlistClient;
+    private readonly IPlaylistsService _playlistsService;
     private readonly IMapper _mapper;
 
-    public PlaylistsController(IPlaylistsClient playlistClient, IMapper mapper)
+    public PlaylistsController(IPlaylistsService playlistsService, IMapper mapper)
     {
-        _playlistClient = playlistClient;
+        _playlistsService = playlistsService;
         _mapper = mapper;
     }
 
@@ -27,7 +27,7 @@ public class PlaylistsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<ActionResult<GetPlaylistResponse>> GetPlaylistAsync(string playlistId, CancellationToken cancellationToken = default)
     {
-        var playlist = await _playlistClient.GetPlaylistAsync(playlistId, cancellationToken);
+        var playlist = await _playlistsService.GetPlaylistAsync(playlistId, cancellationToken);
 
         var response = _mapper.Map<GetPlaylistResponse>(playlist);
 
@@ -40,7 +40,7 @@ public class PlaylistsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<ActionResult<GetPlaylistTracksResponse>> GetPlaylistTracksAsync(string playlistId, CancellationToken cancellationToken = default)
     {
-        var playlistTracks = await _playlistClient.GetPlaylistTracksAsync(playlistId, cancellationToken);
+        var playlistTracks = await _playlistsService.GetPlaylistTracksAsync(playlistId, cancellationToken);
 
         var response = _mapper.Map<GetPlaylistTracksResponse>(playlistTracks);
 
@@ -53,7 +53,7 @@ public class PlaylistsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<ActionResult<GetPlaylistDuplicatesResponse>> GetPlaylistDuplicatesAsync(string playlistId, CancellationToken cancellationToken = default)
     {
-        var playlistTracks = await _playlistClient.GetPlaylistDuplicatesAsync(playlistId, cancellationToken);
+        var playlistTracks = await _playlistsService.GetPlaylistDuplicatesAsync(playlistId, cancellationToken);
 
         var response = _mapper.Map<GetPlaylistDuplicatesResponse>(playlistTracks);
 

@@ -1,12 +1,7 @@
 ﻿using Hellang.Middleware.ProblemDetails;
-using PlaylistCleaner.ApiClients.Clients.UserProfilesClient;
-using PlaylistCleaner.ApiClients.Handlers.AuthorizationHandler;
-using PlaylistCleaner.ApiClients.Exceptions;
-using PlaylistCleaner.ApiClients.Clients.PlaylistClient;
-using PlaylistCleaner.ApiClients.Clients.UsersClient;
-using Polly;
-using Polly.Extensions.Http;
-using PlaylistCleaner.ApiClients.Services.DuplicateDetectorService;
+using PlaylistCleaner.Infrastructure.Exceptions;
+using PlaylistCleaner.Application.Extensions;
+using PlaylistCleaner.Infrastructure.Extensions;
 
 namespace PlaylistCleaner.Api.Extensions;
 
@@ -20,47 +15,13 @@ public static class ServiceCollectionExtensions
 
         services.AddProblemDetails(o =>
         {
-            o.OnBeforeWriteDetails = (_, details) => details.Type = null;
             o.MapToStatusCode<TokenNotFoundException>(StatusCodes.Status401Unauthorized);
         });
 
-        services.AddHeaderPropagation(o => o.Headers.Add("Authorization"));
+        services.AddApplicationDependencies();
 
-        services.AddTransient<AuthorizationHandler>();
-
-        services.AddHttpClient<IUsersClient, UsersClient>(o =>
-        {
-            o.BaseAddress = new Uri("https://api.spotify.com/v1/users/");
-        })
-            .AddHeaderPropagation()
-            .AddHttpMessageHandler<AuthorizationHandler>();
-
-        services.AddHttpClient<IUserProfilesClient, UserProfilesClient>(o =>
-        {
-            o.BaseAddress = new Uri("https://api.spotify.com/v1/");
-        })
-            .AddHeaderPropagation()
-            .AddHttpMessageHandler<AuthorizationHandler>();
-
-        services.AddHttpClient<IPlaylistsClient, PlaylistsClient>(o =>
-        {
-            o.BaseAddress = new Uri("https://api.spotify.com/v1/playlists/");
-        })
-            .AddPolicyHandler(GetRetryPolicy())
-            .AddHeaderPropagation()
-            .AddHttpMessageHandler<AuthorizationHandler>();
-
-        services.AddTransient<IDuplicateDetectorService, DuplicateDetectorService>();
+        services.AddInfrastructureDependencies();
 
         return services;
-    }
-
-    static IAsyncPolicy<HttpResponseMessage> GetRetryPolicy()
-    {
-        return HttpPolicyExtensions
-            .HandleTransientHttpError()
-            .OrResult(msg => msg.StatusCode == System.Net.HttpStatusCode.NotFound)
-            .WaitAndRetryAsync(6, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2,
-                                                                        retryAttempt)));
     }
 }

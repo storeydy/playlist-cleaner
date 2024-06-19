@@ -24,8 +24,6 @@ builder.Services.AddVersionedApiExplorer(setup =>
     setup.SubstituteApiVersionInUrl = true;
 });
 
-builder.Services.AddControllers();
-
 builder.Services.AddCors(x =>
 {
     x.AddDefaultPolicy(builder =>
