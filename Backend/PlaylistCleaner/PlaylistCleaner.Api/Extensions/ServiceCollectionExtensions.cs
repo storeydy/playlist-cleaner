@@ -15,6 +15,7 @@ public static class ServiceCollectionExtensions
 
         services.AddProblemDetails(o =>
         {
+            o.MapToStatusCode<UnauthorizedAccessException>(StatusCodes.Status401Unauthorized);
             o.MapToStatusCode<TokenNotFoundException>(StatusCodes.Status401Unauthorized);
         });
 
