@@ -11,7 +11,8 @@
  */
 
 
-export interface GetPlaylistResponseRestrictions { 
-    reason?: string | null;
+export interface GetSongResponseAlbumArtist { 
+    id?: string | null;
+    name?: string | null;
 }
 

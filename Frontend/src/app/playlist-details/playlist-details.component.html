@@ -43,7 +43,7 @@
             </ng-template>
             <ng-template pTemplate="body" let-item>
                 <tr>
-                    <td><img [src]="item.track.album.images[0].url!" width="35" class="shadow-4" /></td>
+                    <td><img [src]="item.track.album.images?.[0]?.url ? item.track.album.images[0].url : 'https://images.pexels.com/photos/15700297/pexels-photo-15700297/free-photo-of-candle-and-sculpture-on-family-repository.jpeg?auto=compress&cs=tinysrgb&w=600'" width="35" class="shadow-4" /></td>
                     <td>{{item.track.name}}</td>
                     <td>{{item.track.album.name}}</td>
                     <td>{{item.track.artists[0].name}}</td>

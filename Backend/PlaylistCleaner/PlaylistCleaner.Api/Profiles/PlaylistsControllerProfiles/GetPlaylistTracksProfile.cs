@@ -2,7 +2,7 @@
 using PlaylistCleaner.Api.Responses.PlaylistsControllerResponses;
 using PlaylistCleaner.Application.Results.Services.PlaylistsServiceResults;
 
-namespace PlaylistCleaner.Api.Profiles.PlaylistsController;
+namespace PlaylistCleaner.Api.Profiles.PlaylistsControllerProfiles;
 
 internal sealed class GetPlaylistTracksProfile : Profile
 {

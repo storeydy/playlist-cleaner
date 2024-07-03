@@ -4,6 +4,8 @@ api.module.ts
 api/api.ts
 api/playlists.service.ts
 api/playlists.serviceInterface.ts
+api/songs.service.ts
+api/songs.serviceInterface.ts
 api/users.service.ts
 api/users.serviceInterface.ts
 configuration.ts
@@ -14,6 +16,8 @@ model/get-current-users-profile-response-explicit-content.ts
 model/get-current-users-profile-response-follower.ts
 model/get-current-users-profile-response-image.ts
 model/get-current-users-profile-response.ts
+model/get-playlist-duplicates-response-duplicate.ts
+model/get-playlist-duplicates-response.ts
 model/get-playlist-response-external-urls.ts
 model/get-playlist-response-followers.ts
 model/get-playlist-response-image-object.ts
@@ -27,6 +31,12 @@ model/get-playlist-tracks-response-playlist-track-artist.ts
 model/get-playlist-tracks-response-playlist-track-data.ts
 model/get-playlist-tracks-response-playlist-track.ts
 model/get-playlist-tracks-response.ts
+model/get-song-response-album-artist.ts
+model/get-song-response-album-image.ts
+model/get-song-response-album.ts
+model/get-song-response-artist.ts
+model/get-song-response-external-ids.ts
+model/get-song-response.ts
 model/get-user-profile-response-follower.ts
 model/get-user-profile-response-image.ts
 model/get-user-profile-response.ts

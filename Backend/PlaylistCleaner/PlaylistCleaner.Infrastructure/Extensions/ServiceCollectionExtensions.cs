@@ -4,6 +4,7 @@ using PlaylistCleaner.Infrastructure.Clients.PlaylistClient;
 using PlaylistCleaner.Infrastructure.Clients.UserProfilesClient;
 using PlaylistCleaner.Infrastructure.Clients.UsersClient;
 using PlaylistCleaner.Infrastructure.Handlers.AuthorizationHandler;
+using PlaylistCleaner.Infrastructure.HttpClients.SongsClient;
 using Polly;
 using Polly.Extensions.Http;
 
@@ -32,6 +33,13 @@ internal static class ServiceCollectionExtensions
             o.BaseAddress = new Uri("https://api.spotify.com/v1/playlists/");
         })
             .AddPolicyHandler(GetRetryPolicy())
+            .AddHeaderPropagation()
+            .AddHttpMessageHandler<AuthorizationHandler>();
+
+        services.AddHttpClient<ISongsClient, SongsClient>(o =>
+        {
+            o.BaseAddress = new Uri("https://api.spotify.com/v1/tracks/");
+        })
             .AddHeaderPropagation()
             .AddHttpMessageHandler<AuthorizationHandler>();
 

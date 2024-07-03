@@ -19,7 +19,7 @@ export class AuthInterceptorService implements HttpInterceptor{
     const expiry = this.tokenService.retrieveTokenExpiryFromLocalStorage();
         
     if (token && expiry) {
-      if (Date.now() + 180000 > expiry - 3300000){
+      if (Date.now() + 180000 > expiry){
         token = await this.tokenService.getAccessTokenUsingRefreshToken();
       }
 

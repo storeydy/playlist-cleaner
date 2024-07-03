@@ -11,9 +11,7 @@
  */
 
 
-export interface GetPlaylistResponseExternalIds { 
-    isrc?: string | null;
-    ean?: string | null;
-    upc?: string | null;
+export interface GetPlaylistDuplicatesResponseDuplicate { 
+    duplicateTrackIds?: Array<string> | null;
 }
 

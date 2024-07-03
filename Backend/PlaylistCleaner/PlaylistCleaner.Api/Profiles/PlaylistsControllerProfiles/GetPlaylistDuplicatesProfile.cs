@@ -2,7 +2,7 @@
 using PlaylistCleaner.Api.Responses.PlaylistsControllerResponses;
 using PlaylistCleaner.Application.Results.Utils.DuplicateDetector;
 
-namespace PlaylistCleaner.Api.Profiles.PlaylistsController;
+namespace PlaylistCleaner.Api.Profiles.PlaylistsControllerProfiles;
 
 internal class GetPlaylistDuplicatesProfile : Profile
 {

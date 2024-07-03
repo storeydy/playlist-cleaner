@@ -9,15 +9,10 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { GetPlaylistResponseExternalUrls } from './get-playlist-response-external-urls';
 
 
-export interface GetPlaylistResponseAlbumArtist { 
-    external_urls?: GetPlaylistResponseExternalUrls;
-    href?: string | null;
+export interface GetSongResponseArtist { 
     id?: string | null;
     name?: string | null;
-    type?: string | null;
-    uri?: string | null;
 }
 

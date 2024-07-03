@@ -13,9 +13,7 @@ import { HttpHeaders }                                       from '@angular/comm
 
 import { Observable }                                        from 'rxjs';
 
-import { GetPlaylistDuplicatesResponse } from '../model/models';
-import { GetPlaylistResponse } from '../model/models';
-import { GetPlaylistTracksResponse } from '../model/models';
+import { GetSongResponse } from '../model/models';
 import { ProblemDetails } from '../model/models';
 
 
@@ -23,29 +21,15 @@ import { Configuration }                                     from '../configurat
 
 
 
-export interface PlaylistsServiceInterface {
+export interface SongsServiceInterface {
     defaultHeaders: HttpHeaders;
     configuration: Configuration;
 
     /**
      * 
      * 
-     * @param playlistId 
+     * @param songId 
      */
-    apiV1PlaylistsPlaylistIdDuplicatesGet(playlistId: string, extraHttpRequestParams?: any): Observable<GetPlaylistDuplicatesResponse>;
-
-    /**
-     * 
-     * 
-     * @param playlistId 
-     */
-    apiV1PlaylistsPlaylistIdGet(playlistId: string, extraHttpRequestParams?: any): Observable<GetPlaylistResponse>;
-
-    /**
-     * 
-     * 
-     * @param playlistId 
-     */
-    apiV1PlaylistsPlaylistIdTracksGet(playlistId: string, extraHttpRequestParams?: any): Observable<GetPlaylistTracksResponse>;
+    apiV1SongsSongIdGet(songId: string, extraHttpRequestParams?: any): Observable<GetSongResponse>;
 
 }
