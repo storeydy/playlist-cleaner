@@ -10,17 +10,20 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { InputTextModule } from 'primeng/inputtext';
 import { HeaderComponent } from '../shared/components/header/header.component';
 import { MillisecondPipe } from '../shared/pipes/millisecond.pipe';
+import { DynamicDialogModule, DialogService } from 'primeng/dynamicdialog';
+import { DuplicateTracksDialogComponent } from './duplicate-tracks-dialog/duplicate-tracks-dialog.component';
 
 @Component({
   selector: 'playlist-cleaner-playlist-details',
   standalone: true,
-  imports: [CommonModule, ButtonModule, TableModule, ProgressSpinnerModule, InputTextModule, HeaderComponent, MillisecondPipe],
+  imports: [CommonModule, ButtonModule, TableModule, ProgressSpinnerModule, InputTextModule, HeaderComponent, MillisecondPipe, DynamicDialogModule],
   templateUrl: './playlist-details.component.html',
   styleUrl: './playlist-details.component.scss',
+  providers: [DialogService]
 })
 export class PlaylistDetailsComponent implements OnInit {
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(private route: ActivatedRoute, private dialogService: DialogService) {}
 
   private readonly playlistService = inject(PlaylistsService);
   private subscription = new Subscription();
@@ -34,6 +37,7 @@ export class PlaylistDetailsComponent implements OnInit {
   async ngOnInit() {
     this.route.paramMap.subscribe(params => {
       this.playlistId = params.get('id')!;
+      this.playlistService.setSelectedPlaylistId(this.playlistId)
     })
 
     this.initialiseSubscriptions();
@@ -65,10 +69,12 @@ export class PlaylistDetailsComponent implements OnInit {
   }
 
   cleanPlaylist(){
-    let duplicateTracks: any
     this.playlistService.fetchDuplicateTracks(this.playlistId).subscribe((res) => {
-      duplicateTracks = res
-      console.log(duplicateTracks);
+      this.dialogService.open(DuplicateTracksDialogComponent, {
+        data: res,
+        header: 'Duplicate Tracks in ' + this.playlistDetailsHeaderText,
+        width: '50%'
+      });
     })
   }
 
