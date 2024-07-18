@@ -18,6 +18,7 @@ internal static class ServiceCollectionExtensions
         {
             o.BaseAddress = new Uri("https://api.spotify.com/v1/users/");
         })
+            .AddPolicyHandler(GetRetryPolicy())
             .AddHeaderPropagation()
             .AddHttpMessageHandler<AuthorizationHandler>();
 

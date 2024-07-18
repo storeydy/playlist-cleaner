@@ -1,13 +1,25 @@
 <ng-container *ngIf="duplicateTracks!.duplicateTrackSets.length > 0; else noDuplicates">
-    <div *ngFor="let set of duplicateTracks.duplicateTrackSets; let setIndex = index">
-        <div *ngFor="let track of duplicateTracks.duplicateTrackSets[setIndex].songs; let songIndex = index">
-            <p-card header = track.name [style] = "{width: '20%'}">
+    <div class = "duplicate-container">
+        <div *ngFor="let track of duplicateTracks.duplicateTrackSets[duplicateSetIndex].songs; let songIndex = index" class="duplicate-container-songs">
+            <p-card [header] = "track.name!">
                 <ng-template pTemplate="header">
                     <img [src] = "track!.album!.images![0].url!" width="100%" class="shadow-4" />
                 </ng-template>
-                <p>{{track.name}}</p>
+                <p><b>Album Name: </b> {{ track.album!.name! }}</p>
+                <p><b>Added On: </b>  TBD </p>
+                <p style="word-break: break-word;"><b>Spotify Track ID: </b> {{ track.id! }}</p>
+                <ng-template pTemplate="footer">
+                    <div class="flex gap-3 mt-1">
+                        <p-button label="Remove" size="small" [rounded]="true" severity="danger" class="w-full" styleClass="w-full" (onClick)="removeSongFromPlaylist(track.id!)" />
+                    </div>
+                </ng-template>
+            
             </p-card>
         </div>
+    </div>
+    <div class = "footer">
+        <p-button *ngIf="duplicateSetIndex < duplicateTracks!.duplicateTrackSets.length - 1" icon="pi pi-angle-left" size="small" (onClick)="duplicateSetIndex = duplicateSetIndex + 1"/>
+        <p-button *ngIf="duplicateSetIndex > 0" icon="pi pi-angle-right" size="small" (onClick)="duplicateSetIndex = duplicateSetIndex - 1"/>
     </div>
 </ng-container>
 <ng-template #noDuplicates>
