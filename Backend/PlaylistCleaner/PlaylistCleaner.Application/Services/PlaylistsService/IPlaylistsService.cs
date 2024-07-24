@@ -10,4 +10,6 @@ public interface IPlaylistsService
     Task<GetPlaylistTracksDTO> GetPlaylistTracksAsync(string playlistId, CancellationToken cancellationToken = default);
 
     Task<GetPlaylistDuplicatesDTO> GetPlaylistDuplicatesAsync(string playlistId, CancellationToken cancellationToken = default);
+
+    Task DeleteTrackFromPlaylistAsync(string playlistId, string trackId, CancellationToken cancellationToken = default);
 }

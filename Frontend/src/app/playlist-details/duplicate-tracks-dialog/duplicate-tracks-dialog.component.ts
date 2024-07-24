@@ -1,9 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { DynamicDialogRef, DynamicDialogConfig, DynamicDialogModule } from 'primeng/dynamicdialog';
 import { GetPlaylistDuplicateSongs } from '../../shared/types/playlists/GetPlaylistDuplicateSongs';
 import { CommonModule } from '@angular/common';
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
+import { PlaylistsService } from '../../shared/data-access/playlists/playlists.service';
+import { GetPlaylistTracksResponsePlaylistTrack } from '../../shared/types/openapi';
 
 @Component({
   selector: 'playlist-cleaner-duplicate-tracks-dialog',
@@ -14,9 +16,12 @@ import { ButtonModule } from 'primeng/button';
 })
 export class DuplicateTracksDialogComponent {
 
+  private readonly playlistService = inject(PlaylistsService);
+
   duplicateSetIndex: number = 0;
   visible: boolean = true;
   duplicateTracks: GetPlaylistDuplicateSongs
+  duplicateTracksPlaylistContext: GetPlaylistTracksResponsePlaylistTrack[] = [];
 
   constructor(public ref: DynamicDialogRef, public config: DynamicDialogConfig) 
   {
@@ -24,7 +29,19 @@ export class DuplicateTracksDialogComponent {
   }
 
   ngOnInit() {
-    console.log(this.config);
+    this.duplicateTracks.duplicateTrackSets.forEach(duplicateSet => {
+      duplicateSet.songs.forEach(song => {
+        if (song.id){
+          this.playlistService.getTrackById(song.id).subscribe((res) => {
+            if (res){
+              this.duplicateTracksPlaylistContext.push(res);
+            }
+          })
+        }
+      })
+    });
+    console.log(this.duplicateTracksPlaylistContext);
+    
   }
 
   onClose() {
@@ -32,6 +49,12 @@ export class DuplicateTracksDialogComponent {
   }
 
   removeSongFromPlaylist(songId: string){
-    console.log("removing " + songId );
+    this.playlistService.removeSongFromPlaylist(songId).subscribe((res) => {
+      console.log(res);
+    });
+  }
+
+  getTrackContext(songId: string){
+    return this.duplicateTracksPlaylistContext.find(i => i.track?.id === songId);
   }
 }

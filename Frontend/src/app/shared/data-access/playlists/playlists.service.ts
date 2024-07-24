@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { ApiService } from '../../api/src';
 import { BehaviorSubject, Observable, combineLatest, forkJoin, map, of, retry, switchMap, tap, timer } from 'rxjs';
-import { GetPlaylistDuplicatesResponse, GetPlaylistResponse, GetPlaylistTracksResponse, GetSongResponse, GetUsersPlaylistsResponse } from '../../types/openapi';
+import { GetPlaylistDuplicatesResponse, GetPlaylistResponse, GetPlaylistTracksResponse, GetPlaylistTracksResponsePlaylistTrack, GetSongResponse, GetUsersPlaylistsResponse } from '../../types/openapi';
 import { SongsService } from '../songs/songs.service';
 import { GetPlaylistDuplicateSongs, GetPlaylistDuplicateSongsResponseSet } from '../../types/playlists/GetPlaylistDuplicateSongs';
 
@@ -69,6 +69,22 @@ export class PlaylistsService {
           );
         })
       );
+  }
+
+  getTrackById(trackId: string): Observable<GetPlaylistTracksResponsePlaylistTrack | undefined>{
+    return this.selectedPlaylistTracks$.pipe(
+      map(response => {
+        if (response?.items) {
+          return response.items.find(track => track.track?.id === trackId);
+        }
+        return undefined
+      })
+    )
+  }
+
+  removeSongFromPlaylist(songId: string): Observable<void> {
+    var playlistId = this.selectedPlaylistId$.getValue()
+    return this.apiService.delete('/api/v1/playlists/' + playlistId + '/tracks/' + songId)
   }
 
 

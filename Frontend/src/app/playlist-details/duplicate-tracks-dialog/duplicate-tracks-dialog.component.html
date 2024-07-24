@@ -6,7 +6,7 @@
                     <img [src] = "track!.album!.images![0].url!" width="100%" class="shadow-4" />
                 </ng-template>
                 <p><b>Album Name: </b> {{ track.album!.name! }}</p>
-                <p><b>Added On: </b>  TBD </p>
+                <p><b>Added On: </b>  {{ getTrackContext(track.id!) ? getTrackContext(track.id!)!.added_at : "TBD" }} </p>
                 <p style="word-break: break-word;"><b>Spotify Track ID: </b> {{ track.id! }}</p>
                 <ng-template pTemplate="footer">
                     <div class="flex gap-3 mt-1">
@@ -18,8 +18,8 @@
         </div>
     </div>
     <div class = "footer">
-        <p-button *ngIf="duplicateSetIndex < duplicateTracks!.duplicateTrackSets.length - 1" icon="pi pi-angle-left" size="small" (onClick)="duplicateSetIndex = duplicateSetIndex + 1"/>
-        <p-button *ngIf="duplicateSetIndex > 0" icon="pi pi-angle-right" size="small" (onClick)="duplicateSetIndex = duplicateSetIndex - 1"/>
+        <p-button *ngIf="duplicateSetIndex < duplicateTracks!.duplicateTrackSets.length - 1" icon="pi pi-angle-right" size="small" (onClick)="duplicateSetIndex = duplicateSetIndex + 1"/>
+        <p-button *ngIf="duplicateSetIndex > 0" icon="pi pi-angle-left" size="small" (onClick)="duplicateSetIndex = duplicateSetIndex - 1"/>
     </div>
 </ng-container>
 <ng-template #noDuplicates>

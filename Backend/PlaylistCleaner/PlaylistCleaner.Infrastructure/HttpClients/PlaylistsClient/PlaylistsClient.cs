@@ -1,5 +1,6 @@
 ﻿using PlaylistCleaner.Infrastructure.Results.PlaylistsClientResults;
 using System.Net.Http.Json;
+using System.Text.Json.Nodes;
 
 namespace PlaylistCleaner.Infrastructure.Clients.PlaylistClient;
 
@@ -41,5 +42,23 @@ internal sealed class PlaylistsClient : IPlaylistsClient
         }
 
         return jsonPlaylistTracks;
+    }
+
+    public async Task DeleteTrackFromPlaylistAsync(string playlistId, string trackId, CancellationToken cancellationToken = default)
+    {
+        var playlistTrackDeletionCommandUri = $"{playlistId}/tracks";
+        var jsonTracks = new JsonArray();
+        var trackObject = new JsonObject{ ["uri"] = $"spotify:track:{trackId}"};
+        jsonTracks.Add(trackObject);
+
+        var myObject = new JsonObject{ ["tracks"] = jsonTracks };
+        HttpRequestMessage request = new HttpRequestMessage
+        {
+            Content = JsonContent.Create(myObject),
+            Method = HttpMethod.Delete,
+            RequestUri = new Uri(playlistTrackDeletionCommandUri, UriKind.Relative)
+        };
+
+        var response = await _httpClient.SendAsync(request, cancellationToken);
     }
 }

@@ -59,4 +59,15 @@ public class PlaylistsController : ControllerBase
 
         return Ok(response);
     }
+
+    [HttpDelete("{playlistId}/tracks/{trackId}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public async Task<IActionResult> DeleteTrackFromPlaylistAsync(string playlistId, string trackId, CancellationToken cancellationToken = default)
+    {
+        await _playlistsService.DeleteTrackFromPlaylistAsync(playlistId, trackId, cancellationToken);
+
+        return NoContent();
+    }
 }

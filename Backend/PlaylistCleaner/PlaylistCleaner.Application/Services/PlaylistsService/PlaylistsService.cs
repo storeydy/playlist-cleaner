@@ -40,4 +40,9 @@ internal sealed class PlaylistsService : IPlaylistsService
 
         return _mapper.Map<GetPlaylistTracksDTO>(result);
     }
+
+    public async Task DeleteTrackFromPlaylistAsync(string playlistId, string trackId, CancellationToken cancellationToken = default)
+    {
+        await _playlistsClient.DeleteTrackFromPlaylistAsync(playlistId, trackId, cancellationToken);
+    }
 }
