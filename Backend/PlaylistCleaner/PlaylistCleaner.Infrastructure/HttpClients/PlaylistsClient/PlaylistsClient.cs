@@ -29,11 +29,21 @@ internal sealed class PlaylistsClient : IPlaylistsClient
         var jsonPlaylistTracks = await _httpClient.GetFromJsonAsync<GetPlaylistTracksResult>(playlistTracksRequestUri, cancellationToken);
         bool isAnotherPageOfResults = jsonPlaylistTracks.next == null ? false : true;
 
+        int currentTrackIndex = 0;
+
+        var tracksWithPosition = jsonPlaylistTracks.items.Select((item, index) =>
+            item with { position = currentTrackIndex++ }
+        ).ToList();
+
         while (isAnotherPageOfResults)
         {
             string offsetParameter = $"&offset={offsetValue}";
             var nextPageOfTracks = await _httpClient.GetFromJsonAsync<GetPlaylistTracksResult>(playlistTracksRequestUri + offsetParameter, cancellationToken);
-            jsonPlaylistTracks.items.AddRange(nextPageOfTracks.items);
+
+            tracksWithPosition.AddRange(nextPageOfTracks.items.Select((item, index) =>
+                item with { position = currentTrackIndex++ }
+            ).ToList());
+
             if (nextPageOfTracks.next == null)
             {
                 isAnotherPageOfResults = false;
@@ -41,14 +51,14 @@ internal sealed class PlaylistsClient : IPlaylistsClient
             offsetValue += 50;
         }
 
-        return jsonPlaylistTracks;
+        return new GetPlaylistTracksResult(jsonPlaylistTracks.next, tracksWithPosition);
     }
 
-    public async Task DeleteTrackFromPlaylistAsync(string playlistId, string trackId, CancellationToken cancellationToken = default)
+    public async Task DeleteTrackFromPlaylistAsync(string playlistId, string trackId, int trackIndex, CancellationToken cancellationToken = default)
     {
         var playlistTrackDeletionCommandUri = $"{playlistId}/tracks";
         var jsonTracks = new JsonArray();
-        var trackObject = new JsonObject{ ["uri"] = $"spotify:track:{trackId}"};
+        var trackObject = new JsonObject{ ["uri"] = $"spotify:track:{trackId}", ["positions"] = new JsonArray { trackIndex } };
         jsonTracks.Add(trackObject);
 
         var myObject = new JsonObject{ ["tracks"] = jsonTracks };

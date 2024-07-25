@@ -1,5 +1,7 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using PlaylistCleaner.Infrastructure.Clients.PlaylistClient;
 using PlaylistCleaner.Infrastructure.Clients.UserProfilesClient;
 using PlaylistCleaner.Infrastructure.Clients.UsersClient;
@@ -7,6 +9,9 @@ using PlaylistCleaner.Infrastructure.Handlers.AuthorizationHandler;
 using PlaylistCleaner.Infrastructure.HttpClients.SongsClient;
 using Polly;
 using Polly.Extensions.Http;
+using Serilog;
+using System;
+using System.Net;
 
 namespace PlaylistCleaner.Infrastructure.Extensions;
 
@@ -53,9 +58,24 @@ internal static class ServiceCollectionExtensions
 
     static IAsyncPolicy<HttpResponseMessage> GetRetryPolicy()
     {
-        return HttpPolicyExtensions
-            .HandleTransientHttpError()
-            .OrResult(msg => msg.StatusCode == System.Net.HttpStatusCode.NotFound)
-            .WaitAndRetryAsync(6, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)));
+        int maxRetries = 5;
+        var maxRetryDelay = TimeSpan.FromSeconds(30);
+
+        return Policy
+            .HandleResult<HttpResponseMessage>(r => r.StatusCode == HttpStatusCode.TooManyRequests && r.Headers.RetryAfter != null)
+            .WaitAndRetryAsync(
+            maxRetries,
+            retryAttempt =>
+            {
+                var jitter = TimeSpan.FromMilliseconds(new Random().Next(0, 1000));
+                var retryAfter = retryAttempt <= maxRetries ? TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)) + jitter : maxRetryDelay;
+                return retryAfter;
+            },
+            (result, timeSpan, retryCount, context) =>
+            {
+                Log.Information($"Retry {retryCount} for {context.PolicyKey} at {context.OperationKey}, " +
+                                    $"due to {result.Result.StatusCode} - {result.Result.ReasonPhrase}. " +
+                                    $"Waiting {timeSpan.TotalSeconds} seconds before next retry.");
+            });
     }
 }

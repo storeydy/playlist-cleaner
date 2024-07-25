@@ -8,5 +8,5 @@ public interface IPlaylistsClient
 
     Task<GetPlaylistTracksResult> GetPlaylistTracksAsync(string playlistId, CancellationToken cancellationToken = default);
 
-    Task DeleteTrackFromPlaylistAsync(string playlistId, string trackId, CancellationToken cancellationToken);
+    Task DeleteTrackFromPlaylistAsync(string playlistId, string trackId, int trackIndex, CancellationToken cancellationToken);
 }

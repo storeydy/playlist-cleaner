@@ -1,16 +1,16 @@
 <ng-container *ngIf="duplicateTracks!.duplicateTrackSets.length > 0; else noDuplicates">
     <div class = "duplicate-container">
-        <div *ngFor="let track of duplicateTracks.duplicateTrackSets[duplicateSetIndex].songs; let songIndex = index" class="duplicate-container-songs">
+        <div *ngFor="let track of duplicateTracks.duplicateTrackSets[duplicateSetIndex].songs; let duplicateIndex = index" class="duplicate-container-songs">
             <p-card [header] = "track.name!">
                 <ng-template pTemplate="header">
                     <img [src] = "track!.album!.images![0].url!" width="100%" class="shadow-4" />
                 </ng-template>
                 <p><b>Album Name: </b> {{ track.album!.name! }}</p>
-                <p><b>Added On: </b>  {{ getTrackContext(track.id!) ? getTrackContext(track.id!)!.added_at : "TBD" }} </p>
+                <p><b>Added On: </b>  {{ getTrackContext(duplicateIndex) ? getTrackContext(duplicateIndex)!.added_at : "TBD" }} </p>
                 <p style="word-break: break-word;"><b>Spotify Track ID: </b> {{ track.id! }}</p>
                 <ng-template pTemplate="footer">
                     <div class="flex gap-3 mt-1">
-                        <p-button label="Remove" size="small" [rounded]="true" severity="danger" class="w-full" styleClass="w-full" (onClick)="removeSongFromPlaylist(track.id!)" />
+                        <p-button label="Remove" size="small" [rounded]="true" severity="danger" class="w-full" styleClass="w-full" (onClick)="removeSongFromPlaylist(track.id!, duplicateIndex)" />
                     </div>
                 </ng-template>
             

@@ -64,9 +64,9 @@ public class PlaylistsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public async Task<IActionResult> DeleteTrackFromPlaylistAsync(string playlistId, string trackId, CancellationToken cancellationToken = default)
+    public async Task<IActionResult> DeleteTrackFromPlaylistAsync([FromRoute]string playlistId, [FromRoute]string trackId, [FromQuery]int trackIndex, CancellationToken cancellationToken = default)
     {
-        await _playlistsService.DeleteTrackFromPlaylistAsync(playlistId, trackId, cancellationToken);
+        await _playlistsService.DeleteTrackFromPlaylistAsync(playlistId, trackId, trackIndex, cancellationToken);
 
         return NoContent();
     }

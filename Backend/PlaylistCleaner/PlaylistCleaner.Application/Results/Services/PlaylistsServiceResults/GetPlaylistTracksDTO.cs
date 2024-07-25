@@ -2,7 +2,7 @@
 
 public sealed record GetPlaylistTracksDTO(string? next, List<GetPlaylistTracksDTOPlaylistTrack> items);
 
-public sealed record GetPlaylistTracksDTOPlaylistTrack(DateTime added_at, GetPlaylistTracksDTOPlaylistTrackAddedBy added_by, bool is_local, GetPlaylistTracksDTOPlaylistTrackData track);
+public sealed record GetPlaylistTracksDTOPlaylistTrack(DateTime added_at, GetPlaylistTracksDTOPlaylistTrackAddedBy added_by, bool is_local, GetPlaylistTracksDTOPlaylistTrackData track, int position);
 
 public sealed record GetPlaylistTracksDTOPlaylistTrackAddedBy(string id);
 

@@ -27,7 +27,6 @@ export class PlaylistListComponent implements OnInit {
   @ViewChild('dt') dt!: Table;
 
   playlistsList: GetPlaylistResponse[] | null = null;
-  selectedPlaylistTracks: GetPlaylistTracksResponse | null = null;
   unsortedPlaylistsList: GetPlaylistResponse[] | null = null;
   playlistListHeaderText: string = "User's Playlists";
 
@@ -42,12 +41,6 @@ export class PlaylistListComponent implements OnInit {
         this.unsortedPlaylistsList = [...res]
       })
     );
-
-    this.subscription.add(
-      this.playlistService.selectedPlaylistTracks$.subscribe((res) => {
-        this.selectedPlaylistTracks = res;
-      })
-    )
   }
 
   resetTableSort() {

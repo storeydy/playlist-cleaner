@@ -6,6 +6,7 @@ import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
 import { PlaylistsService } from '../../shared/data-access/playlists/playlists.service';
 import { GetPlaylistTracksResponsePlaylistTrack } from '../../shared/types/openapi';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'playlist-cleaner-duplicate-tracks-dialog',
@@ -19,42 +20,57 @@ export class DuplicateTracksDialogComponent {
   private readonly playlistService = inject(PlaylistsService);
 
   duplicateSetIndex: number = 0;
-  visible: boolean = true;
   duplicateTracks: GetPlaylistDuplicateSongs
-  duplicateTracksPlaylistContext: GetPlaylistTracksResponsePlaylistTrack[] = [];
+  duplicateTracksPlaylistContext: Map<number, GetPlaylistTracksResponsePlaylistTrack[]> = new Map();
 
-  constructor(public ref: DynamicDialogRef, public config: DynamicDialogConfig) 
-  {
+  constructor(public ref: DynamicDialogRef, public config: DynamicDialogConfig) {
     this.duplicateTracks = this.config.data;
   }
 
-  ngOnInit() {
-    this.duplicateTracks.duplicateTrackSets.forEach(duplicateSet => {
-      duplicateSet.songs.forEach(song => {
-        if (song.id){
-          this.playlistService.getTrackById(song.id).subscribe((res) => {
-            if (res){
-              this.duplicateTracksPlaylistContext.push(res);
+  async ngOnInit() {
+    await this.getDuplicatesContextWithinPlaylist();
+  }
+
+  private async getDuplicatesContextWithinPlaylist() {
+    for (const [duplicateSetIndex, duplicateSet] of this.duplicateTracks.duplicateTrackSets.entries()) {
+      let duplicateSearchIndex = 0;
+
+      for (const song of duplicateSet.songs) {
+        if (song.id) {
+          try {
+            const res = await firstValueFrom(this.playlistService.getTrackById(song.id, duplicateSearchIndex));
+
+            if (res) {
+              let duplicatesContext = this.duplicateTracksPlaylistContext.get(duplicateSetIndex) || [];
+              duplicatesContext.push(res);
+              this.duplicateTracksPlaylistContext.set(duplicateSetIndex, duplicatesContext);
+
+              duplicateSearchIndex = res.position! + 1;
             }
-          })
+          } catch (error) {
+            console.error(`Error fetching track for song ID ${song.id} at index ${duplicateSetIndex}:`, error);
+          }
         }
-      })
-    });
-    console.log(this.duplicateTracksPlaylistContext);
-    
+      }
+    }
   }
 
   onClose() {
+    this.duplicateSetIndex = 0;
+    this.duplicateTracksPlaylistContext.clear()
     this.ref.close();
   }
 
-  removeSongFromPlaylist(songId: string){
-    this.playlistService.removeSongFromPlaylist(songId).subscribe((res) => {
+  removeSongFromPlaylist(songId: string, duplicateIndex: number) {
+    var trackPositionInPlaylist = this.getTrackContext(duplicateIndex).position!;
+
+    this.playlistService.removeSongFromPlaylist(songId, trackPositionInPlaylist).subscribe((res) => {
       console.log(res);
+      //TODO - Remove deleted track upon success
     });
   }
 
-  getTrackContext(songId: string){
-    return this.duplicateTracksPlaylistContext.find(i => i.track?.id === songId);
+  getTrackContext(duplicateIndex: number) {
+    return this.duplicateTracksPlaylistContext.get(this.duplicateSetIndex)![duplicateIndex];
   }
 }

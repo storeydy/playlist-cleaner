@@ -18,5 +18,6 @@ export interface GetPlaylistTracksResponsePlaylistTrack {
     added_by?: GetPlaylistTracksResponsePlaylistTrackAddedBy;
     is_local?: boolean;
     track?: GetPlaylistTracksResponsePlaylistTrackData;
+    position?: number;
 }
 

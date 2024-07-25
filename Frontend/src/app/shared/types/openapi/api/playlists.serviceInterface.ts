@@ -48,4 +48,13 @@ export interface PlaylistsServiceInterface {
      */
     apiV1PlaylistsPlaylistIdTracksGet(playlistId: string, extraHttpRequestParams?: any): Observable<GetPlaylistTracksResponse>;
 
+    /**
+     * 
+     * 
+     * @param playlistId 
+     * @param trackId 
+     * @param trackIndex 
+     */
+    apiV1PlaylistsPlaylistIdTracksTrackIdDelete(playlistId: string, trackId: string, trackIndex?: number, extraHttpRequestParams?: any): Observable<{}>;
+
 }

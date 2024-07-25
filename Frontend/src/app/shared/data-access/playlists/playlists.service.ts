@@ -49,21 +49,21 @@ export class PlaylistsService {
           if (!response.duplicateTrackSets) {
             return of({ duplicateTrackSets: [] });
           }
-          
+
           const duplicateSetsWithSongs$: Observable<GetPlaylistDuplicateSongsResponseSet>[] = response.duplicateTrackSets.map(duplicateSet => {
             if (!duplicateSet.duplicateTrackIds) {
               return of({ songs: [] });
             }
-  
-            const songObservables: Observable<GetSongResponse>[] = duplicateSet.duplicateTrackIds.map(songId => 
+
+            const songObservables: Observable<GetSongResponse>[] = duplicateSet.duplicateTrackIds.map(songId =>
               this.songsService.fetchSong(songId)
             );
-  
+
             return forkJoin(songObservables).pipe(
               map(songs => ({ songs }))
             );
           });
-  
+
           return forkJoin(duplicateSetsWithSongs$).pipe(
             map(duplicateTrackSets => ({ duplicateTrackSets }))
           );
@@ -71,10 +71,17 @@ export class PlaylistsService {
       );
   }
 
-  getTrackById(trackId: string): Observable<GetPlaylistTracksResponsePlaylistTrack | undefined>{
+  getTrackById(trackId: string, searchIndex: number): Observable<GetPlaylistTracksResponsePlaylistTrack | undefined> {
     return this.selectedPlaylistTracks$.pipe(
       map(response => {
         if (response?.items) {
+          if (searchIndex > 0){
+            for(var i = searchIndex; i < response.items.length; i++){
+              if (response.items[i].track?.id == trackId){
+                return response.items[i];
+              }
+            }
+          }
           return response.items.find(track => track.track?.id === trackId);
         }
         return undefined
@@ -82,21 +89,31 @@ export class PlaylistsService {
     )
   }
 
-  removeSongFromPlaylist(songId: string): Observable<void> {
-    var playlistId = this.selectedPlaylistId$.getValue()
-    return this.apiService.delete('/api/v1/playlists/' + playlistId + '/tracks/' + songId)
+  getTrackByIndex(trackIndex: number): Observable<GetPlaylistTracksResponsePlaylistTrack | undefined> {
+    return this.selectedPlaylistTracks$.pipe(
+      map(response => {
+        if (response?.items) {
+          return response.items[trackIndex];
+        }
+        return undefined
+      })
+    )
   }
 
+  removeSongFromPlaylist(songId: string, songIndex: number): Observable<void> {
+    var playlistId = this.selectedPlaylistId$.getValue()
+    return this.apiService.delete('/api/v1/playlists/' + playlistId + '/tracks/' + songId + '?trackIndex=' + songIndex)
+  }
 
-  private fetchPlaylists(playlistIds: string[]): Observable < GetPlaylistResponse[] > {
-  return combineLatest(
-    playlistIds.map(id =>
-      this.apiService.get<GetPlaylistResponse>('/api/v1/playlists/' + id)
-    )
-  );
-}
+  private fetchPlaylists(playlistIds: string[]): Observable<GetPlaylistResponse[]> {
+    return combineLatest(
+      playlistIds.map(id =>
+        this.apiService.get<GetPlaylistResponse>('/api/v1/playlists/' + id)
+      )
+    );
+  }
 
-  private fetchPlaylistTracks(playlistId: string): Observable < GetPlaylistTracksResponse > {
-  return this.apiService.get<GetPlaylistTracksResponse>('/api/v1/playlists/' + playlistId + '/tracks')
-}
+  private fetchPlaylistTracks(playlistId: string): Observable<GetPlaylistTracksResponse> {
+    return this.apiService.get<GetPlaylistTracksResponse>('/api/v1/playlists/' + playlistId + '/tracks')
+  }
 }
