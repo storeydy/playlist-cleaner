@@ -14,7 +14,7 @@
             [showCurrentPageReport]="true"
             [tableStyle]="{ 'min-width': '50rem' }"
             [scrollable]="true"
-            scrollHeight="450px"
+            scrollHeight="calc(100vh - 32vh)"
             [rowsPerPageOptions]="[5, 10, 20]"
             [globalFilterFields]="['name', 'tracks.total', 'owner.display_name', 'followers.total']"
         >

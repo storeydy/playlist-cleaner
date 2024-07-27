@@ -26,23 +26,14 @@ internal sealed class PlaylistsClient : IPlaylistsClient
     {
         int offsetValue = 50;
         var playlistTracksRequestUri = $"{playlistId}/tracks?limit=50";
-        var jsonPlaylistTracks = await _httpClient.GetFromJsonAsync<GetPlaylistTracksResult>(playlistTracksRequestUri, cancellationToken);
-        bool isAnotherPageOfResults = jsonPlaylistTracks.next == null ? false : true;
-
-        int currentTrackIndex = 0;
-
-        var tracksWithPosition = jsonPlaylistTracks.items.Select((item, index) =>
-            item with { position = currentTrackIndex++ }
-        ).ToList();
+        var playlistTracks = await _httpClient.GetFromJsonAsync<GetPlaylistTracksResult>(playlistTracksRequestUri, cancellationToken);
+        bool isAnotherPageOfResults = playlistTracks.next == null ? false : true;
 
         while (isAnotherPageOfResults)
         {
             string offsetParameter = $"&offset={offsetValue}";
             var nextPageOfTracks = await _httpClient.GetFromJsonAsync<GetPlaylistTracksResult>(playlistTracksRequestUri + offsetParameter, cancellationToken);
-
-            tracksWithPosition.AddRange(nextPageOfTracks.items.Select((item, index) =>
-                item with { position = currentTrackIndex++ }
-            ).ToList());
+            playlistTracks.items.AddRange(nextPageOfTracks.items);
 
             if (nextPageOfTracks.next == null)
             {
@@ -51,7 +42,7 @@ internal sealed class PlaylistsClient : IPlaylistsClient
             offsetValue += 50;
         }
 
-        return new GetPlaylistTracksResult(jsonPlaylistTracks.next, tracksWithPosition);
+        return playlistTracks;
     }
 
     public async Task DeleteTrackFromPlaylistAsync(string playlistId, string trackId, int trackIndex, CancellationToken cancellationToken = default)

@@ -29,7 +29,9 @@ export class PlaylistsService {
     .pipe(
       switchMap(playlistId => {
         if (playlistId) {
-          return this.fetchPlaylistTracks(playlistId) as Observable<GetPlaylistTracksResponse>;
+          return this.fetchPlaylistTracks(playlistId).pipe(
+            map(response => this.addPositionToPlaylistTracks(response))
+          );
         } else {
           return of(null);
         }
@@ -115,5 +117,15 @@ export class PlaylistsService {
 
   private fetchPlaylistTracks(playlistId: string): Observable<GetPlaylistTracksResponse> {
     return this.apiService.get<GetPlaylistTracksResponse>('/api/v1/playlists/' + playlistId + '/tracks')
+  }
+
+  private addPositionToPlaylistTracks(response: GetPlaylistTracksResponse): GetPlaylistTracksResponse {
+    return {
+      ...response,
+      items: response.items!.map((item, index) => ({
+        ...item,
+        position: index + 1 // 1-based index, use `index` for 0-based
+      }))
+    };
   }
 }

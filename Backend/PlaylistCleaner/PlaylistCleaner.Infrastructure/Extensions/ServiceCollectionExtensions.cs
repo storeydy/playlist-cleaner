@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -6,6 +7,7 @@ using PlaylistCleaner.Infrastructure.Clients.PlaylistClient;
 using PlaylistCleaner.Infrastructure.Clients.UserProfilesClient;
 using PlaylistCleaner.Infrastructure.Clients.UsersClient;
 using PlaylistCleaner.Infrastructure.Handlers.AuthorizationHandler;
+using PlaylistCleaner.Infrastructure.Handlers.CachingHandler;
 using PlaylistCleaner.Infrastructure.HttpClients.SongsClient;
 using Polly;
 using Polly.Extensions.Http;
@@ -47,10 +49,21 @@ internal static class ServiceCollectionExtensions
             o.BaseAddress = new Uri("https://api.spotify.com/v1/tracks/");
         })
             .AddHeaderPropagation()
+            .AddHttpMessageHandler<CachingHandler>()
             .AddHttpMessageHandler<AuthorizationHandler>();
+
+        services.AddMemoryCache(options =>
+        {
+            options.SizeLimit = 1024 * 1024 * 50;
+        });
 
         services.AddHeaderPropagation(o => o.Headers.Add("Authorization"));
 
+        services.AddTransient<CachingHandler>(options =>
+        {
+            var cache = options.GetRequiredService<IMemoryCache>();
+            return new CachingHandler(cache, 1024 * 1024);
+        });
         services.AddTransient<AuthorizationHandler>();
 
         return services;

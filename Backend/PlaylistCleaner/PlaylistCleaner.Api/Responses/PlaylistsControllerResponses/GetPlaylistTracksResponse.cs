@@ -2,7 +2,7 @@
 
 public sealed record GetPlaylistTracksResponse(string? next, List<GetPlaylistTracksResponsePlaylistTrack> items);
 
-public sealed record GetPlaylistTracksResponsePlaylistTrack(DateTime added_at, GetPlaylistTracksResponsePlaylistTrackAddedBy added_by, bool is_local, GetPlaylistTracksResponsePlaylistTrackData track, int position);
+public sealed record GetPlaylistTracksResponsePlaylistTrack(DateTime added_at, GetPlaylistTracksResponsePlaylistTrackAddedBy added_by, bool is_local, GetPlaylistTracksResponsePlaylistTrackData track);
 
 public sealed record GetPlaylistTracksResponsePlaylistTrackAddedBy(string id);
 
