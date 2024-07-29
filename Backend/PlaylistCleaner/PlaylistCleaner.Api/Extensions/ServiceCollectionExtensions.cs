@@ -17,6 +17,8 @@ public static class ServiceCollectionExtensions
         {
             o.MapToStatusCode<UnauthorizedAccessException>(StatusCodes.Status401Unauthorized);
             o.MapToStatusCode<TokenNotFoundException>(StatusCodes.Status401Unauthorized);
+            o.MapToStatusCode<EntityNotFoundException>(StatusCodes.Status404NotFound);
+            o.MapToStatusCode<SpotifyApiHttpException>(StatusCodes.Status500InternalServerError);
         });
 
         services.AddApplicationDependencies();

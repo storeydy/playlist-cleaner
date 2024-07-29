@@ -1,4 +1,7 @@
-﻿using PlaylistCleaner.Infrastructure.Results.PlaylistsClientResults;
+﻿using PlaylistCleaner.Infrastructure.Exceptions;
+using PlaylistCleaner.Infrastructure.Results.PlaylistsClientResults;
+using PlaylistCleaner.Infrastructure.Utils.SpotifyHttpClientUtils;
+using System.Net;
 using System.Net.Http.Json;
 using System.Text.Json.Nodes;
 
@@ -7,42 +10,51 @@ namespace PlaylistCleaner.Infrastructure.Clients.PlaylistClient;
 internal sealed class PlaylistsClient : IPlaylistsClient
 {
     private readonly HttpClient _httpClient;
+    private readonly SpotifyHttpClientUtils _spotifyHttpClientUtils;
 
     public PlaylistsClient(HttpClient httpClient)
     {
         _httpClient = httpClient;
+        _spotifyHttpClientUtils = new SpotifyHttpClientUtils(httpClient);
     }
 
     public async Task<GetPlaylistResult> GetPlaylistAsync(string playlistId, CancellationToken cancellationToken = default)
     {
         var playlistRequestUri = $"{playlistId}";
 
-        var playlist = await _httpClient.GetFromJsonAsync<GetPlaylistResult>(playlistRequestUri, cancellationToken);
+        try
+        {
+            var response = await _httpClient.GetAsync(playlistRequestUri, cancellationToken);
+            if (!response.IsSuccessStatusCode)
+            {
+                string content = await response.Content.ReadAsStringAsync();
+                throw new SpotifyApiHttpException(response.StatusCode + content);
+            }
 
-        return playlist;
+            var playlist = await response.Content.ReadFromJsonAsync<GetPlaylistResult>(cancellationToken: cancellationToken);
+            if (playlist == null)
+            {
+                throw new EntityNotFoundException(HttpStatusCode.NoContent + ", Playlist not found or response body is empty.");
+            }
+
+            return playlist;
+        }
+        catch (HttpRequestException ex)
+        {
+            throw new SpotifyApiHttpException(HttpStatusCode.ServiceUnavailable + ", An error occurred while sending the request. Exception " + ex );
+        }
     }
     
     public async Task<GetPlaylistTracksResult> GetPlaylistTracksAsync(string playlistId, CancellationToken cancellationToken = default)
     {
-        int offsetValue = 50;
-        var playlistTracksRequestUri = $"{playlistId}/tracks?limit=50";
-        var playlistTracks = await _httpClient.GetFromJsonAsync<GetPlaylistTracksResult>(playlistTracksRequestUri, cancellationToken);
-        bool isAnotherPageOfResults = playlistTracks.next == null ? false : true;
+        var items = await _spotifyHttpClientUtils.FetchAllItemsAsync<GetPlaylistTracksResult, GetPlaylistTracksResultPlaylistTrack>(
+            $"{playlistId}/tracks?limit=50",
+            response => response.items,
+            response => response.next,
+            cancellationToken
+        );
 
-        while (isAnotherPageOfResults)
-        {
-            string offsetParameter = $"&offset={offsetValue}";
-            var nextPageOfTracks = await _httpClient.GetFromJsonAsync<GetPlaylistTracksResult>(playlistTracksRequestUri + offsetParameter, cancellationToken);
-            playlistTracks.items.AddRange(nextPageOfTracks.items);
-
-            if (nextPageOfTracks.next == null)
-            {
-                isAnotherPageOfResults = false;
-            }
-            offsetValue += 50;
-        }
-
-        return playlistTracks;
+        return new GetPlaylistTracksResult(null, items);
     }
 
     public async Task DeleteTrackFromPlaylistAsync(string playlistId, string trackId, int trackIndex, CancellationToken cancellationToken = default)
@@ -61,5 +73,10 @@ internal sealed class PlaylistsClient : IPlaylistsClient
         };
 
         var response = await _httpClient.SendAsync(request, cancellationToken);
+        if (!response.IsSuccessStatusCode)
+        {
+            string content = await response.Content.ReadAsStringAsync();
+            throw new SpotifyApiHttpException(response.StatusCode + content);
+        }
     }
 }
