@@ -2,18 +2,19 @@ import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PlaylistsService } from '../shared/data-access/playlists/playlists.service';
 import { Subscription } from 'rxjs';
-import { GetPlaylistResponse, GetPlaylistTracksResponse } from '../shared/types/openapi';
+import { GetPlaylistResponse } from '../shared/types/openapi';
 import { ButtonModule } from 'primeng/button';
 import { Table, TableModule } from 'primeng/table';
-import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { InputTextModule } from 'primeng/inputtext';
 import { HeaderComponent } from '../shared/components/header/header.component';
 import { Router } from '@angular/router';
+import { ProgressBarModule } from 'primeng/progressbar';
+import { ToastModule } from 'primeng/toast';
 
 @Component({
   selector: 'playlist-cleaner-playlist-list',
   standalone: true,
-  imports: [CommonModule, ButtonModule, TableModule, ProgressSpinnerModule, InputTextModule, HeaderComponent],
+  imports: [CommonModule, ButtonModule, TableModule, ProgressBarModule, InputTextModule, HeaderComponent, ToastModule],
   templateUrl: './playlist-list.component.html',
   styleUrl: './playlist-list.component.scss',
 })
@@ -29,6 +30,8 @@ export class PlaylistListComponent implements OnInit {
   playlistsList: GetPlaylistResponse[] | null = null;
   unsortedPlaylistsList: GetPlaylistResponse[] | null = null;
   playlistListHeaderText: string = "User's Playlists";
+  playlistsLoadingProgress: number = 0;
+  totalPlaylistsCount: number = 0;
 
   async ngOnInit() {    
     this.initialiseSubscriptions();
@@ -39,8 +42,21 @@ export class PlaylistListComponent implements OnInit {
       this.playlistService.playlists$.subscribe((res) => {
         this.playlistsList = res;
         this.unsortedPlaylistsList = [...res]
+        this.totalPlaylistsCount = this.playlistsList.length;
       })
     );
+
+    this.subscription.add(
+      this.playlistService.playlistFetchingProgress$.subscribe(progress => {
+        this.playlistsLoadingProgress = progress;
+      })
+    );
+
+    this.subscription.add(
+      this.playlistService.playlistsCount$.subscribe(total => {
+        this.totalPlaylistsCount = total;
+      })
+    )
   }
 
   resetTableSort() {

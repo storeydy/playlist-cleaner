@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { ApiService } from '../../api/src';
-import { BehaviorSubject, Observable, combineLatest, forkJoin, map, of, retry, switchMap, tap, timer } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, combineLatest, forkJoin, from, map, mergeMap, of, retry, switchMap, tap, timer, toArray } from 'rxjs';
 import { GetPlaylistDuplicatesResponse, GetPlaylistResponse, GetPlaylistTracksResponse, GetPlaylistTracksResponsePlaylistTrack, GetSongResponse, GetUsersPlaylistsResponse } from '../../types/openapi';
 import { SongsService } from '../songs/songs.service';
 import { GetPlaylistDuplicateSongs, GetPlaylistDuplicateSongsResponseSet } from '../../types/playlists/GetPlaylistDuplicateSongs';
@@ -16,12 +16,21 @@ export class PlaylistsService {
 
   private selectedPlaylistId$ = new BehaviorSubject<string | null>(null);
 
+  playlistFetchingProgress$: Subject<number> = new Subject<number>();
+  playlistsCount$: Subject<number> = new Subject<number>();
+
   playlists$: Observable<GetPlaylistResponse[]> = this.apiService.get<GetUsersPlaylistsResponse>('/api/v1/users/' + this.userId + '/playlists')
     .pipe(
-      switchMap((response: GetUsersPlaylistsResponse) =>
-        response.playlist_ids ?
-          this.fetchPlaylists(response.playlist_ids) as Observable<GetPlaylistResponse[]> :
-          of([])
+      switchMap((response: GetUsersPlaylistsResponse) => {
+        if (response.playlist_ids) {
+          this.playlistsCount$.next(response.playlist_ids.length);
+          return this.fetchPlaylists(response.playlist_ids) as Observable<GetPlaylistResponse[]>
+        }
+        else {
+          this.playlistsCount$.next(0);
+          return of([])
+        }
+      }
       )
     );
 
@@ -29,9 +38,12 @@ export class PlaylistsService {
     .pipe(
       switchMap(playlistId => {
         if (playlistId) {
-          return this.fetchPlaylistTracks(playlistId).pipe(
-            map(response => this.addPositionToPlaylistTracks(response))
-          );
+          return this.fetchPlaylistTracks(playlistId)
+            .pipe(
+              map(response => {
+                return this.addPositionToPlaylistTracks(response)
+              })
+            );
         } else {
           return of(null);
         }
@@ -77,9 +89,9 @@ export class PlaylistsService {
     return this.selectedPlaylistTracks$.pipe(
       map(response => {
         if (response?.items) {
-          if (searchIndex > 0){
-            for(var i = searchIndex; i < response.items.length; i++){
-              if (response.items[i].track?.id == trackId){
+          if (searchIndex > 0) {
+            for (var i = searchIndex; i < response.items.length; i++) {
+              if (response.items[i].track?.id == trackId) {
                 return response.items[i];
               }
             }
@@ -108,10 +120,18 @@ export class PlaylistsService {
   }
 
   private fetchPlaylists(playlistIds: string[]): Observable<GetPlaylistResponse[]> {
-    return combineLatest(
-      playlistIds.map(id =>
-        this.apiService.get<GetPlaylistResponse>('/api/v1/playlists/' + id)
-      )
+    let retrievedPlaylistsCount = 0;
+
+    const concurrentRequestNumber = 7;
+
+    return from(playlistIds).pipe(
+      mergeMap(id => this.apiService.get<GetPlaylistResponse>('/api/v1/playlists/' + id).pipe(
+        tap(() => {
+          retrievedPlaylistsCount++;
+          this.playlistFetchingProgress$.next(retrievedPlaylistsCount);
+        })
+      ), concurrentRequestNumber),
+      toArray()
     );
   }
 
@@ -124,7 +144,7 @@ export class PlaylistsService {
       ...response,
       items: response.items!.map((item, index) => ({
         ...item,
-        position: index + 1 // 1-based index, use `index` for 0-based
+        position: index + 1
       }))
     };
   }

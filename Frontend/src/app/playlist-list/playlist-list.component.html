@@ -1,6 +1,7 @@
-<div *ngIf="!playlistsList" class="spinner-container">
-    <p-progressSpinner></p-progressSpinner>
-</div>
+<div *ngIf="!playlistsList" class="progress-container">
+    <p-progressBar [value]="(playlistsLoadingProgress / totalPlaylistsCount) * 100" [showValue]="false"> </p-progressBar>
+    <p>{{ playlistsLoadingProgress }} / {{ totalPlaylistsCount }} playlists loaded </p>
+  </div>
 <div *ngIf ="playlistsList">
     <playlist-cleaner-header [headerText] = "playlistListHeaderText"></playlist-cleaner-header>
     <div class="table-container">
