@@ -3,6 +3,7 @@ using PlaylistCleaner.Application.Results.Services.PlaylistsServiceResults;
 using PlaylistCleaner.Application.Results.Utils.DuplicateDetector;
 using PlaylistCleaner.Application.Utils.DuplicateDetector;
 using PlaylistCleaner.Infrastructure.Clients.PlaylistClient;
+using System;
 
 namespace PlaylistCleaner.Application.Services.PlaylistsService;
 
@@ -43,6 +44,25 @@ internal sealed class PlaylistsService : IPlaylistsService
 
     public async Task DeleteTrackFromPlaylistAsync(string playlistId, string trackId, int trackIndex, CancellationToken cancellationToken = default)
     {
+        var tracks = await GetPlaylistTracksAsync(playlistId, cancellationToken);
+        var instancesOfDeletedTrack = tracks.items.Where(t => t.track.id == trackId).ToList();
+
         await _playlistsClient.DeleteTrackFromPlaylistAsync(playlistId, trackId, trackIndex, cancellationToken);
+
+        if (instancesOfDeletedTrack.Count() > 1)
+        {
+            for (int i = 0; i < instancesOfDeletedTrack.Count; i++)
+            {
+                var indexOfDeletedTrack = tracks.items.IndexOf(instancesOfDeletedTrack[i]);
+                if (indexOfDeletedTrack != trackIndex)
+                {
+                    if (indexOfDeletedTrack > trackIndex)
+                    {
+                        indexOfDeletedTrack--;
+                    }
+                    await _playlistsClient.AddTrackToPlaylistAsync(playlistId, trackId, indexOfDeletedTrack, cancellationToken);
+                }
+            }
+        }
     }
 }

@@ -79,4 +79,16 @@ internal sealed class PlaylistsClient : IPlaylistsClient
             throw new SpotifyApiHttpException(response.StatusCode + content);
         }
     }
+
+    public async Task AddTrackToPlaylistAsync(string playlistId, string trackId, int trackIndex, CancellationToken cancellationToken = default)
+    {
+        var playlistTracksAdditionCommandUri = $"{playlistId}/tracks";
+        var trackObject = new JsonObject { ["uris"] = new JsonArray() { $"spotify:track:{trackId}" }, ["position"] = trackIndex };
+        var response = await _httpClient.PostAsync(playlistTracksAdditionCommandUri, JsonContent.Create(trackObject), cancellationToken);
+        if (!response.IsSuccessStatusCode)
+        {
+            string content = await response.Content.ReadAsStringAsync();
+            throw new SpotifyApiHttpException(response.StatusCode + content);
+        }
+    }
 }

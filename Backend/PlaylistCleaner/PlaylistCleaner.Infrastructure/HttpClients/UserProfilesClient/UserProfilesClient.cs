@@ -19,7 +19,7 @@ internal sealed class UserProfilesClient : IUserProfilesClient
         var profileRequestUri = "me";
         try
         {
-            var response = await _httpClient.GetAsync("me", cancellationToken);
+            var response = await _httpClient.GetAsync(profileRequestUri, cancellationToken);
             if (!response.IsSuccessStatusCode)
             {
                 string content = await response.Content.ReadAsStringAsync();
