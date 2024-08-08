@@ -1,30 +1,58 @@
-.speed-dial-container {
-    position: relative;
-    display: inline-block;
-    height: auto;
-    ::ng-deep {
-        .p-speeddial {
-          position: inherit !important; // TODO: find another way to overwrite the position attribute of p-speeddial
-        }
-      }
-}
-
-.welcome-page-div{
-  height: 500px;
+.welcome-page {
+  height: 100vh;
   flex-direction: column;
   display: flex;
   align-items: center;
-  justify-content: space-evenly;
+  justify-content: center;
+}
+
+.speed-dial {
+  position: relative;
+  height: auto;
+
+  ::ng-deep {
+    .p-speeddial {
+      position: relative !important; // TODO: find another way to overwrite the position attribute of p-speeddial
+    }
+  }
+}
+
+.card,
+.speed-dial {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
 }
 
 .custom-icon {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 60px;
-    height: 60px;
-    z-index: 1;
-    pointer-events: none;
-    border-radius: 30px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 3.5%;
+  height: 80%;
+  z-index: 1;
+  pointer-events: none;
+  border-radius: 200%;
+}
+
+
+
+.logo-container {
+  height: 10vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.content {
+  height: 47vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  gap: 2vh;
 }

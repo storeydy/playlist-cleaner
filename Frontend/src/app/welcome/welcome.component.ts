@@ -32,12 +32,18 @@ export class WelcomeComponent implements OnInit {
   
   menuItems: MenuItem[] = [
     {
+      tooltipOptions: {
+        tooltipLabel: 'User Profile'
+      },
       title: 'User Information',
       icon: 'pi pi-id-card',
       routerLink: 'user-profile',
       label: 'User Information'
     },
     {
+      tooltipOptions: {
+        tooltipLabel: 'Playlists'
+      },
       title: 'Playlist View',
       icon: 'pi pi-list',
       routerLink: 'playlists',
@@ -74,6 +80,9 @@ export class WelcomeComponent implements OnInit {
 
   pushUserProfileMenuItem(spotifUrl: string) { 
     var item = {     
+      tooltipOptions: {
+        tooltipLabel: 'Spotify Webpage'
+      },
       label: '<p>Spotify Webpage<p>',
       icon: 'pi pi-external-link',
       url: spotifUrl,
