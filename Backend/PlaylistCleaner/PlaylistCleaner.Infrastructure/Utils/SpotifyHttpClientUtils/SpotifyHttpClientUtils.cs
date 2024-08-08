@@ -45,7 +45,7 @@ internal sealed class SpotifyHttpClientUtils
         }
         catch (HttpRequestException ex)
         {
-            throw new SpotifyApiHttpException(HttpStatusCode.ServiceUnavailable + ", An error occurred while sending the request. Exception: " + ex);
+            throw new SpotifyApiHttpException(HttpStatusCode.ServiceUnavailable + ", An error occurred while sending the request. Exception: " + ex.Message);
         }
     }
 }

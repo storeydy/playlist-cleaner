@@ -1,9 +1,10 @@
 import { Injectable, inject } from '@angular/core';
 import { ApiService } from '../../api/src';
-import { BehaviorSubject, Observable, Subject, combineLatest, forkJoin, from, map, mergeMap, of, retry, switchMap, tap, timer, toArray } from 'rxjs';
-import { GetPlaylistDuplicatesResponse, GetPlaylistResponse, GetPlaylistTracksResponse, GetPlaylistTracksResponsePlaylistTrack, GetSongResponse, GetUsersPlaylistsResponse } from '../../types/openapi';
+import { BehaviorSubject, Observable, Subject, catchError, combineLatest, forkJoin, from, map, mergeMap, of, retry, switchMap, tap, timer, toArray } from 'rxjs';
+import { GetPlaylistDuplicatesResponse, GetPlaylistResponse, GetPlaylistTracksResponse, GetPlaylistTracksResponsePlaylistTrack, GetSongResponse, GetUsersPlaylistsResponse, PlaylistsServiceApi } from '../../types/openapi';
 import { SongsService } from '../songs/songs.service';
 import { GetPlaylistDuplicateSongs, GetPlaylistDuplicateSongsResponseSet } from '../../types/playlists/GetPlaylistDuplicateSongs';
+import { HttpResponse } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -11,6 +12,7 @@ import { GetPlaylistDuplicateSongs, GetPlaylistDuplicateSongsResponseSet } from 
 
 export class PlaylistsService {
   private readonly apiService = inject(ApiService);
+  private readonly playlistsApiService = inject(PlaylistsServiceApi);
   private readonly userId = localStorage.getItem('user_id');
   private readonly songsService = inject(SongsService);
 
@@ -114,9 +116,9 @@ export class PlaylistsService {
     )
   }
 
-  removeSongFromPlaylist(songId: string, songIndex: number): Observable<void> {
+  removeSongFromPlaylist(songId: string, songIndex: number): Observable<HttpResponse<void>> {
     var playlistId = this.selectedPlaylistId$.getValue()
-    return this.apiService.delete('/api/v1/playlists/' + playlistId + '/tracks/' + songId + '?trackIndex=' + songIndex)
+    return this.playlistsApiService.apiV1PlaylistsPlaylistIdTracksTrackIdDelete(playlistId!, songId, songIndex, 'response');
   }
 
   private fetchPlaylists(playlistIds: string[]): Observable<GetPlaylistResponse[]> {

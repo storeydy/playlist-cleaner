@@ -21,25 +21,34 @@ internal sealed class SongsClient : ISongsClient
 
         try
         {
-            var response = await _httpClient.GetAsync(songRequestUri, cancellationToken);
-            if (!response.IsSuccessStatusCode)
+            using (var response = await _httpClient.GetAsync(songRequestUri, cancellationToken))
             {
-                string content = await response.Content.ReadAsStringAsync();
-                throw new SpotifyApiHttpException(response.StatusCode + content);
-            }
+                if (!response.IsSuccessStatusCode)
+                {
+                    string content = await response.Content.ReadAsStringAsync();
+                    throw new SpotifyApiHttpException(response.StatusCode + content);
+                }
 
-            var song = await response.Content.ReadFromJsonAsync<GetSongResult>(cancellationToken: cancellationToken);
-            if (song == null)
-            {
-                throw new EntityNotFoundException(HttpStatusCode.NoContent + ", Song not found or response body is empty.");
-            }
+                if (response.Content == null)
+                {
+                    throw new EntityNotFoundException(HttpStatusCode.NoContent + ", Song not found or response body is empty.");
+                }
 
-            return song;
+                var contentStream = await response.Content.ReadAsStreamAsync();
+                var song = await System.Text.Json.JsonSerializer.DeserializeAsync<GetSongResult>(contentStream, new System.Text.Json.JsonSerializerOptions(), cancellationToken);
+
+                if (song == null)
+                {
+                    throw new EntityNotFoundException(HttpStatusCode.NoContent + ", Song not found or response body is empty.");
+                }
+
+                return song;
+            }
         }
 
         catch (HttpRequestException ex)
         {
-            throw new SpotifyApiHttpException(HttpStatusCode.ServiceUnavailable + ", An error occurred while sending the request. Exception " + ex);
+            throw new SpotifyApiHttpException(HttpStatusCode.ServiceUnavailable + ", An error occurred while sending the request. Exception " + ex.Message);
         }
 
     }

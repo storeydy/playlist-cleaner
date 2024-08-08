@@ -35,7 +35,7 @@ import {
 @Injectable({
   providedIn: 'root'
 })
-export class SongsService implements SongsServiceInterface {
+export class SongsServiceApi implements SongsServiceInterface {
 
     protected basePath = 'http://localhost';
     public defaultHeaders = new HttpHeaders();

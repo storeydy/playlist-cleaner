@@ -1,10 +1,10 @@
 export * from './playlists.service';
-import { PlaylistsService } from './playlists.service';
+import { PlaylistsServiceApi } from './playlists.service';
 export * from './playlists.serviceInterface';
 export * from './songs.service';
-import { SongsService } from './songs.service';
+import { SongsServiceApi } from './songs.service';
 export * from './songs.serviceInterface';
 export * from './users.service';
-import { UsersService } from './users.service';
+import { UsersServiceApi } from './users.service';
 export * from './users.serviceInterface';
-export const APIS = [PlaylistsService, SongsService, UsersService];
+export const APIS = [PlaylistsServiceApi, SongsServiceApi, UsersServiceApi];

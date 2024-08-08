@@ -7,11 +7,14 @@ import { ButtonModule } from 'primeng/button';
 import { PlaylistsService } from '../../shared/data-access/playlists/playlists.service';
 import { GetPlaylistTracksResponsePlaylistTrack } from '../../shared/types/openapi';
 import { firstValueFrom } from 'rxjs';
+import { Message } from 'primeng/api';
+import { MessagesModule } from 'primeng/messages';
+import { HttpResponse } from '@angular/common/http';
 
 @Component({
   selector: 'playlist-cleaner-duplicate-tracks-dialog',
   standalone: true,
-  imports: [DynamicDialogModule, CardModule, CommonModule, ButtonModule],
+  imports: [DynamicDialogModule, CardModule, CommonModule, ButtonModule, MessagesModule],
   templateUrl: './duplicate-tracks-dialog.component.html',
   styleUrl: './duplicate-tracks-dialog.component.scss'
 })
@@ -19,6 +22,7 @@ export class DuplicateTracksDialogComponent {
 
   private readonly playlistService = inject(PlaylistsService);
 
+  messages: Message[] = [];
   duplicateSetIndex: number = 0;
   duplicateTracks: GetPlaylistDuplicateSongs
   duplicateTracksPlaylistContext: Map<number, GetPlaylistTracksResponsePlaylistTrack[]> = new Map();
@@ -29,6 +33,13 @@ export class DuplicateTracksDialogComponent {
 
   async ngOnInit() {
     await this.getDuplicatesContextWithinPlaylist();
+  }
+
+  addMessages() {
+    this.messages = [
+      { severity: 'success', summary: 'Duplicate Removed Successfully' },
+      { severity: 'error', summary: 'Error Removing Duplicate' },
+    ]
   }
 
   private async getDuplicatesContextWithinPlaylist() {
@@ -62,15 +73,33 @@ export class DuplicateTracksDialogComponent {
   }
 
   removeSongFromPlaylist(songId: string, duplicateIndex: number) {
-    var trackPositionInPlaylist = this.getTrackContext(duplicateIndex).position!;
-
-    this.playlistService.removeSongFromPlaylist(songId, trackPositionInPlaylist).subscribe((res) => {
-      console.log(res);
-      //TODO - Remove deleted track upon success
-    });
+    if (this.getTrackContext(duplicateIndex)){
+      var trackPositionInPlaylist = this.getTrackContext(duplicateIndex)!.position!;
+      this.playlistService.removeSongFromPlaylist(songId, trackPositionInPlaylist).subscribe({
+        next: (res: HttpResponse<void>) => {
+          if (res.status === 204) {
+            const duplicateTracksPlaylistContextEntry = this.duplicateTracksPlaylistContext.get(this.duplicateSetIndex);
+            if (duplicateTracksPlaylistContextEntry) {
+              duplicateTracksPlaylistContextEntry.splice(duplicateIndex, 1);
+            } 
+            this.duplicateTracks.duplicateTrackSets[this.duplicateSetIndex].songs.splice(duplicateIndex, 1)
+            this.messages = [{ severity: 'success', summary: 'Success', detail: 'Track deleted successfully' }];
+          }
+        },
+        error: (err) => {
+          this.messages = [{ severity: 'error', summary: 'Error', detail: 'There was an error deleting the track.' }];
+        }
+      });
+    }
+    else{
+      this.messages = [{severity: 'error', summary: 'Error finding track context', detail: 'There was an error finding the position of this track within the playlist.'}]
+    }
   }
 
   getTrackContext(duplicateIndex: number) {
-    return this.duplicateTracksPlaylistContext.get(this.duplicateSetIndex)![duplicateIndex];
+    if (this.duplicateTracksPlaylistContext.has(this.duplicateSetIndex)){
+      return this.duplicateTracksPlaylistContext.get(this.duplicateSetIndex)![duplicateIndex];
+    }
+    else return null
   }
 }

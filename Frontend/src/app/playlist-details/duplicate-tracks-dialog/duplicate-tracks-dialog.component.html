@@ -18,6 +18,7 @@
         </div>
     </div>
     <div class = "footer">
+        <p-messages [(value)]="messages"> </p-messages>
         <p-button *ngIf="duplicateSetIndex < duplicateTracks!.duplicateTrackSets.length - 1" icon="pi pi-angle-right" size="small" (onClick)="duplicateSetIndex = duplicateSetIndex + 1"/>
         <p-button *ngIf="duplicateSetIndex > 0" icon="pi pi-angle-left" size="small" (onClick)="duplicateSetIndex = duplicateSetIndex - 1"/>
     </div>

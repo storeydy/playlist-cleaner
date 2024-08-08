@@ -39,7 +39,7 @@ import {
 @Injectable({
   providedIn: 'root'
 })
-export class UsersService implements UsersServiceInterface {
+export class UsersServiceApi implements UsersServiceInterface {
 
     protected basePath = 'http://localhost';
     public defaultHeaders = new HttpHeaders();
