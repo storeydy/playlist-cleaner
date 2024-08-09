@@ -1,26 +1,38 @@
 .progress-container {
-    display: flex;
-    flex-direction: column;
-    position: fixed;
-    justify-content: center;
-    align-items: center;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-  }
-  
-  p-progressBar {
-    width: 100%;
-    max-width: 600px;
-    margin-bottom: 10px;
-  }
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  justify-content: center;
+  align-items: center;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+p-progressBar {
+  width: 100%;
+  max-width: 600px;
+  margin-bottom: 10px;
+}
+
+.table-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center; 
+  padding: 1rem 0;
+}
+
+.info-icon{
+  margin-left: 2%;
+  font-size: 1.5rem;
+}
 
 .table-container {
-    height: 80%;
-    position: fixed;
-    top: 10%;
-    left: 0;
-    right: 0;
-    bottom: 0;
+  height: 80%;
+  position: fixed;
+  top: 10%;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }

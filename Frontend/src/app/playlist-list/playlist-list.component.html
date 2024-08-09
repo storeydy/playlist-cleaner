@@ -3,7 +3,8 @@
     <p>{{ playlistsLoadingProgress }} / {{ totalPlaylistsCount }} playlists loaded </p>
   </div>
 <div *ngIf ="playlistsList">
-    <playlist-cleaner-header [headerText] = "playlistListHeaderText"></playlist-cleaner-header>
+    <playlist-cleaner-header [headerText] = "playlistListHeaderText">
+    </playlist-cleaner-header>
     <div class="table-container">
         <p-table 
             #dt
@@ -20,8 +21,9 @@
             [globalFilterFields]="['name', 'tracks.total', 'owner.display_name', 'followers.total']"
         >
         <ng-template pTemplate="caption">
-            <div class="flex">
+            <div class="table-header">
                 <p-button label="Reset" size="small" [disabled]="!dt._sortField" (click)="resetTableSort()"></p-button>
+                <i class = "pi pi-info-circle info-icon" pTooltip="Click on the table headers to sort by that attribute. Use the reset button to return to the default order. <br/> <br/> Double-click on a playlist to view it in detail." [escape]="false"></i>
                 <span class="p-input-icon-left ml-auto">
                     <i class="pi pi-search"></i>
                     <input pInputText type="text" (input)="dt.filterGlobal($any($event.target).value, 'contains')" placeholder="Search keyword" />

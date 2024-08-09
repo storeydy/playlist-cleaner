@@ -12,18 +12,22 @@ import { HeaderComponent } from '../shared/components/header/header.component';
 import { MillisecondPipe } from '../shared/pipes/millisecond.pipe';
 import { DynamicDialogModule, DialogService } from 'primeng/dynamicdialog';
 import { DuplicateTracksDialogComponent } from './duplicate-tracks-dialog/duplicate-tracks-dialog.component';
+import { TooltipModule } from 'primeng/tooltip';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
+import { MessagesModule } from 'primeng/messages';
 
 @Component({
   selector: 'playlist-cleaner-playlist-details',
   standalone: true,
-  imports: [CommonModule, ButtonModule, TableModule, ProgressSpinnerModule, InputTextModule, HeaderComponent, MillisecondPipe, DynamicDialogModule],
+  imports: [CommonModule, ButtonModule, TableModule, ProgressSpinnerModule, InputTextModule, HeaderComponent, MillisecondPipe, DynamicDialogModule, TooltipModule, ToastModule],
   templateUrl: './playlist-details.component.html',
   styleUrl: './playlist-details.component.scss',
-  providers: [DialogService]
+  providers: [DialogService, MessageService]
 })
 export class PlaylistDetailsComponent implements OnInit {
 
-  constructor(private route: ActivatedRoute, private dialogService: DialogService) {}
+  constructor(private route: ActivatedRoute, private dialogService: DialogService, private messagesService: MessageService) {}
 
   private readonly playlistService = inject(PlaylistsService);
   private subscription = new Subscription();
@@ -104,6 +108,10 @@ export class PlaylistDetailsComponent implements OnInit {
       return data.track.artists[0]?.name;
     }
     return field.split('.').reduce((acc, part) => acc && acc[part], data);
+  }
+
+  displayWipMessage(){
+    this.messagesService.add({ severity: 'warn', summary: 'Not yet available', detail: 'This feature is not available yet.' });
   }
 
 }

@@ -1,40 +1,46 @@
-<div *ngIf="!playlistTracks" class = "spinner-container">
+<div *ngIf="!playlistTracks" class="spinner-container">
     <p-progressSpinner></p-progressSpinner>
 </div>
-<div *ngIf = "playlistTracks!">
+<div *ngIf="playlistTracks!">
     <playlist-cleaner-header [headerText]="playlistDetailsHeaderText"></playlist-cleaner-header>
     <div class="playlist-tracks-container">
-        <p-table 
-            #dt
-            [value]="playlistTracks!"
-            [paginator]="true"
-            [rows]="20"
-            selectionMode="single"
-            [showCurrentPageReport]="true"
-            [tableStyle]="{ 'min-width': '50rem' }"
-            [scrollable]="true"
-            scrollHeight="calc(100vh - 32vh)"
-            [rowsPerPageOptions]="[5, 10, 20]"
-            [customSort]="true"
-            (sortFunction)="customSort($event)"
-        >
+        <p-table #dt [value]="playlistTracks!" [paginator]="true" [rows]="20" selectionMode="single"
+            [showCurrentPageReport]="true" [tableStyle]="{ 'min-width': '50rem' }" [scrollable]="true"
+            scrollHeight="calc(100vh - 32vh)" [rowsPerPageOptions]="[5, 10, 20]" [customSort]="true"
+            (sortFunction)="customSort($event)">
             <ng-template pTemplate="caption">
-                <div class="flex">
-                    <p-button label="Reset" size="small" [disabled]="!dt._sortField"
-                        (click)="resetTableSort()"></p-button>
-                    <p-button label="Clean" size="small" (click)="cleanPlaylist()"></p-button>
-                    <span class="p-input-icon-left ml-auto">
-                        <i class="pi pi-search"></i>
-                        <input pInputText type="text" (input)="dt.filterGlobal($any($event.target).value, 'contains')"
-                            placeholder="Search keyword" />
-                    </span>
+                <div class="playlist-details-header">
+                    <div>
+                        <p-button label="Reset" size="small" [disabled]="!dt._sortField"
+                            (click)="resetTableSort()"></p-button>
+                    </div>
+                    <div class="playlist-action-buttons">
+                        <p-button icon="pi pi-clone" size="small" pTooltip="Remove duplicates"
+                            (click)="cleanPlaylist()"></p-button>
+                        <p-button icon="pi pi-wave-pulse" size="small" pTooltip="Analyse traits"
+                            (click)="displayWipMessage()"></p-button>
+                        <p-button icon="pi pi-exclamation-circle" size="small" pTooltip="Remove explicit songs"
+                            (click)="displayWipMessage()"></p-button>
+                        <p-toast [life]="3000" position="center"
+                            [breakpoints]="{ '920px': { width: '100%', right: '0', left: '0' } }" />
+                    </div>
+                    <div>
+                        <span class="p-input-icon-left ml-auto">
+                            <i class="pi pi-search"></i>
+                            <input pInputText type="text"
+                                (input)="dt.filterGlobal($any($event.target).value, 'contains')"
+                                placeholder="Search keyword" />
+                        </span>
+                    </div>
                 </div>
             </ng-template>
             <ng-template pTemplate="header">
                 <tr>
                     <th style="width:15%">Album Image</th>
-                    <th pSortableColumn="track.name" style="width:15%">Track Name <p-sortIcon field="track.name"></p-sortIcon></th>
-                    <th pSortableColumn="track.album.name" style="width:15%">Album name<p-sortIcon field="track.album.name"></p-sortIcon></th>
+                    <th pSortableColumn="track.name" style="width:15%">Track Name <p-sortIcon
+                            field="track.name"></p-sortIcon></th>
+                    <th pSortableColumn="track.album.name" style="width:15%">Album name<p-sortIcon
+                            field="track.album.name"></p-sortIcon></th>
                     <th pSortableColumn="track.artists[0].name" style="width:15%">Artist<p-sortIcon
                             field="track.artists[0].name"></p-sortIcon></th>
                     <th pSortableColumn="track.duration_ms" style="width:15%">Duration <p-sortIcon
@@ -43,7 +49,8 @@
             </ng-template>
             <ng-template pTemplate="body" let-item>
                 <tr>
-                    <td><img [src]="item.track.album.images?.[0]?.url ? item.track.album.images[0].url : 'https://images.pexels.com/photos/15700297/pexels-photo-15700297/free-photo-of-candle-and-sculpture-on-family-repository.jpeg?auto=compress&cs=tinysrgb&w=600'" width="35" class="shadow-4" /></td>
+                    <td><img [src]="item.track.album.images?.[0]?.url ? item.track.album.images[0].url : 'https://images.pexels.com/photos/15700297/pexels-photo-15700297/free-photo-of-candle-and-sculpture-on-family-repository.jpeg?auto=compress&cs=tinysrgb&w=600'"
+                            width="35" class="shadow-4" /></td>
                     <td>{{item.track.name}}</td>
                     <td>{{item.track.album.name}}</td>
                     <td>{{item.track.artists[0].name}}</td>

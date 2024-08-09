@@ -10,11 +10,12 @@ import { HeaderComponent } from '../shared/components/header/header.component';
 import { Router } from '@angular/router';
 import { ProgressBarModule } from 'primeng/progressbar';
 import { ToastModule } from 'primeng/toast';
+import { TooltipModule } from 'primeng/tooltip';
 
 @Component({
   selector: 'playlist-cleaner-playlist-list',
   standalone: true,
-  imports: [CommonModule, ButtonModule, TableModule, ProgressBarModule, InputTextModule, HeaderComponent, ToastModule],
+  imports: [CommonModule, ButtonModule, TableModule, ProgressBarModule, InputTextModule, HeaderComponent, ToastModule, TooltipModule],
   templateUrl: './playlist-list.component.html',
   styleUrl: './playlist-list.component.scss',
 })
@@ -32,6 +33,7 @@ export class PlaylistListComponent implements OnInit {
   playlistListHeaderText: string = "User's Playlists";
   playlistsLoadingProgress: number = 0;
   totalPlaylistsCount: number = 0;
+
 
   async ngOnInit() {    
     this.initialiseSubscriptions();

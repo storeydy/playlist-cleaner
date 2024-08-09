@@ -1,20 +1,20 @@
 <div class="welcome-page">
-    <div class = "logo-container">
-        <img src="https://storage.googleapis.com/pr-newsroom-wp/1/2023/05/Spotify_Full_Logo_RGB_Green.png" height="70vh">
-    </div>
-    <div class = "content">
-        <div class = "card">
+    <img src="https://storage.googleapis.com/pr-newsroom-wp/1/2023/05/Spotify_Full_Logo_RGB_Green.png" height="80vh">
+    <div class="content">
+        <div class="card">
             <p-card header="Welcome To Playlist Cleaner">
                 <p class="m-0">
-                    This is a tool to help remove noise from your Spotify playlists. <br> <br> Click the profile picture to get started!
+                    This is a tool to help remove noise from your Spotify playlists. <br> <br> Click the profile picture
+                    to get started!
                 </p>
             </p-card>
         </div>
-        
-        <div class = "speed-dial" *ngIf="profileData != null">
-            <p-speedDial icon = "p-circle" [model]="menuItems" direction="down-right" type="quarter-circle" [radius]="150" buttonClassName="p-button-success">
+
+        <div class="speed-dial" *ngIf="profileData != null">
+            <p-speedDial icon="p-circle" [model]="menuItems" direction="down-right" type="quarter-circle" [radius]="125"
+                buttonClassName="p-button-success">
             </p-speedDial>
-            <img [src] = "profilePictureUrl" class="custom-icon" alt="Custom Icon">
+            <img [src]="profilePictureUrl" class="custom-icon" alt="Custom Icon">
         </div>
     </div>
 </div>

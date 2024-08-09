@@ -5,11 +5,12 @@ import { ButtonModule } from 'primeng/button';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 import { CommonModule, Location } from '@angular/common';
+import { TooltipModule } from 'primeng/tooltip';
 
 @Component({
   selector: 'playlist-cleaner-header',
   standalone: true,
-  imports: [CommonModule, ButtonModule],
+  imports: [CommonModule, ButtonModule, TooltipModule],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
 })
@@ -33,7 +34,7 @@ export class HeaderComponent implements OnInit {
   private initialiseSubscriptions(){
     this.subscription.add(
       this.userProfileService.profileObject$.subscribe((res) => {
-        this.profileData = res;
+        this.profileData = res;        
       })
     )
   }
@@ -44,6 +45,10 @@ export class HeaderComponent implements OnInit {
 
   navigateToWelcome() {
     this.router.navigate(['']);
+  }
+
+  navigateToSpotify(){
+    window.location.href = this.profileData?.spotify_external_url!
   }
 
   ngOnDestroy() {
