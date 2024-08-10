@@ -32,4 +32,13 @@ export class CacheInterceptorService implements HttpInterceptor {
       })
     );
   }
+  
+  updateCache<T>(urlWithParams: string, updateFn: (body: T) => T): void {
+    const cached = this.cache.get(urlWithParams);
+    if (cached) {
+      const updatedBody = updateFn(cached.response.body as T);
+      const updatedResponse = cached.response.clone({ body: updatedBody });
+      this.cache.set(urlWithParams, { response: updatedResponse, expiration: cached.expiration });
+    }
+  }
 }

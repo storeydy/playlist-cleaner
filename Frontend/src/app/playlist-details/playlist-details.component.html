@@ -1,10 +1,10 @@
 <div *ngIf="!playlistTracks" class="spinner-container">
     <p-progressSpinner></p-progressSpinner>
 </div>
-<div *ngIf="playlistTracks!">
+<div *ngIf="(playlistService.selectedPlaylistTracks$ | async) as playlistTracks">
     <playlist-cleaner-header [headerText]="playlistDetailsHeaderText"></playlist-cleaner-header>
     <div class="playlist-tracks-container">
-        <p-table #dt [value]="playlistTracks!" [paginator]="true" [rows]="20" selectionMode="single"
+        <p-table #dt [value]="playlistTracks?.items!" [paginator]="true" [rows]="20" selectionMode="single"
             [showCurrentPageReport]="true" [tableStyle]="{ 'min-width': '50rem' }" [scrollable]="true"
             scrollHeight="calc(100vh - 32vh)" [rowsPerPageOptions]="[5, 10, 20]" [customSort]="true"
             (sortFunction)="customSort($event)">

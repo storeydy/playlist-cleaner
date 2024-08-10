@@ -1,10 +1,11 @@
 import { Injectable, inject } from '@angular/core';
 import { ApiService } from '../../api/src';
-import { BehaviorSubject, Observable, Subject, catchError, combineLatest, forkJoin, from, map, mergeMap, of, retry, switchMap, tap, timer, toArray } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, catchError, combineLatest, filter, forkJoin, from, map, mergeMap, of, startWith, switchMap, tap, toArray } from 'rxjs';
 import { GetPlaylistDuplicatesResponse, GetPlaylistResponse, GetPlaylistTracksResponse, GetPlaylistTracksResponsePlaylistTrack, GetSongResponse, GetUsersPlaylistsResponse, PlaylistsServiceApi } from '../../types/openapi';
 import { SongsService } from '../songs/songs.service';
 import { GetPlaylistDuplicateSongs, GetPlaylistDuplicateSongsResponseSet } from '../../types/playlists/GetPlaylistDuplicateSongs';
 import { HttpResponse } from '@angular/common/http';
+import { CacheInterceptorService } from '../../interceptors/cache-interceptor.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,8 +16,10 @@ export class PlaylistsService {
   private readonly playlistsApiService = inject(PlaylistsServiceApi);
   private readonly userId = localStorage.getItem('user_id');
   private readonly songsService = inject(SongsService);
+  private readonly cacheInterceptorService = inject(CacheInterceptorService);
 
   private selectedPlaylistId$ = new BehaviorSubject<string | null>(null);
+  private playlistTracksUpdate$ = new Subject<void>();
 
   playlistFetchingProgress$: Subject<number> = new Subject<number>();
   playlistsCount$: Subject<number> = new Subject<number>();
@@ -36,9 +39,12 @@ export class PlaylistsService {
       )
     );
 
-  selectedPlaylistTracks$: Observable<GetPlaylistTracksResponse | null> = this.selectedPlaylistId$
+  selectedPlaylistTracks$: Observable<GetPlaylistTracksResponse | null> = combineLatest([
+    this.selectedPlaylistId$,
+    this.playlistTracksUpdate$.pipe(startWith(null))
+  ])
     .pipe(
-      switchMap(playlistId => {
+      switchMap(([playlistId]) => {
         if (playlistId) {
           return this.fetchPlaylistTracks(playlistId)
             .pipe(
@@ -105,6 +111,10 @@ export class PlaylistsService {
     )
   }
 
+  triggerPlaylistTracksUpdate() {
+    this.playlistTracksUpdate$.next();
+  }
+
   getTrackByIndex(trackIndex: number): Observable<GetPlaylistTracksResponsePlaylistTrack | undefined> {
     return this.selectedPlaylistTracks$.pipe(
       map(response => {
@@ -118,7 +128,22 @@ export class PlaylistsService {
 
   removeSongFromPlaylist(songId: string, songIndex: number): Observable<HttpResponse<void>> {
     var playlistId = this.selectedPlaylistId$.getValue()
-    return this.playlistsApiService.apiV1PlaylistsPlaylistIdTracksTrackIdDelete(playlistId!, songId, songIndex, 'response');
+    var url = `https://localhost:7204/api/v1/playlists/${playlistId}/tracks`;
+    return this.playlistsApiService.apiV1PlaylistsPlaylistIdTracksTrackIdDelete(playlistId!, songId, songIndex, 'response').pipe(
+      tap(res => {
+        if (res.status === 204){
+          this.cacheInterceptorService.updateCache<GetPlaylistTracksResponse>(
+            url,
+            (playlistData) => {
+              return {
+                ...playlistData,
+                tracks: playlistData.items?.filter(track => track.track?.id !== songId)
+              }
+            }
+          )
+        }
+      })
+    );
   }
 
   private fetchPlaylists(playlistIds: string[]): Observable<GetPlaylistResponse[]> {
@@ -131,8 +156,13 @@ export class PlaylistsService {
         tap(() => {
           retrievedPlaylistsCount++;
           this.playlistFetchingProgress$.next(retrievedPlaylistsCount);
+        }),
+        catchError(error => {
+          console.error(`Failed to retrieve playlist with id ${id}`, error)
+          return of(null as unknown as GetPlaylistResponse);
         })
       ), concurrentRequestNumber),
+      filter(playlist => playlist !== null),
       toArray()
     );
   }

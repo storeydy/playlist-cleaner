@@ -15,7 +15,6 @@ import { DuplicateTracksDialogComponent } from './duplicate-tracks-dialog/duplic
 import { TooltipModule } from 'primeng/tooltip';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
-import { MessagesModule } from 'primeng/messages';
 
 @Component({
   selector: 'playlist-cleaner-playlist-details',
@@ -29,7 +28,7 @@ export class PlaylistDetailsComponent implements OnInit {
 
   constructor(private route: ActivatedRoute, private dialogService: DialogService, private messagesService: MessageService) {}
 
-  private readonly playlistService = inject(PlaylistsService);
+  public readonly playlistService = inject(PlaylistsService);
   private subscription = new Subscription();
   @ViewChild('dt') dt!: Table;
 
@@ -48,12 +47,12 @@ export class PlaylistDetailsComponent implements OnInit {
   }
 
   private initialiseSubscriptions() {
-    this.subscription.add(
-      this.playlistService.selectedPlaylistTracks$.subscribe((res) => {
-        this.playlistTracks = res?.items!;
-        this.unsortedPlaylistTracks = res?.items!;
-      })
-    )
+    // this.subscription.add(
+    //   this.playlistService.selectedPlaylistTracks$.subscribe((res) => {
+    //     this.playlistTracks = res?.items!;
+    //     this.unsortedPlaylistTracks = res?.items!;
+    //   })
+    // )
 
     this.subscription.add(
       this.playlistService.playlists$.subscribe((res) => {
